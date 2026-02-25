@@ -1,0 +1,406 @@
+/* ============================================
+   cov.kids — Static Site Styles
+   Coventry sky blue: #5EB3E4
+   ============================================ */
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: #fafafa;
+  color: #1a1a1a;
+  line-height: 1.7;
+  padding-top: 56px;  /* space for top banner */
+  padding-bottom: 80px; /* space for bottom banner */
+}
+
+/* --- Typography --- */
+h1, h2, h3, h4 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+h1 { font-size: 2.5rem; margin-bottom: 0.5em; }
+h2 { font-size: 1.75rem; margin-bottom: 0.4em; }
+h3 { font-size: 1.35rem; margin-bottom: 0.3em; }
+
+a {
+  color: #5EB3E4;
+  text-decoration: none;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+a:hover {
+  color: #3a9ad4;
+  text-decoration: underline;
+}
+
+/* --- Layout --- */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* --- Header --- */
+.site-header {
+  padding: 2.5rem 0 1.5rem;
+  border-bottom: 2px solid #5EB3E4;
+  margin-bottom: 2.5rem;
+}
+
+.site-header h1 {
+  font-size: 3rem;
+  letter-spacing: -0.02em;
+}
+
+.site-header h1 a {
+  color: #1a1a1a;
+  text-decoration: none;
+}
+
+.site-header h1 a:hover {
+  color: #5EB3E4;
+}
+
+.site-header h1 span {
+  color: #5EB3E4;
+}
+
+.site-header p {
+  color: #666;
+  font-size: 1.05rem;
+  margin-top: 0.25rem;
+}
+
+/* --- Byline (in the banner triangle gap) --- */
+.byline {
+  text-align: right;
+  padding: 0.2rem 1.5rem 0.5rem;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #999;
+  letter-spacing: 0.05em;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.byline.scrolled {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* --- Navigation --- */
+.site-nav {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.site-nav a {
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.3rem 0;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.site-nav a:hover {
+  text-decoration: none;
+  border-bottom-color: #5EB3E4;
+}
+
+.site-nav a.active {
+  border-bottom-color: #5EB3E4;
+  color: #1a1a1a;
+}
+
+/* --- Page Title --- */
+.page-title {
+  margin-bottom: 2rem;
+}
+
+.page-title .subtitle {
+  color: #666;
+  font-size: 1.05rem;
+  margin-top: 0.25rem;
+}
+
+/* --- Category Section --- */
+.category-section {
+  margin-bottom: 3rem;
+}
+
+.category-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.category-header h2 {
+  margin-bottom: 0;
+}
+
+.category-count {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  color: #999;
+  font-weight: 500;
+}
+
+/* --- Event Cards --- */
+.event-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 0.75rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.event-name {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.15rem;
+  margin-bottom: 0.3rem;
+}
+
+.event-name a {
+  color: #1a1a1a;
+}
+
+.event-name a:hover {
+  color: #5EB3E4;
+}
+
+.event-meta {
+  display: flex;
+  gap: 1.25rem;
+  font-size: 0.9rem;
+  color: #666;
+  flex-wrap: wrap;
+}
+
+.event-meta .date::before {
+  content: "\1F4C5 ";
+}
+
+.event-meta .venue::before {
+  content: "\1F4CD ";
+}
+
+.times-badge {
+  display: inline-block;
+  background: #f0f7fc;
+  color: #5EB3E4;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.15rem 0.55rem;
+  border-radius: 99px;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+/* --- Fade-in Animation --- */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Week List / Archive --- */
+.archive-list {
+  list-style: none;
+}
+
+.archive-list li {
+  border-bottom: 1px solid #eee;
+}
+
+.archive-list a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0.5rem;
+  color: #1a1a1a;
+  transition: background 0.15s ease;
+  border-radius: 4px;
+}
+
+.archive-list a:hover {
+  background: #f5fafd;
+  text-decoration: none;
+}
+
+.archive-list .label {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.1rem;
+}
+
+.archive-list .meta {
+  color: #999;
+  font-size: 0.9rem;
+}
+
+/* --- Breadcrumbs --- */
+.breadcrumbs {
+  font-size: 0.9rem;
+  color: #999;
+  margin-bottom: 1.5rem;
+}
+
+.breadcrumbs a {
+  color: #999;
+}
+
+.breadcrumbs a:hover {
+  color: #5EB3E4;
+}
+
+.breadcrumbs .separator {
+  margin: 0 0.4rem;
+}
+
+/* --- Footer --- */
+.site-footer {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  color: #999;
+  font-size: 0.85rem;
+}
+
+.site-footer a {
+  color: #999;
+}
+
+.site-footer a:hover {
+  color: #5EB3E4;
+}
+
+/* --- Top Text Banner --- */
+.top-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 48px;
+  background: #1a1a1a;
+  overflow: hidden;
+  transform: rotate(-1.5deg) scale(1.03);
+  transform-origin: top left;
+  z-index: 100;
+}
+
+.top-banner-track {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  white-space: nowrap;
+  animation: marquee-right 20s linear infinite;
+}
+
+.top-banner-track span {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #fafafa;
+  padding: 0 2rem;
+  flex-shrink: 0;
+}
+
+.top-banner-track span.dot {
+  color: #5EB3E4;
+  padding: 0;
+}
+
+/* --- Scrolling Coventry Banner (bottom) --- */
+.coventry-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: #1a1a1a;
+  overflow: hidden;
+  z-index: 100;
+  transform: rotate(-1.5deg) scale(1.06);
+  transform-origin: bottom left;
+}
+
+.banner-track {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.banner-set {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.banner-set img {
+  height: 40px;
+  width: auto;
+  margin: 0 2.5rem;
+  opacity: 0.4;
+  flex-shrink: 0;
+  filter: invert(1);
+}
+
+.banner-set img.accent {
+  opacity: 0.8;
+  filter: none;
+}
+
+@keyframes marquee-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+/* --- Responsive --- */
+@media (max-width: 640px) {
+  h1 { font-size: 2rem; }
+  .site-header h1 { font-size: 2.25rem; }
+  .event-card { padding: 1rem 1.15rem; }
+  .container { padding: 0 1rem; }
+  .site-nav { gap: 1rem; }
+  .top-banner { height: 40px; }
+  .top-banner-track span { font-size: 1.1rem; }
+}

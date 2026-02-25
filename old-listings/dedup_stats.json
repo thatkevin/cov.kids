@@ -1,0 +1,149 @@
+{
+  "total_raw_entries": 8692,
+  "unique_events": 3762,
+  "dedup_ratio": 56.7,
+  "categories": {
+    "Music": 1208,
+    "Film": 517,
+    "‍‍‍ Family": 500,
+    "Theatre &amp; Performance": 427,
+    "Comedy": 207,
+    "Food, Markets &amp; Socials": 178,
+    "Art &amp; Exhibitions": 139,
+    "Talks &amp; Tours": 126,
+    "Workshops &amp; Classes": 125,
+    "Sport": 113,
+    "Poetry, Writing &amp; Talks": 86,
+    "Tabletop &amp; Gaming": 31,
+    "Literature &amp; Poetry": 28,
+    "Heritage Open Days 2024": 25,
+    "Heritage Open Days": 23,
+    "Literature": 22,
+    "Motoring &amp; Transport": 6,
+    "MotoFest 2024": 1
+  },
+  "top_recurring": [
+    {
+      "name": "Junior Drama Classes (ages 8-11)",
+      "venue": "Belgrade Theatre",
+      "times": 152
+    },
+    {
+      "name": "Family Museum Engineers Play: Saturday Play Days",
+      "venue": "Coventry Transport Museum",
+      "times": 150
+    },
+    {
+      "name": "Dippy In Coventry: The Nation's Favourite Dinosaur",
+      "venue": "Herbert Art Gallery &amp; Museum",
+      "times": 138
+    },
+    {
+      "name": "11-14s Theatre Hub",
+      "venue": "Belgrade Theatre",
+      "times": 134
+    },
+    {
+      "name": "Adult Acting Classes (Thursday Class)",
+      "venue": "Belgrade Theatre",
+      "times": 131
+    },
+    {
+      "name": "Warwickshire's Jurassic Sea",
+      "venue": "Herbert Art Gallery &amp; Museum",
+      "times": 130
+    },
+    {
+      "name": "Tudor’s Historical Journey: Tudor Coventry at St Mary’s Guildhall",
+      "venue": "St Mary's Guildhall",
+      "times": 91
+    },
+    {
+      "name": "Songwriting Workshops",
+      "venue": "Warwick Arts Centre",
+      "times": 87
+    },
+    {
+      "name": "Sensory Stories &amp; Rhymes: Christmas Specials",
+      "venue": "Herbert Art Gallery &amp; Museum",
+      "times": 87
+    },
+    {
+      "name": "Karakoke &amp; DJ Nights at Sky Blue Tavern",
+      "venue": "Sky Blue Tavern",
+      "times": 84
+    },
+    {
+      "name": "Jazz Fridays",
+      "venue": "Warwick Arts Centre",
+      "times": 84
+    },
+    {
+      "name": "Mini Creatives",
+      "venue": "Warwick Arts Centre",
+      "times": 68
+    },
+    {
+      "name": "Family Sundays",
+      "venue": "Warwick Arts Centre",
+      "times": 63
+    },
+    {
+      "name": "PlayHEM in the Community",
+      "venue": "Coventry Transport Museum",
+      "times": 55
+    },
+    {
+      "name": "Collecting Coventry Community Day Event",
+      "venue": "Herbert Art Gallery &amp; Museum",
+      "times": 53
+    },
+    {
+      "name": "Coventry Rugby Club: 150 Years History Display",
+      "venue": "Herbert Art Gallery &amp; Museum",
+      "times": 50
+    },
+    {
+      "name": "Readers' Groups",
+      "venue": "All Coventry Libraries",
+      "times": 47
+    },
+    {
+      "name": "Poetry Workshops",
+      "venue": "Coventry Central Library",
+      "times": 47
+    },
+    {
+      "name": "Earlsdon Carnegie Library Events",
+      "venue": "Earlsdon Carnegie Library",
+      "times": 46
+    },
+    {
+      "name": "Coventry's Jewish Community",
+      "venue": "Herbert Art Gallery &amp; Museum",
+      "times": 46
+    }
+  ],
+  "venues": {
+    "Warwick Arts Centre": 1036,
+    "Albany Theatre": 317,
+    "The Tin": 220,
+    "Belgrade Theatre": 220,
+    "HMV Empire": 216,
+    "Coventry Cathedral": 189,
+    "Herbert Art Gallery &amp; Museum": 130,
+    "Arches Venue": 123,
+    "Fargo Village": 85,
+    "University of Warwick": 79,
+    "LTB Showrooms": 61,
+    "Rialto Plaza": 58,
+    "Coventry Building Society Arena": 56,
+    "Just Dropped In": 55,
+    "St Mary's Guildhall": 53,
+    "Kasbah": 50,
+    "Skydome Arena": 47,
+    "Charterhouse": 45,
+    "Six Sided Society": 40,
+    "Coventry Transport Museum": 40
+  }
+}

@@ -1,0 +1,37 @@
+<div class="breadcrumbs">
+  <a href="<%= root_path %>">Home</a>
+  <span class="separator">/</span>
+  <a href="<%= root_path %><%= year %>/"><%= year %></a>
+  <span class="separator">/</span>
+  <a href="<%= root_path %><%= year %>/<%= month_path %>/"><%= month_name %></a>
+  <span class="separator">/</span>
+  <%= day %>
+</div>
+
+<div class="page-title">
+  <h1><%= day_label %></h1>
+  <p class="subtitle"><%= events.length %> event<%= events.length == 1 ? '' : 's' %></p>
+</div>
+
+<% events.each do |event| %>
+  <div class="event-card fade-in">
+    <div class="event-name">
+      <% if event[:url] && !event[:url].empty? %>
+        <a href="<%= event[:url] %>"><%= event[:name] %></a>
+      <% else %>
+        <%= event[:name] %>
+      <% end %>
+      <% if event[:times_listed] && event[:times_listed] > 2 %>
+        <span class="times-badge">seen <%= event[:times_listed] %>x</span>
+      <% end %>
+    </div>
+    <div class="event-meta">
+      <% if event[:date_text] && !event[:date_text].empty? %>
+        <span class="date"><%= event[:date_text] %></span>
+      <% end %>
+      <% if event[:venue] && !event[:venue].empty? %>
+        <span class="venue"><%= event[:venue] %></span>
+      <% end %>
+    </div>
+  </div>
+<% end %>

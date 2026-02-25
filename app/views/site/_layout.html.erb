@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= page_title ? "#{page_title} — cov.kids" : "cov.kids — What's On in Coventry" %></title>
+  <meta name="description" content="<%= page_description || "What's on in Coventry this week — events, gigs, markets, comedy, theatre, sport and more." %>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="<%= root_path %>style.css">
+</head>
+<body>
+
+  <!-- Top text banner -->
+  <div class="top-banner">
+    <div class="top-banner-track">
+      <% 12.times do %>
+        <span>cov<span class="dot">.</span>kids</span>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="byline">whats on in cov</div>
+
+  <div class="container">
+    <header class="site-header">
+      <h1><a href="<%= root_path %>">cov<span>.</span>kids</a></h1>
+      <p>What's on in Coventry</p>
+      <nav class="site-nav">
+        <a href="<%= root_path %>"<%= nav_active == :home ? ' class="active"' : '' %>>This Week</a>
+        <a href="<%= root_path %>weeks/"<%= nav_active == :weeks ? ' class="active"' : '' %>>All Weeks</a>
+        <% archive_years.each do |y| %>
+          <a href="<%= root_path %><%= y %>/"<%= nav_active == y.to_s ? ' class="active"' : '' %>><%= y %></a>
+        <% end %>
+      </nav>
+    </header>
+
+    <main>
+      <%= content %>
+    </main>
+
+    <footer class="site-footer">
+      <p>Data sourced from <a href="https://www.reddit.com/user/HadjiChippoSafri">u/HadjiChippoSafri</a>'s weekly Coventry event listings.</p>
+      <p>&copy; cov.kids</p>
+    </footer>
+  </div>
+
+  <!-- Scrolling Coventry skyline banner -->
+  <div class="coventry-banner">
+    <div class="banner-track">
+      <div class="banner-set">
+        <img src="<%= root_path %>images/two-tone.svg" alt="" aria-hidden="true">
+        <img src="<%= root_path %>images/three-spires.svg" alt="" aria-hidden="true">
+        <img src="<%= root_path %>images/cathedral-ruins.svg" alt="" aria-hidden="true">
+        <img src="<%= root_path %>images/transport-museum.svg" alt="" aria-hidden="true">
+        <img src="<%= root_path %>images/the-wave.svg" alt="" aria-hidden="true">
+        <img src="<%= root_path %>images/whittle-arch.svg" alt="" aria-hidden="true" class="accent">
+      </div>
+    </div>
+  </div>
+
+  <script src="<%= root_path %>site.js"></script>
+</body>
+</html>
