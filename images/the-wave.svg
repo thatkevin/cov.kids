@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 100" fill="#1a1a1a">
+  <!-- The Wave waterpark -->
+  <path d="M10,70 Q30,30 50,60 Q70,90 90,50 Q110,20 130,55" stroke="#1a1a1a" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M15,80 Q35,50 55,70 Q75,90 95,60 Q115,35 135,65" stroke="#1a1a1a" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.4"/>
+  <rect x="5" y="90" width="130" height="5" rx="1"/>
+</svg>
