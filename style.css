@@ -394,6 +394,78 @@ a:hover {
   100% { transform: translateX(0); }
 }
 
+/* --- Month Navigation --- */
+.month-nav {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.month-tab {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.35rem 1rem;
+  border-radius: 99px;
+  border: 1.5px solid #d0e8f5;
+  color: #3a7fa8;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.month-tab:hover, .month-tab:focus {
+  background: #5EB3E4;
+  color: #fff;
+  border-color: #5EB3E4;
+  text-decoration: none;
+}
+
+/* --- Venue Filter --- */
+.venue-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.75rem;
+  padding: 0.75rem 1rem;
+  background: #f0f7fd;
+  border-radius: 8px;
+}
+
+.venue-filter-label {
+  font-size: 0.8125rem;
+  color: #888;
+  margin-right: 0.25rem;
+  white-space: nowrap;
+}
+
+.venue-chip {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.8125rem;
+  padding: 0.2rem 0.7rem;
+  border: 1.5px solid #c5dff0;
+  border-radius: 99px;
+  background: #fff;
+  color: #3a7fa8;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.venue-chip:hover {
+  background: #5EB3E4;
+  color: #fff;
+  border-color: #5EB3E4;
+}
+
+.venue-chip.active {
+  background: #5EB3E4;
+  color: #fff;
+  border-color: #5EB3E4;
+}
+
 /* --- Responsive --- */
 @media (max-width: 640px) {
   h1 { font-size: 2rem; }
