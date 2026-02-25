@@ -1,20 +1,20 @@
 <div class="breadcrumbs">
   <a href="<%= root_path %>">Home</a>
   <span class="separator">/</span>
-  <a href="<%= root_path %>weeks/">All Weeks</a>
+  <a href="<%= root_path %>weeks">All Weeks</a>
   <span class="separator">/</span>
-  <%= week_id %>
+  <%= @week_id %>
 </div>
 
 <div class="page-title">
-  <h1>Week <%= week_number %></h1>
-  <p class="subtitle"><%= date_range %></p>
+  <h1>Week <%= @week_number %></h1>
+  <p class="subtitle"><%= @date_range %></p>
 </div>
 
-<% if events_by_category.empty? %>
+<% if @events_by_category.empty? %>
   <p>No events found for this week.</p>
 <% else %>
-  <% events_by_category.each do |category, events| %>
+  <% @events_by_category.each do |category, events| %>
     <section class="category-section">
       <div class="category-header">
         <h2><%= category %></h2>

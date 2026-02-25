@@ -25,8 +25,6 @@
 
   <div class="container">
     <header class="site-header">
-      <h1><a href="<%= root_path %>">cov<span>.</span>kids</a></h1>
-      <p>What's on in Coventry</p>
       <nav class="site-nav">
         <a href="<%= root_path %>"<%= nav_active == :home ? ' class="active"' : '' %>>This Week</a>
         <a href="<%= root_path %>weeks/"<%= nav_active == :weeks ? ' class="active"' : '' %>>All Weeks</a>
@@ -41,8 +39,7 @@
     </main>
 
     <footer class="site-footer">
-      <p>Data sourced from <a href="https://www.reddit.com/user/HadjiChippoSafri">u/HadjiChippoSafri</a>'s weekly Coventry event listings.</p>
-      <p>&copy; cov.kids</p>
+      <p>Events sourced from local listings and community submissions.</p>
     </footer>
   </div>
 

@@ -1,14 +1,27 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  devise_for :users
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  namespace :admin do
+    resources :events, only: [ :index, :edit, :update ] do
+      member do
+        patch :approve
+        patch :reject
+      end
+    end
+    resources :feeds do
+      member { post :trigger }
+    end
+    resources :sources, only: [ :index, :new, :create, :edit, :update, :destroy ]
+    root to: "events#index"
+  end
+
+  root "site#index"
+  get "weeks",        to: "site#weeks_index", as: :weeks_index
+  get "weeks/:week_id", to: "site#week",      as: :week_page,
+      constraints: { week_id: /\d{4}-W\d{1,2}/ }
+  get ":year",          to: "site#year",      constraints: { year: /\d{4}/ }
+  get ":year/:month",   to: "site#month",     constraints: { year: /\d{4}/, month: /\d{2}/ }
+  get ":year/:month/:day", to: "site#day",    constraints: { year: /\d{4}/, month: /\d{2}/, day: /\d{2}/ }
+
   get "up" => "rails/health#show", as: :rails_health_check
-
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  # Defines the root path route ("/")
-  # root "posts#index"
 end

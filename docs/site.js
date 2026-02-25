@@ -1,5 +1,32 @@
-// cov.kids — Scroll-triggered fade-in animations
+// cov.kids — Scroll-triggered fade-in + venue filter
 document.addEventListener('DOMContentLoaded', function () {
+
+  // --- Venue filter ---
+  var filterEl = document.getElementById('venue-filter');
+  if (filterEl) {
+    filterEl.addEventListener('click', function (e) {
+      var btn = e.target.closest('.venue-chip');
+      if (!btn) return;
+
+      var selected = btn.dataset.venue;
+
+      filterEl.querySelectorAll('.venue-chip').forEach(function (c) {
+        c.classList.toggle('active', c === btn);
+      });
+
+      document.querySelectorAll('.event-card[data-venue]').forEach(function (card) {
+        card.style.display = (!selected || card.dataset.venue === selected) ? '' : 'none';
+      });
+
+      document.querySelectorAll('.category-section').forEach(function (section) {
+        var hasVisible = Array.from(section.querySelectorAll('.event-card')).some(function (c) {
+          return c.style.display !== 'none';
+        });
+        section.style.display = hasVisible ? '' : 'none';
+      });
+    });
+  }
+
   // Fade-in on scroll
   var elements = document.querySelectorAll('.fade-in');
   if (elements.length) {

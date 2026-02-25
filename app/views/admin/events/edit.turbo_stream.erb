@@ -1,0 +1,72 @@
+<%= turbo_stream.update "edit-dialog" do %>
+  <div class="p-6 w-full max-h-[85vh] overflow-y-auto" data-controller="edit-dialog" data-edit-dialog-event-id-value="<%= @event.id %>">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="font-semibold text-gray-900">Edit event</h2>
+      <button type="button" data-action="edit-dialog#close" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+    </div>
+
+    <%= form_with model: [:admin, @event], method: :patch, data: { turbo_stream: true } do |f| %>
+      <div class="space-y-3">
+
+        <div>
+          <label class="block text-xs font-medium text-gray-500 mb-0.5">Name</label>
+          <p class="text-xs text-gray-400 mb-1 font-mono truncate">Original: <%= @event.name %></p>
+          <%= f.text_field :curated_name,
+              value: @event.effective_name,
+              class: "w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500",
+              data: { "edit-dialog-target": "firstField" } %>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-gray-500 mb-0.5">Venue</label>
+          <p class="text-xs text-gray-400 mb-1 font-mono truncate">Original: <%= @event.venue.presence || "—" %></p>
+          <%= f.text_field :curated_venue,
+              value: @event.effective_venue,
+              class: "w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" %>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-gray-500 mb-0.5">Date</label>
+          <p class="text-xs text-gray-400 mb-1 font-mono">Original: <%= @event.date_text.presence || "—" %></p>
+          <div class="flex gap-2">
+            <input type="date" value="<%= @event.start_date %>"
+              class="rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              data-action="change->edit-dialog#fillDate"
+              data-edit-dialog-target="datePicker">
+            <%= f.text_field :curated_date_text,
+                value: @event.effective_date_text,
+                class: "flex-1 rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500",
+                data: { "edit-dialog-target": "dateText" } %>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-gray-500 mb-0.5">Ticket / event URL</label>
+          <p class="text-xs text-gray-400 mb-1 font-mono truncate">Original: <%= @event.event_url.presence || "—" %></p>
+          <%= f.url_field :curated_event_url,
+              value: @event.effective_event_url,
+              class: "w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" %>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-gray-500 mb-0.5">Category</label>
+          <%= f.select :curated_category,
+              [ ["— keep original (#{@event.category})", ""] ] + Event::CATEGORIES.map { |c| [ c.capitalize, c ] },
+              { selected: @event.curated_category.presence || "" },
+              class: "w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" %>
+        </div>
+
+      </div>
+
+      <div class="mt-5 pt-4 border-t border-gray-100 flex items-center justify-between">
+        <button type="button" data-action="edit-dialog#clear" class="text-xs text-gray-400 hover:text-red-500">
+          Clear all overrides
+        </button>
+        <div class="flex gap-2">
+          <button type="button" data-action="edit-dialog#close" class="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900">Cancel</button>
+          <%= f.submit "Save", class: "px-4 py-1.5 text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-md cursor-pointer" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

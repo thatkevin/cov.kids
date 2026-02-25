@@ -1,0 +1,43 @@
+<%= form_with model: [:admin, source], class: "space-y-4 max-w-2xl" do |f| %>
+  <% if source.errors.any? %>
+    <div class="rounded-md bg-red-50 border border-red-200 p-3">
+      <ul class="list-disc list-inside text-sm text-red-700 space-y-0.5">
+        <% source.errors.full_messages.each do |msg| %><li><%= msg %></li><% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :title, class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.text_field :title, class: "w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" %>
+  </div>
+
+  <div>
+    <%= f.label :url, "URL", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.url_field :url, class: "w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" %>
+  </div>
+
+  <div>
+    <%= f.label :source_type, "Type", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.select :source_type,
+        %w[reddit email facebook ical web eventbrite].map { |t| [t.capitalize, t] },
+        {},
+        class: "w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" %>
+  </div>
+
+  <div>
+    <%= f.label :published_at, "Date", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.datetime_local_field :published_at, class: "rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" %>
+  </div>
+
+  <div>
+    <%= f.label :body, "Body / content", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.text_area :body, rows: 8, class: "w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm font-mono focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" %>
+  </div>
+
+  <div class="flex gap-3 pt-2">
+    <%= f.submit source.new_record? ? "Add source" : "Save changes",
+        class: "bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md cursor-pointer" %>
+    <%= link_to "Cancel", admin_sources_path, class: "text-sm text-gray-600 hover:underline self-center" %>
+  </div>
+<% end %>

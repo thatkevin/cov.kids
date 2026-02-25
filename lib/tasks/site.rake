@@ -37,7 +37,7 @@ module SiteGenerator
 
     # Load data
     sources = Source.order(published_at: :desc).to_a
-    events = Event.order(:category, :name).to_a
+    events = Event.approved.order(:category, :name).to_a
 
     # Build week data from sources
     weeks = build_weeks(sources, events)
@@ -287,18 +287,21 @@ module SiteGenerator
     dated = {}
 
     events.each do |event|
-      # Use first_seen (a date_range string) to infer the year
-      context_year = year_from_date_range(event.first_seen) || year_from_date_range(event.last_seen) || 2025
-      date = parse_event_date(event.date_text, context_year)
+      # Use start_date if we have it, otherwise try to parse from date_text
+      date = event.start_date
+      unless date
+        context_year = event.first_seen&.split("-")&.first&.to_i || Date.today.year
+        date = parse_event_date(event.effective_date_text, context_year)
+      end
       next unless date
 
       dated[date] ||= []
       dated[date] << {
-        name: event.name,
-        date_text: event.date_text,
-        venue: event.venue,
-        category: event.category,
-        url: event.event_url,
+        name:         event.effective_name,
+        date_text:    event.effective_date_text,
+        venue:        event.effective_venue,
+        category:     event.effective_category,
+        url:          event.effective_event_url,
         times_listed: event.times_listed
       }
     end
@@ -486,7 +489,10 @@ module SiteGenerator
     template_path = VIEWS_DIR.join(template_name)
     template = ERB.new(File.read(template_path), trim_mode: "-")
     b = binding
-    locals.each { |key, val| b.local_variable_set(key, val) }
+    locals.each do |key, val|
+      b.local_variable_set(key, val)
+      instance_variable_set(:"@#{key}", val)
+    end
     template.result(b)
   end
 
@@ -500,7 +506,10 @@ module SiteGenerator
 
     layout_template = ERB.new(File.read(VIEWS_DIR.join("_layout.html.erb")), trim_mode: "-")
     b = binding
-    layout_vars.each { |key, val| b.local_variable_set(key, val) }
+    layout_vars.each do |key, val|
+      b.local_variable_set(key, val)
+      instance_variable_set(:"@#{key}", val)
+    end
     full_html = layout_template.result(b)
 
     dest = DOCS_DIR.join(relative_path)

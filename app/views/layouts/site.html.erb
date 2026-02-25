@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= @page_title.present? ? "#{@page_title} — cov.kids" : "cov.kids — What's On in Coventry" %></title>
+  <meta name="description" content="<%= @page_description.presence || "What's on in Coventry this week — events, gigs, markets, comedy, theatre, sport and more." %>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="<%= asset_path('style.css') %>">
+</head>
+<body>
+
+  <div class="top-banner">
+    <div class="top-banner-track">
+      <% 12.times do %>
+        <span>cov<span class="dot">.</span>kids</span>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="byline">whats on in cov</div>
+
+  <div class="container">
+    <header class="site-header">
+      <nav class="site-nav">
+        <a href="<%= root_path %>"<%= ' class="active"' if @nav_active == :home %>>This Week</a>
+        <a href="<%= root_path %>weeks"<%= ' class="active"' if @nav_active == :weeks %>>All Weeks</a>
+        <% @archive_years.each do |y| %>
+          <a href="<%= root_path %><%= y %>"<%= " class=\"active\"" if @nav_active == y.to_s %>><%= y %></a>
+        <% end %>
+      </nav>
+    </header>
+
+    <main>
+      <%= yield %>
+    </main>
+
+    <footer class="site-footer">
+      <p>Events sourced from local listings and community submissions.</p>
+    </footer>
+  </div>
+
+  <div class="coventry-banner">
+    <div class="banner-track">
+      <div class="banner-set">
+        <img src="<%= asset_path('images/two-tone.svg') %>" alt="" aria-hidden="true">
+        <img src="<%= asset_path('images/three-spires.svg') %>" alt="" aria-hidden="true">
+        <img src="<%= asset_path('images/cathedral-ruins.svg') %>" alt="" aria-hidden="true">
+        <img src="<%= asset_path('images/transport-museum.svg') %>" alt="" aria-hidden="true">
+        <img src="<%= asset_path('images/the-wave.svg') %>" alt="" aria-hidden="true">
+        <img src="<%= asset_path('images/whittle-arch.svg') %>" alt="" aria-hidden="true" class="accent">
+      </div>
+    </div>
+  </div>
+
+  <script src="<%= asset_path('site.js') %>"></script>
+</body>
+</html>

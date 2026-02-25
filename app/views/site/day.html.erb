@@ -1,19 +1,19 @@
 <div class="breadcrumbs">
   <a href="<%= root_path %>">Home</a>
   <span class="separator">/</span>
-  <a href="<%= root_path %><%= year %>/"><%= year %></a>
+  <a href="<%= root_path %><%= @year %>"><%= @year %></a>
   <span class="separator">/</span>
-  <a href="<%= root_path %><%= year %>/<%= month_path %>/"><%= month_name %></a>
+  <a href="<%= root_path %><%= @year %>/<%= @month_path %>"><%= @month_name %></a>
   <span class="separator">/</span>
-  <%= day %>
+  <%= @day %>
 </div>
 
 <div class="page-title">
-  <h1><%= day_label %></h1>
-  <p class="subtitle"><%= events.length %> event<%= events.length == 1 ? '' : 's' %></p>
+  <h1><%= @day_label %></h1>
+  <p class="subtitle"><%= @events.length %> event<%= @events.length == 1 ? '' : 's' %></p>
 </div>
 
-<% events.each do |event| %>
+<% @events.each do |event| %>
   <div class="event-card fade-in">
     <div class="event-name">
       <% if event[:url] && !event[:url].empty? %>

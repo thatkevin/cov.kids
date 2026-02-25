@@ -59,7 +59,7 @@ class EmailImportJob < ApplicationJob
       title: message.subject.presence || "Email #{message.date}",
       body: text_body,
       url: source_url,
-      source_type: "email",
+      source_type: detect_source_type(message),
       published_at: message.date
     )
 
@@ -125,22 +125,22 @@ class EmailImportJob < ApplicationJob
     events.each do |data|
       next if data["name"].blank?
 
-      venue = data["venue"].presence || "Unknown"
-
-      event = Event.find_or_initialize_by(name: data["name"], venue: venue)
-
-      if event.persisted?
-        event.increment!(:times_listed)
-        event.update!(last_seen: today)
+      existing = Event.similar_to(data["name"]).first
+      if existing
+        existing.increment!(:times_listed)
+        existing.update!(last_seen: today, source_id: existing.source_id || source.id)
       else
-        event.assign_attributes(
-          category: data["category"],
-          date_text: data["date_text"],
-          event_url: data["event_url"],
+        Event.create!(
+          name:       data["name"],
+          venue:      data["venue"].presence || "Unknown",
+          category:   data["category"],
+          date_text:  data["date_text"],
+          event_url:  data["event_url"],
+          source:     source,
           first_seen: today,
-          last_seen: today
+          last_seen:  today,
+          status:     :pending
         )
-        event.save!
       end
     rescue ActiveRecord::RecordInvalid => e
       Rails.logger.error("EmailImportJob: could not save event '#{data["name"]}': #{e.message}")
@@ -151,6 +151,12 @@ class EmailImportJob < ApplicationJob
 
   def strip_fences(text)
     text.gsub(/\A```(?:json)?\n?/, "").gsub(/\n?```\z/, "").strip
+  end
+
+  def detect_source_type(message)
+    from = Array(message.from).join(" ")
+    return "facebook" if from.include?("facebookmail.com")
+    "email"
   end
 
   def credentials

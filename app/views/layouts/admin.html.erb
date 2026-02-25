@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Admin · CK</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-gray-50 min-h-screen">
+    <header class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+      <nav class="flex items-center gap-6">
+        <span class="font-semibold text-gray-900">CK Admin</span>
+        <% if user_signed_in? %>
+          <%= link_to "Queue", admin_events_path, class: "text-sm #{request.path.start_with?('/admin/events') ? 'text-blue-600 font-medium' : 'text-gray-600 hover:text-gray-900'}" %>
+          <%= link_to "Sources", admin_sources_path, class: "text-sm #{request.path.start_with?('/admin/sources') ? 'text-blue-600 font-medium' : 'text-gray-600 hover:text-gray-900'}" %>
+          <%= link_to "Feeds", admin_feeds_path, class: "text-sm #{request.path.start_with?('/admin/feeds') ? 'text-blue-600 font-medium' : 'text-gray-600 hover:text-gray-900'}" %>
+        <% end %>
+      </nav>
+      <% if user_signed_in? %>
+        <div class="flex items-center gap-4 text-sm text-gray-600">
+          <span><%= current_user.email %></span>
+          <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "text-red-600 hover:underline bg-transparent border-0 cursor-pointer p-0" %>
+        </div>
+      <% end %>
+    </header>
+
+    <% if notice.present? %>
+      <div class="bg-green-50 border-b border-green-200 px-6 py-2 text-sm text-green-800"><%= notice %></div>
+    <% end %>
+    <% if alert.present? %>
+      <div class="bg-red-50 border-b border-red-200 px-6 py-2 text-sm text-red-800"><%= alert %></div>
+    <% end %>
+
+    <main class="max-w-5xl mx-auto px-6 py-8">
+      <%= yield %>
+    </main>
+
+    <%# Edit dialog — content injected via Turbo Stream %>
+    <dialog id="edit-dialog" class="rounded-xl shadow-xl w-full max-w-lg p-0 backdrop:bg-black/40"></dialog>
+  </body>
+</html>

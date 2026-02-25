@@ -1,0 +1,68 @@
+<div class="flex items-center justify-between mb-6">
+  <div>
+    <h1 class="text-xl font-semibold text-gray-900">Sources</h1>
+    <p class="text-sm text-gray-500 mt-1">All import sources — emails, Reddit, iCal feeds, and scraped pages.</p>
+  </div>
+  <%= link_to "Add source", new_admin_source_path, class: "bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md" %>
+</div>
+
+<% type_labels = { "email" => "Email", "facebook" => "Facebook", "reddit" => "Reddit", "ical" => "iCal", "web" => "Web", "eventbrite" => "Eventbrite" } %>
+<% type_colors = { "email" => "bg-indigo-100 text-indigo-700", "facebook" => "bg-blue-100 text-blue-700", "reddit" => "bg-orange-100 text-orange-700", "ical" => "bg-teal-100 text-teal-700", "web" => "bg-purple-100 text-purple-700", "eventbrite" => "bg-rose-100 text-rose-700" } %>
+
+<% if @grouped.empty? %>
+  <p class="text-gray-500 text-sm">No sources imported yet.</p>
+<% else %>
+  <% @grouped.each do |type, sources| %>
+    <section class="mb-8">
+      <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
+        <%= type_labels[type] || type.capitalize %>
+        <span class="font-normal normal-case text-gray-400">(<%= sources.size %>)</span>
+      </h2>
+
+      <div class="bg-white rounded-lg border border-gray-200 divide-y divide-gray-100">
+        <% sources.each do |source| %>
+          <div class="px-4 py-3">
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-gray-900 truncate"><%= source.title %></p>
+                <% if source.url.present? && !source.url.start_with?("email:") %>
+                  <p class="text-xs text-gray-400 truncate mt-0.5"><%= source.url %></p>
+                <% end %>
+                <p class="text-xs text-gray-400 mt-0.5">
+                  <% if source.published_at %>
+                    <%= time_ago_in_words(source.published_at) %> ago
+                  <% else %>
+                    Unknown date
+                  <% end %>
+                </p>
+              </div>
+              <div class="flex items-center gap-3 shrink-0">
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium <%= type_colors[type] || 'bg-gray-100 text-gray-700' %>">
+                  <%= type_labels[type] || type %>
+                </span>
+                <%= link_to "Edit", edit_admin_source_path(source), class: "text-xs text-blue-600 hover:underline" %>
+                <%= button_to "Remove", admin_source_path(source), method: :delete,
+                    data: { turbo_confirm: "Remove this source and unlink its events?" },
+                    class: "text-xs text-red-500 hover:underline bg-transparent border-0 cursor-pointer p-0" %>
+              </div>
+            </div>
+
+            <% events = @recent_by_source[source.id] %>
+            <% if events.any? %>
+              <ul class="mt-2 space-y-0.5">
+                <% events.each do |ev| %>
+                  <li class="flex items-center gap-2 text-xs text-gray-600">
+                    <span class="inline-block w-1.5 h-1.5 rounded-full shrink-0
+                      <%= ev.status == 'approved' ? 'bg-green-400' : ev.status == 'rejected' ? 'bg-red-400' : 'bg-yellow-400' %>"></span>
+                    <span class="truncate"><%= ev.name %></span>
+                    <span class="shrink-0 text-gray-400"><%= ev.status %></span>
+                  </li>
+                <% end %>
+              </ul>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+<% end %>

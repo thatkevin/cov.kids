@@ -1,22 +1,22 @@
 <div class="breadcrumbs">
   <a href="<%= root_path %>">Home</a>
   <span class="separator">/</span>
-  <a href="<%= root_path %><%= year %>/"><%= year %></a>
+  <a href="<%= root_path %><%= @year %>"><%= @year %></a>
   <span class="separator">/</span>
-  <%= month_name %>
+  <%= @month_name %>
 </div>
 
 <div class="page-title">
-  <h1><%= month_name %> <%= year %></h1>
-  <p class="subtitle"><%= total_events %> events</p>
+  <h1><%= @month_name %> <%= @year %></h1>
+  <p class="subtitle"><%= @total_events %> events</p>
 </div>
 
-<% if days.any? %>
+<% if @days.any? %>
   <h3>Browse by day</h3>
   <ul class="archive-list" style="margin-bottom: 2rem;">
-    <% days.each do |day| %>
+    <% @days.each do |day| %>
       <li>
-        <a href="<%= root_path %><%= year %>/<%= month_path %>/<%= day[:path] %>/">
+        <a href="<%= root_path %><%= @year %>/<%= @month_path %>/<%= day[:path] %>">
           <span class="label"><%= day[:label] %></span>
           <span class="meta"><%= day[:event_count] %> events</span>
         </a>
@@ -25,7 +25,7 @@
   </ul>
 <% end %>
 
-<% events_by_category.each do |category, events| %>
+<% @events_by_category.each do |category, events| %>
   <section class="category-section">
     <div class="category-header">
       <h2><%= category %></h2>

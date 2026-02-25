@@ -1,18 +1,18 @@
 <div class="breadcrumbs">
   <a href="<%= root_path %>">Home</a>
   <span class="separator">/</span>
-  <%= year %>
+  <%= @year %>
 </div>
 
 <div class="page-title">
-  <h1>Events in <%= year %></h1>
-  <p class="subtitle"><%= total_events %> events across <%= months.length %> months</p>
+  <h1>Events in <%= @year %></h1>
+  <p class="subtitle"><%= @total_events %> events across <%= @months.length %> months</p>
 </div>
 
 <ul class="archive-list">
-  <% months.each do |month| %>
+  <% @months.each do |month| %>
     <li class="fade-in">
-      <a href="<%= root_path %><%= year %>/<%= month[:path] %>/">
+      <a href="<%= root_path %><%= @year %>/<%= month[:path] %>">
         <span class="label"><%= month[:label] %></span>
         <span class="meta"><%= month[:event_count] %> events</span>
       </a>

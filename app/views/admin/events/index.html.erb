@@ -1,0 +1,23 @@
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-xl font-semibold text-gray-900">
+    Pending Events
+    <span class="ml-2 text-sm font-normal text-gray-500">(<%= @events.count %>)</span>
+  </h1>
+  <div class="text-xs text-gray-400 bg-white border border-gray-200 rounded px-3 py-2 space-x-3">
+    <span><kbd class="font-mono bg-gray-100 px-1 rounded">j</kbd>/<kbd class="font-mono bg-gray-100 px-1 rounded">k</kbd> navigate</span>
+    <span><kbd class="font-mono bg-gray-100 px-1 rounded">a</kbd> approve</span>
+    <span><kbd class="font-mono bg-gray-100 px-1 rounded">r</kbd> reject</span>
+    <span><kbd class="font-mono bg-gray-100 px-1 rounded">e</kbd> edit</span>
+    <span><kbd class="font-mono bg-gray-100 px-1 rounded">l</kbd> link</span>
+  </div>
+</div>
+
+<% if @events.empty? %>
+  <p class="text-gray-500 text-center py-16">Queue is empty — nothing to review.</p>
+<% else %>
+  <div id="pending-events" data-controller="moderation">
+    <% @events.each do |event| %>
+      <%= render "event_card", event: event %>
+    <% end %>
+  </div>
+<% end %>

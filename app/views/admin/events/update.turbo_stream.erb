@@ -1,0 +1,4 @@
+<%= turbo_stream.update "edit-dialog", "" %>
+<%= turbo_stream.replace "event-#{@event.id}" do %>
+  <%= render "event_card", event: @event %>
+<% end %>

@@ -1,12 +1,12 @@
 <div class="page-title">
   <h1>All Weekly Listings</h1>
-  <p class="subtitle"><%= weeks.length %> weeks of Coventry events</p>
+  <p class="subtitle"><%= @weeks.length %> weeks of Coventry events</p>
 </div>
 
 <ul class="archive-list">
-  <% weeks.each do |week| %>
+  <% @weeks.each do |week| %>
     <li class="fade-in">
-      <a href="<%= root_path %>weeks/<%= week[:id] %>/">
+      <a href="<%= root_path %>weeks/<%= week[:id] %>">
         <span class="label"><%= week[:label] %></span>
         <span class="meta"><%= week[:event_count] %> events</span>
       </a>

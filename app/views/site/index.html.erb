@@ -1,19 +1,47 @@
 <div class="page-title">
   <h1>This Week in Coventry</h1>
-  <p class="subtitle"><%= week_label %></p>
+  <p class="subtitle"><%= @week_label %></p>
 </div>
 
-<% if events_by_category.empty? %>
-  <p>No events listed for this week yet.</p>
+<%
+  next_months = (1..6).map do |i|
+    d = Date.today >> i
+    { label: d.strftime("%B"), path: "#{root_path}#{d.year}/#{d.strftime('%m')}" }
+  end
+%>
+<nav class="month-nav" aria-label="Browse by month">
+  <% next_months.each do |m| %>
+    <a href="<%= m[:path] %>" class="month-tab"><%= m[:label] %></a>
+  <% end %>
+</nav>
+
+<% if @events_by_category.empty? %>
+  <p class="no-events">No events listed for this week yet.</p>
 <% else %>
-  <% events_by_category.each do |category, events| %>
+  <%
+    all_venues = @events_by_category.values.flatten
+                   .map { |e| e[:venue].to_s.strip }
+                   .reject { |v| v.empty? || v == "Unknown" }
+                   .uniq.sort
+  %>
+  <% if all_venues.size > 1 %>
+    <div class="venue-filter" id="venue-filter">
+      <span class="venue-filter-label">Venue:</span>
+      <button class="venue-chip active" data-venue="">All</button>
+      <% all_venues.each do |venue| %>
+        <button class="venue-chip" data-venue="<%= venue %>"><%= venue %></button>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% @events_by_category.each do |category, events| %>
     <section class="category-section">
       <div class="category-header">
         <h2><%= category %></h2>
         <span class="category-count"><%= events.length %> event<%= events.length == 1 ? '' : 's' %></span>
       </div>
       <% events.each do |event| %>
-        <div class="event-card fade-in">
+        <div class="event-card fade-in" data-venue="<%= event[:venue] %>">
           <div class="event-name">
             <% if event[:url] && !event[:url].empty? %>
               <a href="<%= event[:url] %>"><%= event[:name] %></a>

@@ -4,4 +4,12 @@ class ApplicationController < ActionController::Base
 
   # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
+
+  layout :layout_by_resource
+
+  private
+
+  def layout_by_resource
+    devise_controller? ? "admin" : "application"
+  end
 end
