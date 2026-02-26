@@ -8,7 +8,7 @@ class Admin::EventsController < Admin::ApplicationController
   def edit
     respond_to do |format|
       format.turbo_stream
-      format.html { redirect_to admin_events_path }
+      format.html
     end
   end
 
@@ -16,12 +16,12 @@ class Admin::EventsController < Admin::ApplicationController
     if @event.update(curated_params)
       respond_to do |format|
         format.turbo_stream
-        format.html { redirect_to admin_events_path, notice: "Event updated." }
+        format.html { redirect_back fallback_location: root_path, notice: "Event updated." }
       end
     else
       respond_to do |format|
         format.turbo_stream { render :edit, status: :unprocessable_entity }
-        format.html { redirect_to admin_events_path }
+        format.html { render :edit, status: :unprocessable_entity }
       end
     end
   end
