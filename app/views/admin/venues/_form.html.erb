@@ -27,6 +27,18 @@
         class: "rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" %>
   </div>
 
+  <% if venue.persisted? && venue.aliases.any? %>
+    <div>
+      <p class="text-xs font-medium text-gray-500 mb-1">Known aliases</p>
+      <p class="text-xs text-gray-400">These previous names are automatically matched on import:</p>
+      <ul class="mt-1 space-y-0.5">
+        <% venue.aliases.each do |a| %>
+          <li class="text-xs text-gray-500 font-mono bg-gray-50 rounded px-2 py-0.5 inline-block mr-1 mb-1"><%= a %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
   <div class="flex items-center gap-3 pt-2">
     <%= f.submit venue.new_record? ? "Add venue" : "Save changes",
         class: "px-4 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-md cursor-pointer" %>

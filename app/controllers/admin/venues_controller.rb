@@ -82,8 +82,11 @@ class Admin::VenuesController < Admin::ApplicationController
       next if seen.include?(venue.id)
       seen.add(venue.id)
 
-      similar = Venue.where("id != ? AND similarity(name, ?) >= ?", venue.id, venue.name, threshold)
-                     .where.not(id: seen.to_a)
+      similar = Venue.left_joins(:events)
+                     .select("venues.*, COUNT(events.id) AS events_count")
+                     .where("venues.id != ? AND similarity(venues.name, ?) >= ?", venue.id, venue.name, threshold)
+                     .where.not("venues.id" => seen.to_a)
+                     .group("venues.id")
       next if similar.empty?
 
       similar.each { |s| seen.add(s.id) }

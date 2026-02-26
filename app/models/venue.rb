@@ -9,6 +9,7 @@ class Venue < ApplicationRecord
 
   validates :name, presence: true
 
+  before_save :capture_alias_on_rename
   before_save :auto_set_zone
 
   scope :similar_to, ->(name, threshold: SIMILARITY_THRESHOLD) {
@@ -17,20 +18,32 @@ class Venue < ApplicationRecord
   }
 
   # Find the best-matching existing venue, or create a new one.
-  # Splits "Venue Name - Room" → name + room parts before matching.
+  # Matching order:
+  #   1. Fuzzy similarity on name (pg_trgm)
+  #   2. Exact match against stored aliases (previous names saved on rename)
+  #   3. Create new record
   def self.find_or_create_for(raw, room: nil)
     return nil if raw.blank?
 
     clean = CGI.unescapeHTML(raw.to_s).strip
     return nil if clean.blank?
 
-    # Strip common address suffixes to get a cleaner match candidate
     candidate = clean.split(/\s*[-–]\s*/, 2).first.strip
 
-    similar_to(candidate).first || create!(name: candidate, address: clean == candidate ? nil : clean)
+    similar_to(candidate).first ||
+      find_by("? = ANY(aliases)", candidate) ||
+      find_by("? = ANY(aliases)", clean) ||
+      create!(name: candidate, address: clean == candidate ? nil : clean)
   end
 
   private
+
+  # When the name changes, save the old name as an alias so future imports
+  # using the old raw string still resolve to this venue.
+  def capture_alias_on_rename
+    return unless name_changed? && name_was.present?
+    self.aliases = (aliases | [name_was]).uniq
+  end
 
   def auto_set_zone
     self.zone = self.class.detect_zone(address.presence || name)
