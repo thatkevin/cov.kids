@@ -56,6 +56,7 @@
       <% elsif feed.last_run_status.in?(%w[queued running]) %>
         <span class="text-xs text-gray-400 px-3 py-1.5">Running…</span>
       <% end %>
+      <%= link_to "Events", admin_feed_path(feed), class: "text-xs text-blue-600 hover:underline" %>
       <%= link_to "Edit", edit_admin_feed_path(feed), class: "text-xs text-blue-600 hover:underline" %>
       <%= button_to "Remove", admin_feed_path(feed), method: :delete,
           data: { turbo_confirm: "Remove #{feed.name}?" },

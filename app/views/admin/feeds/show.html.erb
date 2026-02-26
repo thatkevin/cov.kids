@@ -1,0 +1,98 @@
+<div class="mb-6">
+  <%= link_to "← Feeds", admin_feeds_path, class: "text-sm text-blue-600 hover:underline" %>
+</div>
+
+<div class="flex items-start justify-between mb-6">
+  <div>
+    <div class="flex items-center gap-2 mb-1">
+      <h1 class="text-xl font-semibold text-gray-900"><%= @feed.name %></h1>
+      <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
+        <%= @feed.feed_type == 'web' ? 'bg-purple-100 text-purple-700' :
+            @feed.feed_type == 'ical' ? 'bg-blue-100 text-blue-700' :
+            'bg-gray-100 text-gray-700' %>">
+        <%= @feed.feed_type %>
+      </span>
+    </div>
+    <p class="text-sm text-gray-400"><%= @feed.url %></p>
+  </div>
+  <div class="flex items-center gap-2">
+    <%= link_to "Edit", edit_admin_feed_path(@feed), class: "text-sm text-blue-600 hover:underline" %>
+    <% if @feed.last_run_status.in?(%w[idle done error]) %>
+      <%= button_to "Run now", trigger_admin_feed_path(@feed), method: :post,
+          class: "text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded" %>
+    <% end %>
+  </div>
+</div>
+
+<%# Pending queue %>
+<div class="mb-8">
+  <div class="flex items-center justify-between mb-3">
+    <h2 class="text-base font-semibold text-gray-800">
+      Queue
+      <% if @pending_events.any? %>
+        <span class="ml-1 text-sm font-normal text-gray-400">(<%= @pending_events.count %> pending)</span>
+      <% end %>
+    </h2>
+  </div>
+
+  <% if @pending_events.none? %>
+    <p class="text-sm text-gray-400">No events pending approval.</p>
+  <% else %>
+    <div data-controller="moderation">
+      <% @pending_events.each do |event| %>
+        <%= render "admin/events/event_card", event: event %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<%# Approved events %>
+<div>
+  <div class="flex items-center justify-between mb-3">
+    <h2 class="text-base font-semibold text-gray-800">
+      Approved
+      <% if @approved_events.any? %>
+        <span class="ml-1 text-sm font-normal text-gray-400">(<%= @approved_events.count %>)</span>
+      <% end %>
+    </h2>
+  </div>
+
+  <% if @approved_events.none? %>
+    <p class="text-sm text-gray-400">No approved events from this feed yet.</p>
+  <% else %>
+    <div class="bg-white rounded-lg border border-gray-200 divide-y divide-gray-100">
+      <% @approved_events.each do |event| %>
+        <div class="px-4 py-3 flex items-center gap-4">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-medium text-gray-900 truncate"><%= event.effective_name %></span>
+              <% if event.zone != "coventry" %>
+                <span class="shrink-0 inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium <%= event.zone == "birmingham" ? "bg-blue-100 text-blue-700" : "bg-orange-100 text-orange-700" %>">
+                  <%= event.zone == "birmingham" ? "brum" : "warks" %>
+                </span>
+              <% end %>
+            </div>
+            <div class="flex flex-wrap gap-x-3 text-xs text-gray-400 mt-0.5">
+              <% if event.effective_date_text.present? %>
+                <span><%= event.effective_date_text %></span>
+              <% end %>
+              <% if event.effective_venue.present? && event.effective_venue != "Unknown" %>
+                <span><%= event.effective_venue %></span>
+              <% end %>
+              <% if event.effective_category.present? %>
+                <span class="capitalize"><%= event.effective_category %></span>
+              <% end %>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 shrink-0">
+            <% if event.effective_event_url.present? %>
+              <%= link_to "↗", event.effective_event_url, target: "_blank", rel: "noopener",
+                  class: "text-xs text-blue-600 hover:underline" %>
+            <% end %>
+            <%= link_to "Edit", edit_admin_event_path(event), class: "text-xs text-blue-600 hover:underline" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

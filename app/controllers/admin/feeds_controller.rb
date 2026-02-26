@@ -1,8 +1,19 @@
 class Admin::FeedsController < Admin::ApplicationController
-  before_action :set_feed, only: %i[edit update destroy trigger]
+  before_action :set_feed, only: %i[show edit update destroy trigger]
 
   def index
     @feeds = Feed.order(:feed_type, :name)
+  end
+
+  def show
+    source = Source.find_by(url: @feed.url)
+    if source
+      @pending_events  = source.events.pending.order(Arel.sql("start_date ASC NULLS LAST, first_seen DESC"))
+      @approved_events = source.events.approved.order(Arel.sql("start_date ASC NULLS LAST, name"))
+    else
+      @pending_events  = Event.none
+      @approved_events = Event.none
+    end
   end
 
   def new
