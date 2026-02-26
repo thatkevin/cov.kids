@@ -4,4 +4,24 @@
     <p class="text-sm text-gray-500 mt-1"><%= @venue.events.count %> event(s) linked to this venue.</p>
   </div>
   <%= render "form", venue: @venue %>
+
+  <div class="mt-10 pt-6 border-t border-gray-200">
+    <h2 class="text-sm font-semibold text-gray-700 mb-1">Merge into another venue</h2>
+    <p class="text-xs text-gray-400 mb-3">
+      All events from <strong><%= @venue.name %></strong> will be moved to the chosen venue, then this record will be deleted.
+    </p>
+    <%= form_with url: merge_into_admin_venue_path(@venue), method: :post do |f| %>
+      <div class="flex items-center gap-3">
+        <%= f.select :target_venue_id,
+            Venue.where.not(id: @venue.id).order(:name).map { |v| [v.name, v.id] },
+            { prompt: "Choose venue to merge into…" },
+            class: "flex-1 text-sm border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500" %>
+        <button type="submit"
+                data-turbo-confirm="Move all events from '<%= @venue.name %>' to the selected venue and delete '<%= @venue.name %>'?"
+                class="text-sm bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md whitespace-nowrap">
+          Merge &amp; delete
+        </button>
+      </div>
+    <% end %>
+  </div>
 </div>

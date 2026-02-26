@@ -1,5 +1,5 @@
 class Admin::VenuesController < Admin::ApplicationController
-  before_action :set_venue, only: %i[edit update destroy merge]
+  before_action :set_venue, only: %i[edit update destroy merge merge_into]
 
   def index
     @venues = Venue.left_joins(:events)
@@ -40,6 +40,14 @@ class Admin::VenuesController < Admin::ApplicationController
     redirect_to admin_venues_path, notice: "Venue removed."
   end
 
+  # Merge THIS venue into another (target) venue — used from the edit page.
+  def merge_into
+    target = Venue.find(params[:target_venue_id])
+    count  = Event.where(venue_id: @venue.id).update_all(venue_id: target.id)
+    @venue.destroy
+    redirect_to admin_venues_path, notice: "Merged '#{@venue.name}' into '#{target.name}' — #{count} event(s) moved."
+  end
+
   # Merge source venues into this venue — all their events are reassigned here.
   def merge
     source_ids = Array(params[:source_venue_ids]).map(&:to_i).reject { |id| id == @venue.id }
@@ -60,7 +68,7 @@ class Admin::VenuesController < Admin::ApplicationController
 
   # Greedy clustering: find groups of venues where names are similar.
   # Returns array of arrays; each inner array is [canonical_venue, *similar_venues].
-  def find_clusters(threshold: 0.72)
+  def find_clusters(threshold: 0.5)
     all = Venue.left_joins(:events)
                .select("venues.*, COUNT(events.id) AS events_count")
                .group("venues.id")

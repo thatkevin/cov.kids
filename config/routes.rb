@@ -12,7 +12,10 @@ Rails.application.routes.draw do
       member { post :trigger }
     end
     resources :venues do
-      member { post :merge }
+      member do
+        post :merge
+        post :merge_into
+      end
     end
     resources :sources, only: [ :index, :new, :create, :edit, :update, :destroy ] do
       collection { post :run_by_type }
