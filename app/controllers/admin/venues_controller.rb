@@ -43,6 +43,7 @@ class Admin::VenuesController < Admin::ApplicationController
   # Merge THIS venue into another (target) venue — used from the edit page.
   def merge_into
     target = Venue.find(params[:target_venue_id])
+    absorb_aliases(target, [@venue])
     count  = Event.where(venue_id: @venue.id).update_all(venue_id: target.id)
     @venue.destroy
     redirect_to admin_venues_path, notice: "Merged '#{@venue.name}' into '#{target.name}' — #{count} event(s) moved."
@@ -51,12 +52,20 @@ class Admin::VenuesController < Admin::ApplicationController
   # Merge source venues into this venue — all their events are reassigned here.
   def merge
     source_ids = Array(params[:source_venue_ids]).map(&:to_i).reject { |id| id == @venue.id }
+    sources    = Venue.where(id: source_ids).to_a
+    absorb_aliases(@venue, sources)
     count = Event.where(venue_id: source_ids).update_all(venue_id: @venue.id)
     Venue.where(id: source_ids).destroy_all
     redirect_to admin_venues_path, notice: "Merged #{source_ids.size} venue(s) — #{count} events moved to #{@venue.name}."
   end
 
   private
+
+  # Collect names + existing aliases from all source venues and add to survivor.
+  def absorb_aliases(survivor, sources)
+    new_aliases = sources.flat_map { |v| [v.name] + v.aliases.to_a }
+    survivor.update_columns(aliases: (survivor.aliases.to_a | new_aliases).uniq)
+  end
 
   def set_venue
     @venue = Venue.find(params[:id])
