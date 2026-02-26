@@ -134,7 +134,8 @@ class SiteController < ApplicationController
   end
 
   def event_to_hash(event)
-    { name:         event.effective_name,
+    { id:           event.id,
+      name:         event.effective_name,
       url:          event.effective_event_url,
       times_listed: event.times_listed,
       date_text:    event.effective_date_text,

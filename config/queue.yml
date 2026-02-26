@@ -12,6 +12,9 @@ default: &default
         feed_sync:
           class: FeedSyncJob
           schedule: "0 3 * * *"   # 3am — run all active feeds (iCal, web, Eventbrite)
+        site_publish:
+          class: SitePublishJob
+          schedule: "0 22 * * 0"  # 10pm Sunday — generate + commit + push GitHub Pages
   workers:
     - queues: "*"
       threads: 3

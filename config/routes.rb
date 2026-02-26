@@ -22,6 +22,9 @@ Rails.application.routes.draw do
         patch :unarchive
       end
     end
+    resource :site, only: [] do
+      post :publish
+    end
     root to: "events#index"
   end
 

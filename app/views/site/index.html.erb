@@ -51,6 +51,9 @@
             <% if event[:times_listed] && event[:times_listed] > 2 %>
               <span class="times-badge">seen <%= event[:times_listed] %>x</span>
             <% end %>
+            <% if user_signed_in? && current_user.admin? %>
+              <a href="<%= edit_admin_event_path(event[:id]) %>" class="admin-edit-link">edit</a>
+            <% end %>
           </div>
           <div class="event-meta">
             <% if event[:date_text] && !event[:date_text].empty? %>
@@ -64,4 +67,10 @@
       <% end %>
     </section>
   <% end %>
+<% end %>
+
+<% if user_signed_in? && current_user.admin? %>
+  <div class="admin-publish-bar">
+    <%= button_to "Publish Site", publish_admin_site_path, method: :post, class: "publish-btn" %>
+  </div>
 <% end %>
