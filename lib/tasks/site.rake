@@ -50,8 +50,9 @@ module SiteGenerator
 
     # --- Generate pages ---
 
-    # Homepage: this week's events (from DB, grouped by date)
-    generate_homepage(archive_years)
+    # Homepage: this week's events
+    current_week = find_current_week(weeks)
+    generate_homepage(current_week, archive_years)
 
     # Individual week pages
     weeks.each { |w| generate_week_page(w, archive_years) }
@@ -310,33 +311,15 @@ module SiteGenerator
 
   # --- Page Generation ---
 
-  def generate_homepage(archive_years)
-    today      = Date.today
-    week_start = today.beginning_of_week(:monday)
-    week_end   = today.end_of_week(:monday)
-    week_label = "#{week_start.strftime('%-d %B')} – #{week_end.strftime('%-d %B %Y')}"
+  def generate_homepage(week, archive_years)
+    return unless week
 
-    dated   = Event.approved.where(start_date: week_start..week_end).order(:start_date, :name)
-    undated = Event.approved.where(start_date: nil)
-                            .where(last_seen: week_start.to_s..week_end.to_s)
-                            .order(:category, :name)
-
-    if dated.empty? && undated.empty?
-      upcoming   = Event.approved.where(start_date: today..(today + 28)).order(:start_date, :name)
-      events_by_date = upcoming.group_by(&:start_date)
-                                .transform_values { |evs| evs.map { |e| static_event_hash(e) } }
-      undated_events = []
-    else
-      events_by_date = dated.group_by(&:start_date)
-                             .transform_values { |evs| evs.map { |e| static_event_hash(e) } }
-      undated_events = undated.map { |e| static_event_hash(e) }
-    end
+    events_by_category = group_by_category(week[:events])
 
     html = render_template("index.html.erb",
-      week_label:     week_label,
-      events_by_date: events_by_date,
-      undated_events: undated_events,
-      root_path:      "./"
+      week_label:         week[:label],
+      events_by_category: events_by_category,
+      root_path:          "./"
     )
 
     write_page("index.html", html,
@@ -346,17 +329,7 @@ module SiteGenerator
       root_path:     "./"
     )
 
-    puts "  Generated homepage (#{week_label})"
-  end
-
-  def static_event_hash(event)
-    { id:           event.id,
-      name:         event.effective_name,
-      url:          event.effective_event_url,
-      times_listed: event.times_listed,
-      date_text:    event.effective_date_text,
-      venue:        event.effective_venue,
-      category:     event.effective_category }
+    puts "  Generated homepage (#{week[:id]})"
   end
 
   def generate_week_page(week, archive_years)

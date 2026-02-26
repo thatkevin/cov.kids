@@ -8,21 +8,16 @@ class SiteController < ApplicationController
     week_start = Date.current.beginning_of_week(:monday)
     week_end   = Date.current.end_of_week(:monday)
 
-    dated   = zoned_events.where(start_date: week_start..week_end).order(:start_date, :name)
-    undated = zoned_events.where(start_date: nil).where(last_seen: week_start.to_s..week_end.to_s).order(:category, :name)
+    dated   = zoned_events.where(start_date: week_start..week_end)
+    undated = zoned_events.where(start_date: nil).where(last_seen: week_start.to_s..week_end.to_s)
+    events  = dated.or(undated).order(Arel.sql("start_date NULLS LAST"), :category, :name)
 
-    if dated.empty? && undated.empty?
-      # Fallback: next 4 weeks of upcoming events, grouped by date
-      upcoming = zoned_events.where(start_date: Date.current..(Date.current + 28)).order(:start_date, :name)
-      @events_by_date  = upcoming.group_by(&:start_date)
-                                 .transform_values { |evs| evs.map { |e| event_to_hash(e) } }
-      @undated_events  = []
-    else
-      @events_by_date  = dated.group_by(&:start_date)
-                               .transform_values { |evs| evs.map { |e| event_to_hash(e) } }
-      @undated_events  = undated.map { |e| event_to_hash(e) }
+    # Fallback: show next 4 weeks of upcoming events if nothing is on this week
+    if events.empty?
+      events = zoned_events.where(start_date: Date.current..(Date.current + 28)).order(:start_date, :category, :name)
     end
 
+    @events_by_category = group_by_category(events)
     @week_label = "#{week_start.strftime('%-d %B')} – #{week_end.strftime('%-d %B %Y')}"
     @nav_active = :home
   end
