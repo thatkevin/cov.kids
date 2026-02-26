@@ -38,7 +38,7 @@
                     merge_admin_venue_path(cluster[:canonical]),
                     params: { source_venue_ids: [v.id] },
                     data: { turbo_confirm: "Move #{v.events_count} event(s) from '#{v.name}' to '#{cluster[:canonical].name}' and delete '#{v.name}'?" },
-                    class: "text-xs bg-amber-600 hover:bg-amber-700 text-white px-3 py-1.5 rounded" %>
+                    class: "text-xs bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded" %>
               </div>
             </div>
           <% end %>
