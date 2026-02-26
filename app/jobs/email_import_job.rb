@@ -19,9 +19,14 @@ class EmailImportJob < ApplicationJob
   PROMPT
 
   def perform
+    ImportStatus.set!(:email, :running)
     messages = fetch_unread_messages
     Rails.logger.info("EmailImportJob: found #{messages.size} unread message(s)")
     messages.each { |msg| process_message(msg) }
+    ImportStatus.set!(:email, :done)
+  rescue => e
+    ImportStatus.set!(:email, :error, error: e.message)
+    raise
   end
 
   private

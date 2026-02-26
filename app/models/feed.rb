@@ -16,4 +16,12 @@ class Feed < ApplicationRecord
   def mark_fetched!
     update!(last_fetched_at: Time.current)
   end
+
+  def set_status!(status, error: nil)
+    update!(last_run_status: status.to_s, last_run_error: error)
+    broadcast_replace_to "admin_feeds",
+      target: "feed-#{id}",
+      partial: "admin/feeds/feed_row",
+      locals: { feed: self }
+  end
 end

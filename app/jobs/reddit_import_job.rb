@@ -20,9 +20,14 @@ class RedditImportJob < ApplicationJob
   }.freeze
 
   def perform
+    ImportStatus.set!(:reddit, :running)
     posts = fetch_recent_listings
     Rails.logger.info("RedditImportJob: found #{posts.size} listing(s) to check")
     posts.each { |post| process_post(post) }
+    ImportStatus.set!(:reddit, :done)
+  rescue => e
+    ImportStatus.set!(:reddit, :error, error: e.message)
+    raise
   end
 
   private

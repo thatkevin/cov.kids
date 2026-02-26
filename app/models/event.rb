@@ -1,6 +1,6 @@
 class Event < ApplicationRecord
   SIMILARITY_THRESHOLD = 0.6
-  CATEGORIES = %w[music comedy arts sport food film family community other].freeze
+  CATEGORIES = %w[music folk comedy arts sport food film family community other].freeze
 
   belongs_to :source, optional: true
 

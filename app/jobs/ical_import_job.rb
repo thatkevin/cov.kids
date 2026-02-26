@@ -5,19 +5,21 @@ class IcalImportJob < ApplicationJob
   queue_as :default
 
   CATEGORY_MAP = {
-    /concert|gig|session|singaround|singers|performers|club.guest/i => "music",
-    /workshop/i                                                      => "other",
-    /comedy/i                                                        => "comedy",
-    /art|exhib|theatre|theater|dance|drama/i                        => "arts",
-    /sport|fitness|run/i                                             => "sport",
-    /food|drink|market/i                                             => "food",
-    /film|cinema/i                                                   => "film",
-    /family|kids|children/i                                         => "family",
-    /community|charity/i                                            => "community"
+    /folk|shanty|trad|ceilidh|ceili|ballad|bluegrass|acoustic/i    => "folk",
+    /concert|gig|singaround|singers|performers|club.guest/i        => "music",
+    /workshop/i                                                     => "other",
+    /comedy/i                                                       => "comedy",
+    /art|exhib|theatre|theater|dance|drama/i                       => "arts",
+    /sport|fitness|run/i                                            => "sport",
+    /food|drink|market/i                                            => "food",
+    /film|cinema/i                                                  => "film",
+    /family|kids|children/i                                        => "family",
+    /community|charity/i                                           => "community"
   }.freeze
 
   # perform(feed_url, source_type: "ical", source_name: nil)
   def perform(feed_url, source_type: "ical", source_name: nil)
+    @default_category = source_name.to_s.match?(/folk/i) ? "folk" : "other"
     ics = fetch(feed_url)
     return unless ics
 
@@ -60,7 +62,7 @@ class IcalImportJob < ApplicationJob
           Event.create!(
             name:       ev.summary.to_s,
             venue:      ev.location.to_s.presence,
-            category:   map_category(ev.categories.to_a.first.to_s),
+            category:   map_category(ev.categories.to_a.first.to_s, default: @default_category),
             date_text:  format_date(ev.dtstart, ev.dtend),
             event_url:  ticket_url,
             start_date: start_date,
@@ -123,9 +125,9 @@ class IcalImportJob < ApplicationJob
     result
   end
 
-  def map_category(raw)
+  def map_category(raw, default: "other")
     CATEGORY_MAP.each { |pattern, cat| return cat if raw.match?(pattern) }
-    "other"
+    default
   end
 
   TICKET_DOMAINS = /eventbrite\.(co\.uk|com)|humanitix\.com|skiddle\.com|ticketmaster\.co\.uk|ticketweb\.uk|wegottickets\.com|seetickets\.com|universe\.com/i

@@ -11,7 +11,14 @@ Rails.application.routes.draw do
     resources :feeds do
       member { post :trigger }
     end
-    resources :sources, only: [ :index, :new, :create, :edit, :update, :destroy ]
+    resources :sources, only: [ :index, :new, :create, :edit, :update, :destroy ] do
+      collection { post :run_by_type }
+      member do
+        post :reprocess
+        patch :archive
+        patch :unarchive
+      end
+    end
     root to: "events#index"
   end
 

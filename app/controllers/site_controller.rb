@@ -105,8 +105,9 @@ class SiteController < ApplicationController
   end
 
   def group_by_category(events)
-    events.group_by { |e| e.effective_category.presence || "other" }
-          .transform_values { |evs| evs.map { |e| event_to_hash(e) } }
+    grouped = events.group_by { |e| e.effective_category.presence || "other" }
+                    .transform_values { |evs| evs.map { |e| event_to_hash(e) } }
+    Event::CATEGORIES.filter_map { |cat| [cat, grouped[cat]] if grouped.key?(cat) }.to_h
   end
 
   def event_to_hash(event)

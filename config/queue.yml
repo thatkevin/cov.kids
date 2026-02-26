@@ -2,6 +2,16 @@ default: &default
   dispatchers:
     - polling_interval: 1
       batch_size: 500
+      recurring_tasks:
+        email_import:
+          class: EmailImportJob
+          schedule: "0 1 * * *"   # 1am — check inbox for new event emails
+        reddit_import:
+          class: RedditImportJob
+          schedule: "0 2 * * *"   # 2am — pull Reddit event threads
+        feed_sync:
+          class: FeedSyncJob
+          schedule: "0 3 * * *"   # 3am — run all active feeds (iCal, web, Eventbrite)
   workers:
     - queues: "*"
       threads: 3

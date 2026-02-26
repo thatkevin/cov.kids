@@ -34,17 +34,9 @@ class Admin::FeedsController < Admin::ApplicationController
   end
 
   def trigger
-    case @feed.feed_type
-    when "web"
-      WebScraperJob.perform_later(@feed.id)
-    when "ical"
-      IcalImportJob.perform_later(@feed.url, source_type: "ical", source_name: @feed.name)
-      @feed.mark_fetched!
-    when "eventbrite"
-      EventbriteImportJob.perform_later
-      @feed.mark_fetched!
-    end
-    redirect_to admin_feeds_path, notice: "Job queued for #{@feed.name}."
+    @feed.set_status!(:queued)
+    FeedRunnerJob.perform_later(@feed.id)
+    redirect_to admin_feeds_path, notice: "#{@feed.name} queued."
   end
 
   private

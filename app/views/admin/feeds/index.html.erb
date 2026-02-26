@@ -1,3 +1,5 @@
+<%= turbo_stream_from "admin_feeds" %>
+
 <div class="flex items-center justify-between mb-6">
   <h1 class="text-xl font-semibold text-gray-900">Feeds</h1>
   <%= link_to "Add feed", new_admin_feed_path, class: "bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md" %>
@@ -8,43 +10,7 @@
 <% else %>
   <div class="bg-white rounded-lg border border-gray-200 divide-y divide-gray-100">
     <% @feeds.each do |feed| %>
-      <div class="px-4 py-3 flex items-center gap-4">
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center gap-2">
-            <span class="font-medium text-gray-900 text-sm"><%= feed.name %></span>
-            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
-              <%= feed.feed_type == 'web' ? 'bg-purple-100 text-purple-700' :
-                  feed.feed_type == 'ical' ? 'bg-blue-100 text-blue-700' :
-                  feed.feed_type == 'reddit' ? 'bg-orange-100 text-orange-700' :
-                  feed.feed_type == 'eventbrite' ? 'bg-rose-100 text-rose-700' :
-                  'bg-gray-100 text-gray-700' %>">
-              <%= feed.feed_type %>
-            </span>
-            <% unless feed.active? %>
-              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">paused</span>
-            <% end %>
-          </div>
-          <p class="text-xs text-gray-400 truncate mt-0.5"><%= feed.url %></p>
-          <p class="text-xs text-gray-400 mt-0.5">
-            Every <%= feed.fetch_interval_hours %>h ·
-            <% if feed.last_fetched_at %>
-              Last fetched <%= time_ago_in_words(feed.last_fetched_at) %> ago
-            <% else %>
-              Never fetched
-            <% end %>
-          </p>
-        </div>
-        <div class="flex items-center gap-2 shrink-0">
-          <% if %w[web ical eventbrite].include?(feed.feed_type) %>
-            <%= button_to "Run now", trigger_admin_feed_path(feed), method: :post,
-                class: "text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded" %>
-          <% end %>
-          <%= link_to "Edit", edit_admin_feed_path(feed), class: "text-xs text-blue-600 hover:underline" %>
-          <%= button_to "Remove", admin_feed_path(feed), method: :delete,
-              data: { turbo_confirm: "Remove #{feed.name}?" },
-              class: "text-xs text-red-500 hover:underline bg-transparent border-0 cursor-pointer p-0" %>
-        </div>
-      </div>
+      <%= render "feed_row", feed: feed %>
     <% end %>
   </div>
 <% end %>

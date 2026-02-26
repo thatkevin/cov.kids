@@ -9,14 +9,16 @@ export default class extends Controller {
     document.addEventListener("keydown", this._onKeydown)
     this._highlight()
 
-    // When Turbo removes a card, advance to the next one
-    this.element.addEventListener("turbo:before-stream-render", () => {
-      setTimeout(() => this._afterRemoval(), 50)
+    // Watch for cards being removed from the DOM and re-highlight
+    this._observer = new MutationObserver(() => {
+      requestAnimationFrame(() => this._afterRemoval())
     })
+    this._observer.observe(this.element, { childList: true })
   }
 
   disconnect() {
     document.removeEventListener("keydown", this._onKeydown)
+    this._observer?.disconnect()
   }
 
   _visibleCards() {
@@ -26,8 +28,7 @@ export default class extends Controller {
   _highlight() {
     const cards = this._visibleCards()
     cards.forEach((c, i) => {
-      c.classList.toggle("ring-2", i === this.currentIndex)
-      c.classList.toggle("ring-blue-400", i === this.currentIndex)
+      c.classList.toggle("card-focused", i === this.currentIndex)
     })
     if (cards[this.currentIndex]) {
       cards[this.currentIndex].scrollIntoView({ block: "nearest", behavior: "smooth" })

@@ -1,0 +1,27 @@
+<div id="import-status-<%= import_status&.key %>" class="flex items-center gap-2">
+  <% case import_status&.status %>
+  <% when "queued" %>
+    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-700">
+      <span class="animate-pulse">●</span> queued
+    </span>
+  <% when "running" %>
+    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700">
+      <span class="animate-spin inline-block">↻</span> running
+    </span>
+  <% when "done" %>
+    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">
+      ✓ done
+      <% if import_status.last_run_at %>
+        <span class="font-normal text-green-600"><%= time_ago_in_words(import_status.last_run_at) %> ago</span>
+      <% end %>
+    </span>
+  <% when "error" %>
+    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-700"
+          title="<%= import_status.last_run_error %>">
+      ✕ error
+      <% if import_status.last_run_error.present? %>
+        <span class="font-normal truncate max-w-[200px]"><%= import_status.last_run_error.truncate(40) %></span>
+      <% end %>
+    </span>
+  <% end %>
+</div>

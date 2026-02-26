@@ -1,23 +1,51 @@
+<%= turbo_stream_from "admin_import_statuses" %>
+
 <div class="flex items-center justify-between mb-6">
   <div>
     <h1 class="text-xl font-semibold text-gray-900">Sources</h1>
     <p class="text-sm text-gray-500 mt-1">All import sources — emails, Reddit, iCal feeds, and scraped pages.</p>
   </div>
-  <%= link_to "Add source", new_admin_source_path, class: "bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md" %>
+  <div class="flex items-center gap-3">
+    <% if @show_archived %>
+      <%= link_to "← Active sources", admin_sources_path, class: "text-sm text-blue-600 hover:underline" %>
+    <% elsif @archived_count&.positive? %>
+      <%= link_to "Show archived (#{@archived_count})", admin_sources_path(show_archived: "1"),
+          class: "text-sm text-gray-400 hover:text-gray-600" %>
+    <% end %>
+    <%= link_to "Add source", new_admin_source_path, class: "bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md" %>
+  </div>
 </div>
 
 <% type_labels = { "email" => "Email", "facebook" => "Facebook", "reddit" => "Reddit", "ical" => "iCal", "web" => "Web", "eventbrite" => "Eventbrite" } %>
 <% type_colors = { "email" => "bg-indigo-100 text-indigo-700", "facebook" => "bg-blue-100 text-blue-700", "reddit" => "bg-orange-100 text-orange-700", "ical" => "bg-teal-100 text-teal-700", "web" => "bg-purple-100 text-purple-700", "eventbrite" => "bg-rose-100 text-rose-700" } %>
+<% group_types = %w[email facebook reddit] %>
+<% status_key_for = { "email" => "email", "facebook" => "email", "reddit" => "reddit" } %>
 
 <% if @grouped.empty? %>
-  <p class="text-gray-500 text-sm">No sources imported yet.</p>
+  <p class="text-gray-500 text-sm">No sources <%= @show_archived ? "archived" : "imported" %> yet.</p>
 <% else %>
   <% @grouped.each do |type, sources| %>
     <section class="mb-8">
-      <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
-        <%= type_labels[type] || type.capitalize %>
-        <span class="font-normal normal-case text-gray-400">(<%= sources.size %>)</span>
-      </h2>
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">
+          <%= type_labels[type] || type.capitalize %>
+          <span class="font-normal normal-case text-gray-400">(<%= sources.size %>)</span>
+        </h2>
+
+        <% if group_types.include?(type) && !@show_archived %>
+          <% skey = status_key_for[type] %>
+          <div class="flex items-center gap-3">
+            <%= render "import_status_badge", import_status: @import_statuses[skey] %>
+            <% unless @import_statuses[skey]&.status&.in?(%w[queued running]) %>
+              <%= button_to "Run #{type_labels[type]}",
+                  run_by_type_admin_sources_path(type: type), method: :post,
+                  class: "text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded" %>
+            <% else %>
+              <span class="text-xs text-gray-400 px-3 py-1.5">Running…</span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
 
       <div class="bg-white rounded-lg border border-gray-200 divide-y divide-gray-100">
         <% sources.each do |source| %>
@@ -36,11 +64,28 @@
                   <% end %>
                 </p>
               </div>
+
               <div class="flex items-center gap-3 shrink-0">
                 <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium <%= type_colors[type] || 'bg-gray-100 text-gray-700' %>">
                   <%= type_labels[type] || type %>
                 </span>
+
+                <%# Per-row Run button only for feed-backed types %>
+                <% if %w[ical web].include?(type) && !@show_archived %>
+                  <%= button_to "Run", reprocess_admin_source_path(source), method: :post,
+                      class: "text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded" %>
+                <% end %>
+
                 <%= link_to "Edit", edit_admin_source_path(source), class: "text-xs text-blue-600 hover:underline" %>
+
+                <% if @show_archived %>
+                  <%= button_to "Unarchive", unarchive_admin_source_path(source), method: :patch,
+                      class: "text-xs text-green-600 hover:underline bg-transparent border-0 cursor-pointer p-0" %>
+                <% else %>
+                  <%= button_to "Archive", archive_admin_source_path(source), method: :patch,
+                      class: "text-xs text-gray-400 hover:text-gray-600 hover:underline bg-transparent border-0 cursor-pointer p-0" %>
+                <% end %>
+
                 <%= button_to "Remove", admin_source_path(source), method: :delete,
                     data: { turbo_confirm: "Remove this source and unlink its events?" },
                     class: "text-xs text-red-500 hover:underline bg-transparent border-0 cursor-pointer p-0" %>

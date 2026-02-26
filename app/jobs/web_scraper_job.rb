@@ -21,10 +21,13 @@ class WebScraperJob < ApplicationJob
     return unless feed.active?
 
     html = fetch(feed.url)
-    return unless html
+    raise "Could not fetch #{feed.url} — check the URL and whether the site blocks bots" unless html
 
     text = strip_html(html)
-    return if text.blank?
+    if text.blank?
+      Rails.logger.warn("WebScraperJob [#{feed.url}]: page appears JS-rendered or empty, no text extracted")
+      return
+    end
 
     source = Source.find_or_initialize_by(url: feed.url)
     source.update!(
@@ -36,8 +39,6 @@ class WebScraperJob < ApplicationJob
 
     events_json = run_claude(EXTRACT_PROMPT + "\n\nPage content:\n#{text.slice(0, 10_000)}")
     save_events(events_json, source)
-    feed.mark_fetched!
-
     Rails.logger.info("WebScraperJob [#{feed.url}]: done")
   end
 

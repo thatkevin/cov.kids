@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_25_224425) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_26_195834) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -50,6 +50,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_25_224425) do
     t.string "feed_type", default: "web", null: false
     t.integer "fetch_interval_hours", default: 24, null: false
     t.datetime "last_fetched_at"
+    t.text "last_run_error"
+    t.string "last_run_status", default: "idle"
     t.string "name", null: false
     t.datetime "updated_at", null: false
     t.string "url", null: false
@@ -58,7 +60,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_25_224425) do
     t.index ["url"], name: "index_feeds_on_url", unique: true
   end
 
+  create_table "import_statuses", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "key", null: false
+    t.datetime "last_run_at"
+    t.text "last_run_error"
+    t.string "status", default: "idle", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_import_statuses_on_key", unique: true
+  end
+
   create_table "sources", force: :cascade do |t|
+    t.boolean "archived", default: false, null: false
     t.text "body"
     t.datetime "created_at", null: false
     t.string "date_range"
@@ -68,6 +81,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_25_224425) do
     t.datetime "updated_at", null: false
     t.string "url"
     t.integer "week_number"
+    t.index ["archived"], name: "index_sources_on_archived"
     t.index ["source_type"], name: "index_sources_on_source_type"
     t.index ["url"], name: "index_sources_on_url", unique: true
     t.index ["week_number"], name: "index_sources_on_week_number"
