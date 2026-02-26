@@ -6,6 +6,7 @@ class Admin::VenuesController < Admin::ApplicationController
                    .select("venues.*, COUNT(events.id) AS events_count")
                    .group("venues.id")
                    .order(Arel.sql("COUNT(events.id) DESC"))
+                   .to_a
 
     # Find clusters of similar venues (similarity > 0.7) for the "possible duplicates" panel
     @clusters = find_clusters
