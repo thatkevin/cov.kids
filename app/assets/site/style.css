@@ -497,6 +497,19 @@ a:hover {
   border-color: #5EB3E4;
 }
 
+/* --- Category pill on event cards --- */
+.category-pill {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #888;
+  background: #f0f0f0;
+  border-radius: 4px;
+  padding: 1px 6px;
+}
+
 /* --- Admin overlays (only visible when logged in as admin) --- */
 .admin-edit-link {
   font-size: 0.7rem;

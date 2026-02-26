@@ -1,5 +1,6 @@
 require "net/imap"
 require "open3"
+require "cgi"
 
 class EmailImportJob < ApplicationJob
   queue_as :default
@@ -129,6 +130,9 @@ class EmailImportJob < ApplicationJob
 
     events.each do |data|
       next if data["name"].blank?
+
+      data["name"]  = CGI.unescapeHTML(data["name"].to_s).strip
+      data["venue"] = CGI.unescapeHTML(data["venue"].to_s).strip.presence
 
       existing = Event.similar_to(data["name"]).first
       if existing

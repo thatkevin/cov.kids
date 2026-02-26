@@ -1,6 +1,6 @@
 <div class="page-title">
   <h1>This Week in Coventry</h1>
-  <p class="subtitle"><%= @week_label %></p>
+  <p class="subtitle"><%= @week_label || week_label %></p>
 </div>
 
 <%
@@ -15,43 +15,32 @@
   <% end %>
 </nav>
 
-<% if @events_by_category.empty? %>
+<% all_events_by_date = defined?(events_by_date) ? events_by_date : @events_by_date %>
+<% all_undated        = defined?(undated_events)  ? undated_events  : @undated_events %>
+
+<% if all_events_by_date.blank? && all_undated.blank? %>
   <p class="no-events">No events listed for this week yet.</p>
 <% else %>
-  <%
-    all_venues = @events_by_category.values.flatten
-                   .map { |e| e[:venue].to_s.strip }
-                   .reject { |v| v.empty? || v == "Unknown" }
-                   .uniq.sort
-  %>
-  <% if all_venues.size > 1 %>
-    <div class="venue-filter" id="venue-filter">
-      <span class="venue-filter-label">Venue:</span>
-      <button class="venue-chip active" data-venue="">All</button>
-      <% all_venues.each do |venue| %>
-        <button class="venue-chip" data-venue="<%= venue %>"><%= venue %></button>
-      <% end %>
-    </div>
-  <% end %>
 
-  <% @events_by_category.each do |category, events| %>
+  <% all_events_by_date.each do |date, events| %>
+    <% date_label = date.respond_to?(:strftime) ? date.strftime("%A %-d %B") : date.to_s %>
     <section class="category-section">
       <div class="category-header">
-        <h2><%= category %></h2>
+        <h2><%= date_label %></h2>
         <span class="category-count"><%= events.length %> event<%= events.length == 1 ? '' : 's' %></span>
       </div>
       <% events.each do |event| %>
-        <div class="event-card fade-in" data-venue="<%= event[:venue] %>">
+        <div class="event-card fade-in">
           <div class="event-name">
             <% if event[:url] && !event[:url].empty? %>
               <a href="<%= event[:url] %>"><%= event[:name] %></a>
             <% else %>
               <%= event[:name] %>
             <% end %>
-            <% if event[:times_listed] && event[:times_listed] > 2 %>
+            <% if event[:times_listed] && event[:times_listed].to_i > 2 %>
               <span class="times-badge">seen <%= event[:times_listed] %>x</span>
             <% end %>
-            <% if user_signed_in? && current_user.admin? %>
+            <% if defined?(current_user) && respond_to?(:user_signed_in?) && user_signed_in? && current_user.admin? %>
               <a href="<%= edit_admin_event_path(event[:id]) %>" class="admin-edit-link">edit</a>
             <% end %>
           </div>
@@ -62,14 +51,55 @@
             <% if event[:venue] && !event[:venue].empty? %>
               <span class="venue"><%= event[:venue] %></span>
             <% end %>
+            <% if event[:category] && !event[:category].empty? %>
+              <span class="category-pill"><%= event[:category] %></span>
+            <% end %>
           </div>
         </div>
       <% end %>
     </section>
   <% end %>
+
+  <% if all_undated && all_undated.any? %>
+    <section class="category-section undated-section">
+      <div class="category-header">
+        <h2>Also this week</h2>
+        <span class="category-count"><%= all_undated.length %> event<%= all_undated.length == 1 ? '' : 's' %></span>
+      </div>
+      <% all_undated.each do |event| %>
+        <div class="event-card fade-in">
+          <div class="event-name">
+            <% if event[:url] && !event[:url].empty? %>
+              <a href="<%= event[:url] %>"><%= event[:name] %></a>
+            <% else %>
+              <%= event[:name] %>
+            <% end %>
+            <% if event[:times_listed] && event[:times_listed].to_i > 2 %>
+              <span class="times-badge">seen <%= event[:times_listed] %>x</span>
+            <% end %>
+            <% if defined?(current_user) && respond_to?(:user_signed_in?) && user_signed_in? && current_user.admin? %>
+              <a href="<%= edit_admin_event_path(event[:id]) %>" class="admin-edit-link">edit</a>
+            <% end %>
+          </div>
+          <div class="event-meta">
+            <% if event[:date_text] && !event[:date_text].empty? %>
+              <span class="date"><%= event[:date_text] %></span>
+            <% end %>
+            <% if event[:venue] && !event[:venue].empty? %>
+              <span class="venue"><%= event[:venue] %></span>
+            <% end %>
+            <% if event[:category] && !event[:category].empty? %>
+              <span class="category-pill"><%= event[:category] %></span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </section>
+  <% end %>
+
 <% end %>
 
-<% if user_signed_in? && current_user.admin? %>
+<% if defined?(current_user) && respond_to?(:user_signed_in?) && user_signed_in? && current_user.admin? %>
   <div class="admin-publish-bar">
     <%= button_to "Publish Site", publish_admin_site_path, method: :post, class: "publish-btn" %>
   </div>
