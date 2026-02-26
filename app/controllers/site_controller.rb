@@ -11,7 +11,7 @@ class SiteController < ApplicationController
     # Events with a known start_date in this week, OR undated events seen this week
     dated   = zoned_events.where(start_date: week_start..week_end)
     undated = zoned_events.where(start_date: nil).where(last_seen: week_start.to_s..week_end.to_s)
-    events  = dated.or(undated).order(:category, :name)
+    events  = dated.or(undated).order(Arel.sql("start_date NULLS LAST"), :category, :name)
 
     # Fallback: show next 4 weeks of upcoming events if nothing is on this week
     if events.empty?

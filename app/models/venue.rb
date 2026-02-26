@@ -1,3 +1,5 @@
+require "cgi"
+
 class Venue < ApplicationRecord
   include ZoneDetectable
 
@@ -19,10 +21,13 @@ class Venue < ApplicationRecord
   def self.find_or_create_for(raw, room: nil)
     return nil if raw.blank?
 
-    # Strip common address suffixes to get a cleaner match candidate
-    candidate = raw.split(/\s*[-–]\s*/, 2).first.strip
+    clean = CGI.unescapeHTML(raw.to_s).strip
+    return nil if clean.blank?
 
-    similar_to(candidate).first || create!(name: candidate, address: raw == candidate ? nil : raw)
+    # Strip common address suffixes to get a cleaner match candidate
+    candidate = clean.split(/\s*[-–]\s*/, 2).first.strip
+
+    similar_to(candidate).first || create!(name: candidate, address: clean == candidate ? nil : clean)
   end
 
   private
