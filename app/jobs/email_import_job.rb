@@ -138,6 +138,7 @@ class EmailImportJob < ApplicationJob
         Event.create!(
           name:       data["name"],
           venue:      data["venue"].presence || "Unknown",
+          venue_id:   Venue.find_or_create_for(data["venue"].presence)&.id,
           category:   data["category"],
           date_text:  data["date_text"],
           event_url:  data["event_url"],

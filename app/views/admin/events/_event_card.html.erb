@@ -6,6 +6,11 @@
         <% if event.curated? %>
           <span class="shrink-0 inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700">edited</span>
         <% end %>
+        <% if event.zone != "coventry" %>
+          <span class="shrink-0 inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium <%= event.zone == "birmingham" ? "bg-blue-100 text-blue-700" : "bg-orange-100 text-orange-700" %>">
+            <%= event.zone == "birmingham" ? "brum" : "warks" %>
+          </span>
+        <% end %>
       </div>
       <div class="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-500">
         <% if event.effective_venue.present? && event.effective_venue != "Unknown" %>

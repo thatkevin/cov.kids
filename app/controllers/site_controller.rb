@@ -2,13 +2,21 @@ class SiteController < ApplicationController
   layout "site"
 
   before_action :set_archive_years
+  before_action :set_zone
 
   def index
     week_start = Date.current.beginning_of_week(:monday)
     week_end   = Date.current.end_of_week(:monday)
 
-    events = Event.approved.where(last_seen: week_start.to_s..week_end.to_s).order(:category, :name)
-    events = Event.approved.order(:category, :name) if events.empty?
+    # Events with a known start_date in this week, OR undated events seen this week
+    dated   = zoned_events.where(start_date: week_start..week_end)
+    undated = zoned_events.where(start_date: nil).where(last_seen: week_start.to_s..week_end.to_s)
+    events  = dated.or(undated).order(:category, :name)
+
+    # Fallback: show next 4 weeks of upcoming events if nothing is on this week
+    if events.empty?
+      events = zoned_events.where(start_date: Date.current..(Date.current + 28)).order(:start_date, :category, :name)
+    end
 
     @events_by_category = group_by_category(events)
     @week_label = "#{week_start.strftime('%-d %B')} – #{week_end.strftime('%-d %B %Y')}"
@@ -42,7 +50,7 @@ class SiteController < ApplicationController
     @week_number = week_num
     @date_range  = "#{week_start.strftime('%-d %b')} – #{week_end.strftime('%-d %b %Y')}"
 
-    events = Event.approved.where(first_seen: week_start.to_s..week_end.to_s).order(:category, :name)
+    events = zoned_events.where(first_seen: week_start.to_s..week_end.to_s).order(:category, :name)
     @events_by_category = group_by_category(events)
   end
 
@@ -69,7 +77,7 @@ class SiteController < ApplicationController
     month_date  = Date.new(@year, @month_path.to_i, 1)
     @month_name = month_date.strftime("%B")
 
-    events = Event.approved.where("first_seen LIKE ?", "#{@year}-#{@month_path}-%").order(:category, :name)
+    events = zoned_events.where("first_seen LIKE ?", "#{@year}-#{@month_path}-%").order(:category, :name)
     @total_events = events.count
     @events_by_category = group_by_category(events)
 
@@ -83,6 +91,11 @@ class SiteController < ApplicationController
                   end
   end
 
+  def about
+    @page_title = "About"
+    @nav_active = :about
+  end
+
   def day
     @year       = params[:year].to_i
     @month_path = params[:month]
@@ -91,10 +104,20 @@ class SiteController < ApplicationController
     @month_name = date.strftime("%B")
     @day_label  = date.strftime("%-d %B %Y")
 
-    @events = Event.approved.where(first_seen: date.to_s).order(:category, :name).map { |e| event_to_hash(e) }
+    @events = zoned_events.where(first_seen: date.to_s).order(:category, :name).map { |e| event_to_hash(e) }
   end
 
   private
+
+  def set_zone
+    @zones = ["coventry"]
+    @zones << "warwickshire" if params[:warwickshire] == "1"
+    @zones << "birmingham"   if params[:birmingham]   == "1"
+  end
+
+  def zoned_events
+    Event.approved.where(zone: @zones)
+  end
 
   def set_archive_years
     @archive_years = Event.approved

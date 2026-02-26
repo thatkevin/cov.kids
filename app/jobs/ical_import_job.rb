@@ -62,6 +62,7 @@ class IcalImportJob < ApplicationJob
           Event.create!(
             name:       ev.summary.to_s,
             venue:      ev.location.to_s.presence,
+            venue_id:   Venue.find_or_create_for(ev.location.to_s.presence)&.id,
             category:   map_category(ev.categories.to_a.first.to_s, default: @default_category),
             date_text:  format_date(ev.dtstart, ev.dtend),
             event_url:  ticket_url,

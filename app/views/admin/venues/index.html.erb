@@ -1,0 +1,77 @@
+<div class="flex items-center justify-between mb-6">
+  <div>
+    <h1 class="text-xl font-semibold text-gray-900">Venues</h1>
+    <p class="text-sm text-gray-500 mt-1"><%= @venues.size %> venues · edit names/addresses, merge duplicates.</p>
+  </div>
+  <%= link_to "Add venue", new_admin_venue_path, class: "bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md" %>
+</div>
+
+<%# Possible duplicates panel %>
+<% if @clusters.any? %>
+  <div class="mb-8 bg-amber-50 border border-amber-200 rounded-lg p-4">
+    <h2 class="text-sm font-semibold text-amber-800 mb-3">Possible duplicates (<%= @clusters.size %>)</h2>
+    <div class="space-y-4">
+      <% @clusters.each do |cluster| %>
+        <div class="bg-white rounded border border-amber-100 p-3">
+          <p class="text-xs text-gray-500 mb-2">These venues look similar — merge the others into the canonical one:</p>
+          <%= form_with url: merge_admin_venue_path(cluster[:canonical]), method: :post, class: "space-y-2" do |f| %>
+            <div class="flex flex-wrap gap-2 items-center">
+              <span class="text-sm font-medium text-gray-900">
+                <%= cluster[:canonical].name %>
+                <span class="text-gray-400 font-normal">(<%= cluster[:canonical].events_count %> events)</span>
+              </span>
+              <span class="text-gray-400 text-xs">← merge into this</span>
+            </div>
+            <div class="space-y-1">
+              <% cluster[:similar].each do |v| %>
+                <label class="flex items-center gap-2 text-sm cursor-pointer">
+                  <%= check_box_tag "source_venue_ids[]", v.id, true,
+                      class: "rounded border-gray-300 text-blue-600" %>
+                  <span class="text-gray-700"><%= v.name %></span>
+                  <% if v.address.present? %>
+                    <span class="text-gray-400 text-xs">— <%= v.address.truncate(50) %></span>
+                  <% end %>
+                  <span class="text-gray-400 text-xs">(<%= v.events_count %> events)</span>
+                </label>
+              <% end %>
+            </div>
+            <button type="submit" class="text-xs bg-amber-600 hover:bg-amber-700 text-white px-3 py-1.5 rounded">
+              Merge selected
+            </button>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<%# Full venue list %>
+<div class="bg-white rounded-lg border border-gray-200 divide-y divide-gray-100">
+  <% zone_colors = { "coventry" => "bg-sky-100 text-sky-700", "warwickshire" => "bg-orange-100 text-orange-700", "birmingham" => "bg-blue-100 text-blue-700" } %>
+  <% @venues.each do |venue| %>
+    <div class="px-4 py-3 flex items-center gap-4">
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2">
+          <span class="font-medium text-gray-900 text-sm"><%= venue.name %></span>
+          <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium <%= zone_colors[venue.zone] || 'bg-gray-100 text-gray-700' %>">
+            <%= venue.zone %>
+          </span>
+          <% if venue.name == venue.address || venue.address.blank? %>
+            <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-700"
+                  title="Name and address are the same — consider splitting them">needs cleanup</span>
+          <% end %>
+        </div>
+        <% if venue.address.present? && venue.address != venue.name %>
+          <p class="text-xs text-gray-400 mt-0.5"><%= venue.address %></p>
+        <% end %>
+        <p class="text-xs text-gray-400 mt-0.5"><%= venue.events_count %> event(s)</p>
+      </div>
+      <div class="flex items-center gap-3 shrink-0">
+        <%= link_to "Edit", edit_admin_venue_path(venue), class: "text-xs text-blue-600 hover:underline" %>
+        <%= button_to "Remove", admin_venue_path(venue), method: :delete,
+            data: { turbo_confirm: "Remove #{venue.name}? Events will be unlinked." },
+            class: "text-xs text-red-500 hover:underline bg-transparent border-0 cursor-pointer p-0" %>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -17,9 +17,10 @@
       <nav class="flex items-center gap-6">
         <span class="font-semibold text-gray-900">CK Admin</span>
         <% if user_signed_in? %>
-          <%= link_to "Queue", admin_events_path, class: "text-sm #{request.path.start_with?('/admin/events') ? 'text-blue-600 font-medium' : 'text-gray-600 hover:text-gray-900'}" %>
+          <%= link_to "Queue",   admin_events_path,  class: "text-sm #{request.path.start_with?('/admin/events')  ? 'text-blue-600 font-medium' : 'text-gray-600 hover:text-gray-900'}" %>
+          <%= link_to "Venues",  admin_venues_path,  class: "text-sm #{request.path.start_with?('/admin/venues')  ? 'text-blue-600 font-medium' : 'text-gray-600 hover:text-gray-900'}" %>
           <%= link_to "Sources", admin_sources_path, class: "text-sm #{request.path.start_with?('/admin/sources') ? 'text-blue-600 font-medium' : 'text-gray-600 hover:text-gray-900'}" %>
-          <%= link_to "Feeds", admin_feeds_path, class: "text-sm #{request.path.start_with?('/admin/feeds') ? 'text-blue-600 font-medium' : 'text-gray-600 hover:text-gray-900'}" %>
+          <%= link_to "Feeds",   admin_feeds_path,   class: "text-sm #{request.path.start_with?('/admin/feeds')   ? 'text-blue-600 font-medium' : 'text-gray-600 hover:text-gray-900'}" %>
         <% end %>
       </nav>
       <% if user_signed_in? %>

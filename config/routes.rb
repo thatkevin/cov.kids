@@ -11,6 +11,9 @@ Rails.application.routes.draw do
     resources :feeds do
       member { post :trigger }
     end
+    resources :venues do
+      member { post :merge }
+    end
     resources :sources, only: [ :index, :new, :create, :edit, :update, :destroy ] do
       collection { post :run_by_type }
       member do
@@ -23,6 +26,7 @@ Rails.application.routes.draw do
   end
 
   root "site#index"
+  get "about", to: "site#about"
   get "weeks",        to: "site#weeks_index", as: :weeks_index
   get "weeks/:week_id", to: "site#week",      as: :week_page,
       constraints: { week_id: /\d{4}-W\d{1,2}/ }

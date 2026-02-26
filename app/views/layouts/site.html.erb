@@ -31,6 +31,14 @@
           <a href="<%= root_path %><%= y %>"<%= " class=\"active\"" if @nav_active == y.to_s %>><%= y %></a>
         <% end %>
       </nav>
+      <nav class="zone-nav">
+        <% warks_on = params[:warwickshire] == "1" %>
+        <% brum_on  = params[:birmingham]   == "1" %>
+        <a href="<%= url_for(params.to_unsafe_hash.merge(warwickshire: warks_on ? nil : "1")) %>"
+           class="zone-tab<%= " active" if warks_on %>">+ Warwickshire</a>
+        <a href="<%= url_for(params.to_unsafe_hash.merge(birmingham: brum_on ? nil : "1")) %>"
+           class="zone-tab<%= " active" if brum_on %>">+ Birmingham</a>
+      </nav>
     </header>
 
     <main>
@@ -38,7 +46,7 @@
     </main>
 
     <footer class="site-footer">
-      <p>Events sourced from local listings and community submissions.</p>
+      <p>Events sourced from local listings and community submissions. · <%= link_to "About", about_path %></p>
     </footer>
   </div>
 

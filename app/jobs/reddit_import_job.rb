@@ -108,6 +108,7 @@ class RedditImportJob < ApplicationJob
         Event.create!(
           name:       name,
           venue:      cols[2].presence || "Unknown",
+          venue_id:   Venue.find_or_create_for(cols[2].presence)&.id,
           category:   current_category,
           date_text:  cols[1].presence,
           event_url:  event_url,

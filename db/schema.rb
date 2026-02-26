@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_26_195834) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_26_204017) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -36,12 +36,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_26_195834) do
     t.integer "times_listed", default: 1
     t.datetime "updated_at", null: false
     t.string "venue"
+    t.bigint "venue_id"
+    t.string "venue_room"
+    t.string "zone", default: "coventry", null: false
     t.index ["category"], name: "index_events_on_category"
     t.index ["name", "venue"], name: "index_events_on_name_and_venue", unique: true
     t.index ["name"], name: "index_events_on_name", opclass: :gin_trgm_ops, using: :gin
     t.index ["source_id"], name: "index_events_on_source_id"
     t.index ["status"], name: "index_events_on_status"
-    t.index ["venue"], name: "index_events_on_venue"
+    t.index ["venue"], name: "index_events_on_venue", opclass: :gin_trgm_ops, using: :gin
+    t.index ["venue_id"], name: "index_events_on_venue_id"
+    t.index ["zone"], name: "index_events_on_zone"
   end
 
   create_table "feeds", force: :cascade do |t|
@@ -100,5 +105,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_26_195834) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "venues", force: :cascade do |t|
+    t.string "address"
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.string "zone", default: "coventry", null: false
+    t.index ["name"], name: "index_venues_on_name", opclass: :gin_trgm_ops, using: :gin
+  end
+
   add_foreign_key "events", "sources"
+  add_foreign_key "events", "venues"
 end

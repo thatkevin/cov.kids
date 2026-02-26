@@ -1,0 +1,7 @@
+<div class="max-w-lg">
+  <div class="mb-6">
+    <h1 class="text-xl font-semibold text-gray-900">Edit venue</h1>
+    <p class="text-sm text-gray-500 mt-1"><%= @venue.events.count %> event(s) linked to this venue.</p>
+  </div>
+  <%= render "form", venue: @venue %>
+</div>

@@ -1,61 +1,74 @@
-<div id="feed-<%= feed.id %>" class="px-4 py-3 flex items-center gap-4">
-  <div class="flex-1 min-w-0">
-    <div class="flex items-center gap-2">
-      <span class="font-medium text-gray-900 text-sm"><%= feed.name %></span>
-      <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
-        <%= feed.feed_type == 'web' ? 'bg-purple-100 text-purple-700' :
-            feed.feed_type == 'ical' ? 'bg-blue-100 text-blue-700' :
-            feed.feed_type == 'reddit' ? 'bg-orange-100 text-orange-700' :
-            feed.feed_type == 'eventbrite' ? 'bg-rose-100 text-rose-700' :
-            'bg-gray-100 text-gray-700' %>">
-        <%= feed.feed_type %>
-      </span>
-      <% unless feed.active? %>
-        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">paused</span>
-      <% end %>
-      <%# Run status badge %>
-      <% case feed.last_run_status %>
-      <% when "queued" %>
-        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-700">
-          <span class="animate-pulse">●</span> queued
+<div id="feed-<%= feed.id %>" class="px-4 py-3">
+  <div class="flex items-center gap-4">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <span class="font-medium text-gray-900 text-sm"><%= feed.name %></span>
+        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
+          <%= feed.feed_type == 'web' ? 'bg-purple-100 text-purple-700' :
+              feed.feed_type == 'ical' ? 'bg-blue-100 text-blue-700' :
+              feed.feed_type == 'reddit' ? 'bg-orange-100 text-orange-700' :
+              feed.feed_type == 'eventbrite' ? 'bg-rose-100 text-rose-700' :
+              'bg-gray-100 text-gray-700' %>">
+          <%= feed.feed_type %>
         </span>
-      <% when "running" %>
-        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700">
-          <span class="animate-spin inline-block">↻</span> running
-        </span>
-      <% when "done" %>
-        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">
-          ✓ done
-        </span>
-      <% when "error" %>
-        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-700" title="<%= feed.last_run_error %>">
-          ✕ error
-        </span>
-      <% end %>
+        <% unless feed.active? %>
+          <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">paused</span>
+        <% end %>
+
+        <%# Run status badge %>
+        <% case feed.last_run_status %>
+        <% when "queued" %>
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-700">
+            <span class="animate-pulse">●</span> queued
+          </span>
+        <% when "running" %>
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700">
+            <span class="animate-spin inline-block">↻</span> running
+          </span>
+        <% when "done" %>
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">
+            ✓ done
+          </span>
+        <% when "error" %>
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-700">
+            ✕ error
+          </span>
+        <% end %>
+      </div>
+
+      <p class="text-xs text-gray-400 truncate mt-0.5"><%= feed.url %></p>
+      <p class="text-xs text-gray-400 mt-0.5">
+        Every <%= feed.fetch_interval_hours %>h ·
+        <% if feed.last_fetched_at %>
+          <span title="<%= feed.last_fetched_at.strftime('%d/%m/%Y %H:%M') %>">
+            Last run <%= time_ago_in_words(feed.last_fetched_at) %> ago
+          </span>
+        <% else %>
+          Never run
+        <% end %>
+      </p>
     </div>
-    <p class="text-xs text-gray-400 truncate mt-0.5"><%= feed.url %></p>
-    <p class="text-xs text-gray-400 mt-0.5">
-      Every <%= feed.fetch_interval_hours %>h ·
-      <% if feed.last_fetched_at %>
-        Last run <%= time_ago_in_words(feed.last_fetched_at) %> ago
-      <% else %>
-        Never run
+
+    <div class="flex items-center gap-2 shrink-0">
+      <% if %w[web ical eventbrite].include?(feed.feed_type) && feed.last_run_status.in?(%w[idle done error]) %>
+        <%= button_to "Run now", trigger_admin_feed_path(feed), method: :post,
+            class: "text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded" %>
+      <% elsif feed.last_run_status.in?(%w[queued running]) %>
+        <span class="text-xs text-gray-400 px-3 py-1.5">Running…</span>
       <% end %>
-      <% if feed.last_run_status == "error" && feed.last_run_error.present? %>
-        · <span class="text-red-400 truncate"><%= feed.last_run_error.truncate(60) %></span>
-      <% end %>
-    </p>
+      <%= link_to "Edit", edit_admin_feed_path(feed), class: "text-xs text-blue-600 hover:underline" %>
+      <%= button_to "Remove", admin_feed_path(feed), method: :delete,
+          data: { turbo_confirm: "Remove #{feed.name}?" },
+          class: "text-xs text-red-500 hover:underline bg-transparent border-0 cursor-pointer p-0" %>
+    </div>
   </div>
-  <div class="flex items-center gap-2 shrink-0">
-    <% if %w[web ical eventbrite].include?(feed.feed_type) && feed.last_run_status.in?(%w[idle done error]) %>
-      <%= button_to "Run now", trigger_admin_feed_path(feed), method: :post,
-          class: "text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded" %>
-    <% elsif feed.last_run_status.in?(%w[queued running]) %>
-      <span class="text-xs text-gray-400 px-3 py-1.5">Running…</span>
-    <% end %>
-    <%= link_to "Edit", edit_admin_feed_path(feed), class: "text-xs text-blue-600 hover:underline" %>
-    <%= button_to "Remove", admin_feed_path(feed), method: :delete,
-        data: { turbo_confirm: "Remove #{feed.name}?" },
-        class: "text-xs text-red-500 hover:underline bg-transparent border-0 cursor-pointer p-0" %>
-  </div>
+
+  <% if feed.last_run_status == "error" && feed.last_run_error.present? %>
+    <details class="mt-2">
+      <summary class="text-xs text-red-500 cursor-pointer select-none hover:text-red-700">
+        Show error
+      </summary>
+      <pre class="mt-1 text-xs text-red-600 bg-red-50 border border-red-100 rounded p-2 whitespace-pre-wrap break-all"><%= feed.last_run_error %></pre>
+    </details>
+  <% end %>
 </div>

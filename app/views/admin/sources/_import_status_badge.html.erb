@@ -12,16 +12,23 @@
     <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">
       ✓ done
       <% if import_status.last_run_at %>
-        <span class="font-normal text-green-600"><%= time_ago_in_words(import_status.last_run_at) %> ago</span>
+        <span class="font-normal text-green-600" title="<%= import_status.last_run_at.strftime('%d/%m/%Y %H:%M') %>">
+          <%= time_ago_in_words(import_status.last_run_at) %> ago
+        </span>
       <% end %>
     </span>
   <% when "error" %>
-    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-700"
-          title="<%= import_status.last_run_error %>">
+    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-700">
       ✕ error
-      <% if import_status.last_run_error.present? %>
-        <span class="font-normal truncate max-w-[200px]"><%= import_status.last_run_error.truncate(40) %></span>
-      <% end %>
     </span>
+  <% end %>
+
+  <% if import_status&.status == "error" && import_status.last_run_error.present? %>
+    <details class="inline">
+      <summary class="text-xs text-red-500 cursor-pointer select-none hover:text-red-700">details</summary>
+      <div class="absolute z-10 mt-1 max-w-sm bg-white border border-red-200 rounded shadow-lg p-3">
+        <pre class="text-xs text-red-600 whitespace-pre-wrap break-all"><%= import_status.last_run_error %></pre>
+      </div>
+    </details>
   <% end %>
 </div>
