@@ -11,7 +11,9 @@ class IcalImportJob < ApplicationJob
     /comedy/i                                                       => "comedy",
     /art|exhib|theatre|theater|dance|drama/i                       => "arts",
     /sport|fitness|run/i                                            => "sport",
-    /food|drink|market/i                                            => "food",
+    /ale.festival|beer.festival|pub.session|morris|folk.pub/i      => "drink",
+    /food|market/i                                                  => "food",
+    /\bdrink\b/i                                                    => "drink",
     /film|cinema/i                                                  => "film",
     /family|kids|children/i                                        => "family",
     /community|charity/i                                           => "community"

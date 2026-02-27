@@ -128,8 +128,31 @@ class SiteController < ApplicationController
 
   def group_by_category(events)
     grouped = events.group_by { |e| e.effective_category.presence || "other" }
-                    .transform_values { |evs| evs.map { |e| event_to_hash(e) } }
+                    .transform_values do |evs|
+                      evs.sort_by { |e| [date_sort_key(e), e.effective_name.to_s.downcase] }
+                         .map { |e| event_to_hash(e) }
+                    end
     Event::CATEGORIES.filter_map { |cat| [cat, grouped[cat]] if grouped.key?(cat) }.to_h
+  end
+
+  # Returns a sortable value for an event's date.
+  # start_date (Date) sorts first; parseable date_text sorts next; vague/undated sorts last.
+  MONTH_ABBREVS = %w[Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec].freeze
+
+  def date_sort_key(event)
+    return event.start_date if event.start_date
+
+    text = event.effective_date_text.to_s
+    return Date.new(9999) if text.blank? || text.match?(/\buntil\b|\bongoing\b|\bvarious\b|\btbc\b/i)
+
+    if text =~ /(\d{1,2})(?:st|nd|rd|th)?\s+(#{MONTH_ABBREVS.join('|')})/i
+      day   = $1.to_i
+      month = MONTH_ABBREVS.index($2.capitalize) + 1
+      year  = Date.current.year
+      Date.new(year, month, day) rescue Date.new(9999)
+    else
+      Date.new(9999)
+    end
   end
 
   def event_to_hash(event)

@@ -2,7 +2,7 @@ class Event < ApplicationRecord
   include ZoneDetectable
 
   SIMILARITY_THRESHOLD = 0.6
-  CATEGORIES = %w[music folk comedy arts sport food film family community other].freeze
+  CATEGORIES = %w[music folk comedy arts sport food drink film family community other].freeze
   ZONES = %w[coventry warwickshire birmingham].freeze
   VENUE_SIMILARITY_THRESHOLD = 0.75
 
