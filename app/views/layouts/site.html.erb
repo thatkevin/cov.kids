@@ -7,38 +7,47 @@
   <meta name="description" content="<%= @page_description.presence || "What's on in Coventry this week — events, gigs, markets, comedy, theatre, sport and more." %>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="<%= asset_path('style.css') %>">
 </head>
 <body>
 
   <div class="top-banner">
     <div class="top-banner-track">
-      <% 12.times do %>
+      <% 6.times do %>
         <span>cov<span class="dot">.</span>kids</span>
+        <span class="banner-preview">preview mode — there will be errors!</span>
       <% end %>
     </div>
   </div>
 
-  <div class="byline">whats on in cov</div>
-
   <div class="container">
     <header class="site-header">
-      <nav class="site-nav">
-        <a href="<%= root_path %>"<%= ' class="active"' if @nav_active == :home %>>This Week</a>
-        <a href="<%= root_path %>weeks"<%= ' class="active"' if @nav_active == :weeks %>>All Weeks</a>
-        <% @archive_years.each do |y| %>
-          <a href="<%= root_path %><%= y %>"<%= " class=\"active\"" if @nav_active == y.to_s %>><%= y %></a>
-        <% end %>
-      </nav>
-      <nav class="zone-nav">
-        <% warks_on = params[:warwickshire] == "1" %>
-        <% brum_on  = params[:birmingham]   == "1" %>
-        <a href="<%= url_for(params.to_unsafe_hash.merge(warwickshire: warks_on ? nil : "1")) %>"
-           class="zone-tab<%= " active" if warks_on %>">+ Warwickshire</a>
-        <a href="<%= url_for(params.to_unsafe_hash.merge(birmingham: brum_on ? nil : "1")) %>"
-           class="zone-tab<%= " active" if brum_on %>">+ Birmingham</a>
-      </nav>
+      <% if @week_label %>
+        <%
+          next_months = (1..6).map do |i|
+            d = Date.today >> i
+            { label: d.strftime("%b"), path: "#{root_path}#{d.year}/#{d.strftime('%m')}" }
+          end
+        %>
+        <div class="page-context-identity">
+          <span class="page-tagline">what's on in cov</span>
+          <span class="page-week"><%= @week_label %></span>
+        </div>
+        <nav class="month-nav" aria-label="Browse by month">
+          <% next_months.each do |m| %>
+            <a href="<%= m[:path] %>" class="month-tab"><%= m[:label] %></a>
+          <% end %>
+        </nav>
+        <nav class="zone-nav" aria-label="Area filter">
+          <% warks_on = params[:warwickshire] == "1" %>
+          <% brum_on  = params[:birmingham]   == "1" %>
+          <a href="<%= url_for(params.to_unsafe_hash.merge(warwickshire: warks_on ? nil : "1")) %>"
+             class="zone-tab<%= " active" if warks_on %>">+ Warks</a>
+          <a href="<%= url_for(params.to_unsafe_hash.merge(birmingham: brum_on ? nil : "1")) %>"
+             class="zone-tab<%= " active" if brum_on %>">+ Brum</a>
+        </nav>
+      <% end %>
     </header>
 
     <main>
@@ -46,7 +55,7 @@
     </main>
 
     <footer class="site-footer">
-      <p>Events sourced from local listings and community submissions. · <%= link_to "About", about_path %></p>
+      <p>Events sourced from local listings and community submissions · <%= link_to "About", about_path %></p>
     </footer>
   </div>
 

@@ -1,14 +1,11 @@
-/* ============================================
-   cov.kids — Static Site Styles
-   Coventry sky blue: #5EB3E4
-   ============================================ */
+/* ============================================================
+   cov.kids — Site Styles
+   Playfair Display (serif, editorial) + Inter (clean, practical)
+   Coventry sky: #5EB3E4
+   ============================================================ */
 
 /* --- Reset & Base --- */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html {
   font-size: 16px;
@@ -21,290 +18,33 @@ body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background: #fafafa;
   color: #1a1a1a;
-  line-height: 1.7;
-  padding-top: 56px;  /* space for top banner */
-  padding-bottom: 80px; /* space for bottom banner */
+  line-height: 1.65;
+  padding-top: 56px;
+  padding-bottom: 90px;
 }
 
-/* --- Typography --- */
 h1, h2, h3, h4 {
-  font-family: 'DM Serif Display', Georgia, serif;
+  font-family: 'Playfair Display', Georgia, serif;
   font-weight: 400;
   line-height: 1.2;
 }
 
-h1 { font-size: 2.5rem; margin-bottom: 0.5em; }
-h2 { font-size: 1.75rem; margin-bottom: 0.4em; }
-h3 { font-size: 1.35rem; margin-bottom: 0.3em; }
-
 a {
   color: #5EB3E4;
   text-decoration: none;
-  transition: color 0.2s ease, opacity 0.2s ease;
+  transition: color 0.15s ease;
 }
 
-a:hover {
-  color: #3a9ad4;
-  text-decoration: underline;
-}
+a:hover { color: #3a9ad4; text-decoration: underline; }
 
 /* --- Layout --- */
 .container {
-  max-width: 900px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 2rem;
 }
 
-/* --- Header --- */
-.site-header {
-  padding: 2.5rem 0 1.5rem;
-  border-bottom: 2px solid #5EB3E4;
-  margin-bottom: 2.5rem;
-}
-
-.site-header h1 {
-  font-size: 3rem;
-  letter-spacing: -0.02em;
-}
-
-.site-header h1 a {
-  color: #1a1a1a;
-  text-decoration: none;
-}
-
-.site-header h1 a:hover {
-  color: #5EB3E4;
-}
-
-.site-header h1 span {
-  color: #5EB3E4;
-}
-
-.site-header p {
-  color: #666;
-  font-size: 1.05rem;
-  margin-top: 0.25rem;
-}
-
-/* --- Byline (in the banner triangle gap) --- */
-.byline {
-  text-align: right;
-  padding: 0.2rem 1.5rem 0.5rem;
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-transform: capitalize;
-  color: #999;
-  letter-spacing: 0.05em;
-  transition: opacity 0.4s ease, transform 0.4s ease;
-}
-
-.byline.scrolled {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
-/* --- Navigation --- */
-.site-nav {
-  display: flex;
-  gap: 1.5rem;
-  margin-top: 1rem;
-  flex-wrap: wrap;
-}
-
-.site-nav a {
-  font-size: 0.95rem;
-  font-weight: 500;
-  padding: 0.3rem 0;
-  border-bottom: 2px solid transparent;
-  transition: border-color 0.2s ease;
-}
-
-.site-nav a:hover {
-  text-decoration: none;
-  border-bottom-color: #5EB3E4;
-}
-
-.site-nav a.active {
-  border-bottom-color: #5EB3E4;
-  color: #1a1a1a;
-}
-
-/* --- Page Title --- */
-.page-title {
-  margin-bottom: 2rem;
-}
-
-.page-title .subtitle {
-  color: #666;
-  font-size: 1.05rem;
-  margin-top: 0.25rem;
-}
-
-/* --- Category Section --- */
-.category-section {
-  margin-bottom: 3rem;
-}
-
-.category-header {
-  display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
-  margin-bottom: 1.25rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.category-header h2 {
-  margin-bottom: 0;
-}
-
-.category-count {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.85rem;
-  color: #999;
-  font-weight: 500;
-}
-
-/* --- Event Cards --- */
-.event-card {
-  background: #fff;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  padding: 1.25rem 1.5rem;
-  margin-bottom: 0.75rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.event-card:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-}
-
-.event-name {
-  font-family: 'DM Serif Display', Georgia, serif;
-  font-size: 1.15rem;
-  margin-bottom: 0.3rem;
-}
-
-.event-name a {
-  color: #1a1a1a;
-}
-
-.event-name a:hover {
-  color: #5EB3E4;
-}
-
-.event-meta {
-  display: flex;
-  gap: 1.25rem;
-  font-size: 0.9rem;
-  color: #666;
-  flex-wrap: wrap;
-}
-
-.event-meta .date::before {
-  content: "\1F4C5 ";
-}
-
-.event-meta .venue::before {
-  content: "\1F4CD ";
-}
-
-.times-badge {
-  display: inline-block;
-  background: #f0f7fc;
-  color: #5EB3E4;
-  font-size: 0.78rem;
-  font-weight: 600;
-  padding: 0.15rem 0.55rem;
-  border-radius: 99px;
-  margin-left: 0.5rem;
-  vertical-align: middle;
-}
-
-/* --- Fade-in Animation --- */
-.fade-in {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.fade-in.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* --- Week List / Archive --- */
-.archive-list {
-  list-style: none;
-}
-
-.archive-list li {
-  border-bottom: 1px solid #eee;
-}
-
-.archive-list a {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 0.5rem;
-  color: #1a1a1a;
-  transition: background 0.15s ease;
-  border-radius: 4px;
-}
-
-.archive-list a:hover {
-  background: #f5fafd;
-  text-decoration: none;
-}
-
-.archive-list .label {
-  font-family: 'DM Serif Display', Georgia, serif;
-  font-size: 1.1rem;
-}
-
-.archive-list .meta {
-  color: #999;
-  font-size: 0.9rem;
-}
-
-/* --- Breadcrumbs --- */
-.breadcrumbs {
-  font-size: 0.9rem;
-  color: #999;
-  margin-bottom: 1.5rem;
-}
-
-.breadcrumbs a {
-  color: #999;
-}
-
-.breadcrumbs a:hover {
-  color: #5EB3E4;
-}
-
-.breadcrumbs .separator {
-  margin: 0 0.4rem;
-}
-
-/* --- Footer --- */
-.site-footer {
-  text-align: center;
-  padding: 3rem 0 2rem;
-  color: #999;
-  font-size: 0.85rem;
-}
-
-.site-footer a {
-  color: #999;
-}
-
-.site-footer a:hover {
-  color: #5EB3E4;
-}
-
-/* --- Top Text Banner --- */
+/* --- Top text banner (fixed, diagonal, scrolling) --- */
 .top-banner {
   position: fixed;
   top: 0;
@@ -323,13 +63,13 @@ a:hover {
   align-items: center;
   height: 100%;
   white-space: nowrap;
-  animation: marquee-right 20s linear infinite;
+  animation: marquee-right 22s linear infinite;
 }
 
 .top-banner-track span {
   font-family: 'Inter', system-ui, sans-serif;
   font-weight: 800;
-  font-size: 1.4rem;
+  font-size: 1.35rem;
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: #fafafa;
@@ -337,23 +77,395 @@ a:hover {
   flex-shrink: 0;
 }
 
-.top-banner-track span.dot {
-  color: #5EB3E4;
-  padding: 0;
+.top-banner-track span.dot { color: #5EB3E4; padding: 0; }
+.top-banner-track .banner-preview { color: #f0b429; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: none; }
+
+/* --- Site Header --- */
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  padding: 1.25rem 0 0.75rem;
+  border-bottom: 1px solid #e8e8e8;
+  transform: rotate(-1.5deg);
+  transform-origin: top left;
 }
 
-/* --- Scrolling Coventry Banner (bottom) --- */
+.site-header .month-nav {
+  margin-left: auto;
+}
+
+.page-context-identity {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.page-tagline {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #5EB3E4;
+  white-space: nowrap;
+}
+
+.page-week {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.2rem;
+  color: #1a1a1a;
+  font-style: italic;
+  white-space: nowrap;
+}
+
+/* --- Page Title (archive pages) --- */
+.page-title { margin: 2rem 0 1.75rem; }
+.page-title h1 { font-size: 2rem; }
+.page-title .subtitle { color: #888; font-size: 0.95rem; margin-top: 0.3rem; }
+
+/* --- Featured Hero --- */
+.featured-hero {
+  display: flex;
+  gap: 2rem;
+  background: #fff;
+  border: 1.5px solid #5EB3E4;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 3rem;
+}
+
+.featured-hero-image {
+  width: 260px;
+  min-height: 180px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.featured-hero-body {
+  padding: 1.75rem 1.75rem 1.75rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.featured-hero-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #5EB3E4;
+  margin-bottom: 0.6rem;
+}
+
+.featured-hero-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.6rem;
+  color: #1a1a1a;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
+
+.featured-hero-meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.featured-hero-description {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* ── Events Grid ─────────────────────────────────────────── */
+
+.events-grid {
+  display: flex;
+  align-items: flex-start;
+  gap: 3rem;
+}
+
+.events-col {
+  flex: 1;
+  min-width: 0;
+}
+
+.category-section {
+  margin-bottom: 3rem;
+}
+
+/* ── Category Header ─────────────────────────────────────── */
+
+.category-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #1a1a1a;
+}
+
+.category-header h2 {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #1a1a1a;
+  margin-bottom: 0;
+}
+
+.category-count {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem;
+  color: #bbb;
+  font-weight: 500;
+  margin-left: auto;
+  letter-spacing: 0.04em;
+}
+
+/* ── Event Cards (editorial, border-bottom style) ─────────── */
+
+.event-card {
+  padding: 0.9rem 0;
+  border-bottom: 1px solid #ececec;
+  transition: none;
+}
+
+.event-card:last-child { border-bottom: none; }
+
+/* With optional image thumbnail */
+.event-card-inner {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+}
+
+.event-card-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.event-card-content { flex: 1; min-width: 0; }
+
+.event-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 0.98rem;
+  line-height: 1.3;
+  margin-bottom: 0.3rem;
+  color: #1a1a1a;
+}
+
+.event-name a { color: #1a1a1a; }
+.event-name a:hover { color: #5EB3E4; text-decoration: none; }
+
+.event-meta {
+  display: flex;
+  gap: 0.85rem;
+  font-size: 0.78rem;
+  color: #999;
+  flex-wrap: wrap;
+  line-height: 1.4;
+}
+
+/* Remove emojis */
+.event-meta .date::before  { content: ""; }
+.event-meta .venue::before { content: ""; }
+
+.event-description {
+  font-size: 0.8rem;
+  color: #666;
+  line-height: 1.5;
+  margin-top: 0.4rem;
+}
+
+.times-badge {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #5EB3E4;
+  padding: 0.1rem 0.45rem;
+  border: 1px solid #c8e4f5;
+  border-radius: 99px;
+  margin-left: 0.4rem;
+  vertical-align: middle;
+}
+
+/* --- Admin overlays --- */
+.admin-edit-link {
+  font-size: 0.65rem;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  color: #ccc;
+  border: 1px solid #e5e5e5;
+  border-radius: 3px;
+  padding: 1px 5px;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+  text-decoration: none;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.admin-edit-link:hover { color: #5EB3E4; border-color: #5EB3E4; text-decoration: none; }
+
+.admin-publish-bar {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed #ddd;
+  text-align: right;
+}
+
+.publish-btn {
+  display: inline-block;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.publish-btn:hover { background: #5EB3E4; }
+
+/* --- Zone / Month Filters --- */
+.zone-nav {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.zone-tab {
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  color: #888;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.zone-tab:hover { border-color: #5EB3E4; color: #1a1a1a; text-decoration: none; }
+.zone-tab.active { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
+
+.month-nav {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.month-tab {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 0.2rem 0.75rem;
+  border-radius: 99px;
+  border: 1px solid #d0e8f5;
+  color: #5EB3E4;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.month-tab:hover, .month-tab:focus {
+  background: #5EB3E4;
+  color: #fff;
+  border-color: #5EB3E4;
+  text-decoration: none;
+}
+
+/* --- Archive Lists --- */
+.archive-list { list-style: none; }
+
+.archive-list li { border-bottom: 1px solid #eeeeee; }
+
+.archive-list a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0.5rem;
+  color: #1a1a1a;
+  transition: background 0.12s;
+  border-radius: 4px;
+}
+
+.archive-list a:hover { background: #f5fafd; text-decoration: none; }
+.archive-list .label { font-family: 'Playfair Display', Georgia, serif; font-size: 1.1rem; }
+.archive-list .meta { color: #999; font-size: 0.85rem; }
+
+/* --- Breadcrumbs --- */
+.breadcrumbs {
+  font-size: 0.82rem;
+  color: #bbb;
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.breadcrumbs a { color: #bbb; }
+.breadcrumbs a:hover { color: #5EB3E4; }
+.breadcrumbs .separator { margin: 0 0.4rem; }
+
+/* --- Footer --- */
+.site-footer {
+  margin-top: 4rem;
+  padding: 2rem 0;
+  border-top: 1px solid #eee;
+  color: #bbb;
+  font-size: 0.82rem;
+}
+
+.site-footer a { color: #bbb; }
+.site-footer a:hover { color: #5EB3E4; }
+
+/* --- Top banner scrolling keyframe --- */
+@keyframes marquee-right {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+/* --- Fade-in --- */
+.fade-in {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* --- Bottom Coventry banner (fixed, mirrored diagonal) --- */
 .coventry-banner {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 60px;
+  height: 64px;
   background: #1a1a1a;
   overflow: hidden;
   z-index: 100;
   transform: rotate(-1.5deg) scale(1.06);
-  transform-origin: bottom left;
+  transform-origin: bottom right;
 }
 
 .banner-track {
@@ -371,197 +483,34 @@ a:hover {
 }
 
 .banner-set img {
-  height: 40px;
+  height: 42px;
   width: auto;
   margin: 0 2.5rem;
-  opacity: 0.4;
+  opacity: 0.35;
   flex-shrink: 0;
   filter: invert(1);
 }
 
-.banner-set img.accent {
-  opacity: 0.8;
-  filter: none;
-}
+.banner-set img.accent { opacity: 0.75; filter: none; }
 
-@keyframes marquee-left {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
+/* ── Responsive ──────────────────────────────────────────── */
+/* The columns: N MIN-WIDTH shorthand auto-collapses at narrow widths,
+   so no extra media queries are needed for the events grid itself. */
 
-@keyframes marquee-right {
-  0% { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
-}
-
-/* --- Zone Filter --- */
-.zone-nav {
-  display: flex;
-  gap: 0.375rem;
-  margin-top: 0.75rem;
-  flex-wrap: wrap;
-}
-
-.zone-tab {
-  font-size: 0.75rem;
-  font-weight: 500;
-  padding: 0.25rem 0.75rem;
-  border-radius: 999px;
-  border: 1px solid #ddd;
-  color: #666;
-  text-decoration: none;
-  transition: all 0.15s ease;
-}
-
-.zone-tab:hover {
-  border-color: #5EB3E4;
-  color: #1a1a1a;
-  text-decoration: none;
-}
-
-.zone-tab.active {
-  background: #1a1a1a;
-  border-color: #1a1a1a;
-  color: #fff;
-}
-
-/* --- Month Navigation --- */
-.month-nav {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin-bottom: 2rem;
-}
-
-.month-tab {
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 0.875rem;
-  font-weight: 500;
-  padding: 0.35rem 1rem;
-  border-radius: 99px;
-  border: 1.5px solid #d0e8f5;
-  color: #3a7fa8;
-  text-decoration: none;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-  white-space: nowrap;
-}
-
-.month-tab:hover, .month-tab:focus {
-  background: #5EB3E4;
-  color: #fff;
-  border-color: #5EB3E4;
-  text-decoration: none;
-}
-
-/* --- Venue Filter --- */
-.venue-filter {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4rem;
-  margin-bottom: 1.75rem;
-  padding: 0.75rem 1rem;
-  background: #f0f7fd;
-  border-radius: 8px;
-}
-
-.venue-filter-label {
-  font-size: 0.8125rem;
-  color: #888;
-  margin-right: 0.25rem;
-  white-space: nowrap;
-}
-
-.venue-chip {
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 0.8125rem;
-  padding: 0.2rem 0.7rem;
-  border: 1.5px solid #c5dff0;
-  border-radius: 99px;
-  background: #fff;
-  color: #3a7fa8;
-  cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-  white-space: nowrap;
-}
-
-.venue-chip:hover {
-  background: #5EB3E4;
-  color: #fff;
-  border-color: #5EB3E4;
-}
-
-.venue-chip.active {
-  background: #5EB3E4;
-  color: #fff;
-  border-color: #5EB3E4;
-}
-
-/* --- Category pill on event cards --- */
-.category-pill {
-  display: inline-block;
-  font-size: 0.7rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #888;
-  background: #f0f0f0;
-  border-radius: 4px;
-  padding: 1px 6px;
-}
-
-/* --- Admin overlays (only visible when logged in as admin) --- */
-.admin-edit-link {
-  font-size: 0.7rem;
-  font-weight: 500;
-  color: #aaa;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 1px 6px;
-  margin-left: 0.5rem;
-  vertical-align: middle;
-  text-decoration: none;
-  transition: color 0.15s, border-color 0.15s;
-}
-
-.admin-edit-link:hover {
-  color: #5EB3E4;
-  border-color: #5EB3E4;
-  text-decoration: none;
-}
-
-.admin-publish-bar {
-  margin-top: 2.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px dashed #ddd;
-  text-align: right;
-}
-
-.publish-btn {
-  display: inline-block;
-  padding: 0.5rem 1.25rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  font-family: 'Inter', system-ui, sans-serif;
-  background: #1a1a1a;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.15s;
-}
-
-.publish-btn:hover {
-  background: #5EB3E4;
-}
-
-/* --- Responsive --- */
-@media (max-width: 640px) {
-  h1 { font-size: 2rem; }
-  .site-header h1 { font-size: 2.25rem; }
-  .event-card { padding: 1rem 1.15rem; }
-  .container { padding: 0 1rem; }
-  .site-nav { gap: 1rem; }
+/* General small-screen fixes */
+@media (max-width: 768px) {
+  .container { padding: 0 1.25rem; }
+  body { padding-top: 44px; }
   .top-banner { height: 40px; }
-  .top-banner-track span { font-size: 1.1rem; }
+  .top-banner-track span { font-size: 1.05rem; }
+  .site-header { gap: 0.5rem 1rem; }
+  .page-week { font-size: 1rem; }
+  .featured-hero { flex-direction: column; }
+  .featured-hero-image { width: 100%; min-height: 180px; max-height: 240px; }
+  .featured-hero-body { padding: 1.25rem; }
+  .events-grid { gap: 2rem; }
+}
+
+@media (max-width: 480px) {
+  .featured-hero-title { font-size: 1.3rem; }
 }
