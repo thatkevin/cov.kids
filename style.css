@@ -78,6 +78,7 @@ a:hover { color: #3a9ad4; text-decoration: underline; }
 }
 
 .top-banner-track span.dot { color: #5EB3E4; padding: 0; }
+.top-banner-track .banner-preview { color: #f0b429; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: none; }
 
 /* --- Site Header --- */
 .site-header {
