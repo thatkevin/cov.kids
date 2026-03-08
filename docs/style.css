@@ -66,6 +66,12 @@ a:hover { color: #3a9ad4; text-decoration: underline; }
   animation: marquee-right 22s linear infinite;
 }
 
+.top-banner-set {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
 .top-banner-track span {
   font-family: 'Inter', system-ui, sans-serif;
   font-weight: 800;
@@ -488,8 +494,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
 
 /* --- Top banner scrolling keyframe --- */
 @keyframes marquee-right {
-  0%   { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 /* --- Bottom banner scrolling keyframe --- */
