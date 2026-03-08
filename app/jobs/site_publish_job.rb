@@ -17,6 +17,7 @@ class SitePublishJob < ApplicationJob
     log "Site generated."
 
     log "Staging docs/..."
+    Open3.capture3("git", "-C", root, "rm", "-r", "--cached", "--ignore-unmatch", "docs/")
     _, stage_err, stage_status = Open3.capture3("git", "-C", root, "add", "docs/")
     raise "git add failed: #{stage_err}" unless stage_status.success?
 
