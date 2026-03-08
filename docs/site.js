@@ -104,30 +104,4 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Continuous marquee for bottom banner
-  var track = document.querySelector('.banner-track');
-  if (track) {
-    var set = track.querySelector('.banner-set');
-    if (set) {
-      // Clone until we have enough to fill viewport + scroll
-      var needed = Math.ceil((window.innerWidth * 3) / set.offsetWidth) + 1;
-      for (var i = 1; i < needed; i++) {
-        track.appendChild(set.cloneNode(true));
-      }
-
-      var setWidth = set.offsetWidth;
-      var pos = 0;
-      var speed = 0.5; // pixels per frame
-
-      function animateBanner() {
-        pos -= speed;
-        if (pos <= -setWidth) {
-          pos += setWidth;
-        }
-        track.style.transform = 'translateX(' + pos + 'px)';
-        requestAnimationFrame(animateBanner);
-      }
-      requestAnimationFrame(animateBanner);
-    }
-  }
 });
