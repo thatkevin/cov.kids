@@ -5,16 +5,21 @@ class SiteController < ApplicationController
   before_action :set_zone
 
   def index
-    week_start = Date.current.beginning_of_week(:monday)
-    week_end   = Date.current.end_of_week(:monday)
+    today      = effective_date
+    week_start = today.beginning_of_week(:monday)
+    week_end   = today.end_of_week(:monday)
+
+    # For undated events, look back to the real current week start so recently
+    # imported events aren't excluded when we've shifted to "next week" on Sunday evening
+    undated_from = Date.current.beginning_of_week(:monday)
 
     dated   = zoned_events.where(start_date: week_start..week_end)
-    undated = zoned_events.where(start_date: nil).where(last_seen: week_start.to_s..week_end.to_s)
+    undated = zoned_events.where(start_date: nil).where(last_seen: undated_from.to_s..week_end.to_s)
     events  = dated.or(undated).order(Arel.sql("start_date NULLS LAST"), :category, :name)
 
     # Fallback: show next 4 weeks of upcoming events if nothing is on this week
     if events.empty?
-      events = zoned_events.where(start_date: Date.current..(Date.current + 28)).order(:start_date, :category, :name)
+      events = zoned_events.where(start_date: today..(today + 28)).order(:start_date, :category, :name)
     end
 
     @events_by_category = group_by_category(events)
@@ -108,6 +113,12 @@ class SiteController < ApplicationController
   end
 
   private
+
+  # After 7pm on Sunday, treat it as the start of next week
+  def effective_date
+    now = Time.current
+    now.sunday? && now.hour >= 19 ? Date.current + 1 : Date.current
+  end
 
   def set_zone
     @zones = ["coventry"]

@@ -25,7 +25,7 @@
     <header class="site-header">
       <% if defined?(week_label) && week_label %>
         <%
-          next_months = (1..6).map do |i|
+          next_months = (0..5).map do |i|
             d = Date.today >> i
             { label: d.strftime("%b"), path: "#{root_path}#{d.year}/#{d.strftime('%m')}" }
           end
@@ -65,7 +65,7 @@
     </main>
 
     <footer class="site-footer">
-      <p>Events sourced from local listings and community submissions.</p>
+      <p>Events sourced from local listings and community submissions · <a href="<%= root_path %>about/">About</a></p>
     </footer>
   </div>
 

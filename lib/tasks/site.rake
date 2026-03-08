@@ -63,6 +63,14 @@ module SiteGenerator
     # Year, month, day archives
     generate_date_archives(dated_events, archive_years)
 
+    # About page
+    html = render_template("about.html.erb", root_path: "./")
+    write_page("about/index.html", html,
+      page_title:    "About",
+      archive_years: archive_years,
+      root_path:     "../"
+    )
+
     puts "Done! Site generated in docs/"
     puts "  #{Dir[DOCS_DIR.join('**', '*.html')].count} HTML files"
   end
@@ -275,10 +283,16 @@ module SiteGenerator
   end
 
   def find_current_week(weeks)
-    today = Date.today
+    today = effective_date
     # Find the week containing today, or the most recent past week
     current = weeks.find { |w| w[:monday] <= today && w[:sunday] >= today }
     current || weeks.first
+  end
+
+  # After 7pm on Sunday, treat it as the start of next week
+  def effective_date
+    now = Time.now
+    now.sunday? && now.hour >= 19 ? Date.today + 1 : Date.today
   end
 
   # --- Date Archives ---
@@ -350,15 +364,17 @@ module SiteGenerator
   end
 
   def fetch_homepage_events(zones)
-    week_start = Date.current.beginning_of_week(:monday)
-    week_end   = Date.current.end_of_week(:monday)
+    today      = effective_date
+    week_start = today.beginning_of_week(:monday)
+    week_end   = today.end_of_week(:monday)
+    undated_from = Date.today.beginning_of_week(:monday)
     base       = Event.approved.where(zone: zones)
 
     dated   = base.where(start_date: week_start..week_end)
-    undated = base.where(start_date: nil).where(last_seen: week_start.to_s..week_end.to_s)
+    undated = base.where(start_date: nil).where(last_seen: undated_from.to_s..week_end.to_s)
     events  = dated.or(undated).order(Arel.sql("start_date NULLS LAST"), :category, :name)
 
-    events = base.where(start_date: Date.current..(Date.current + 28)).order(:start_date, :category, :name) if events.empty?
+    events = base.where(start_date: today..(today + 28)).order(:start_date, :category, :name) if events.empty?
     events.to_a
   end
 

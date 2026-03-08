@@ -16,12 +16,6 @@ class SitePublishJob < ApplicationJob
     Rake::Task["site:generate"].invoke
     log "Site generated."
 
-    log "Pulling latest changes..."
-    Open3.capture3("git", "-C", root, "stash")
-    _, pull_err, pull_status = Open3.capture3("git", "-C", root, "pull", "--rebase", "pages", "main")
-    Open3.capture3("git", "-C", root, "stash", "pop")
-    raise "git pull failed: #{pull_err}" unless pull_status.success?
-
     log "Staging docs/..."
     _, stage_err, stage_status = Open3.capture3("git", "-C", root, "add", "docs/")
     raise "git add failed: #{stage_err}" unless stage_status.success?
@@ -46,7 +40,7 @@ class SitePublishJob < ApplicationJob
     end
 
     log "Pushing to GitHub..."
-    _, push_err, push_status = Open3.capture3("git", "-C", root, "push", "pages", "main")
+    _, push_err, push_status = Open3.capture3("git", "-C", root, "push", "--force-with-lease", "pages", "main")
     raise "git push failed: #{push_err}" unless push_status.success?
 
     log "Done — site is live.", :success
