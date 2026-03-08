@@ -86,6 +86,7 @@ a:hover { color: #3a9ad4; text-decoration: underline; }
   align-items: center;
   gap: 1rem;
   padding: 1.25rem 0 0.75rem;
+  margin-bottom: 2rem;
   border-bottom: 1px solid #e8e8e8;
 }
 
@@ -94,7 +95,7 @@ a:hover { color: #3a9ad4; text-decoration: underline; }
   align-items: center;
   gap: 0.75rem;
   flex-wrap: wrap;
-  flex: 1;
+  margin-left: auto;
 }
 
 .page-context-identity {
