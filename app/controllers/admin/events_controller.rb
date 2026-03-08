@@ -1,8 +1,11 @@
 class Admin::EventsController < Admin::ApplicationController
-  before_action :set_event, only: %i[edit update approve reject]
+  before_action :set_event, only: %i[edit update approve reject feature]
 
   def index
-    @events = Event.pending.includes(:source).order(Arel.sql("start_date ASC NULLS LAST, first_seen DESC, created_at DESC"))
+    @events         = Event.pending.includes(:source).order(Arel.sql("start_date ASC NULLS LAST, first_seen DESC, created_at DESC"))
+    @featured_event = Event.approved.find_by(featured: true)
+    @imageable      = Event.approved.where.not(image_url: [ nil, "" ]).where(featured: false)
+                           .order(Arel.sql("start_date ASC NULLS LAST, name")).limit(20)
   end
 
   def edit
@@ -40,6 +43,12 @@ class Admin::EventsController < Admin::ApplicationController
       format.turbo_stream
       format.html { redirect_to admin_events_path }
     end
+  end
+
+  def feature
+    Event.where.not(id: @event.id).update_all(featured: false)
+    @event.update!(featured: !@event.featured)
+    redirect_to admin_events_path
   end
 
   private

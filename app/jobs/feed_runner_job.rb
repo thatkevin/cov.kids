@@ -12,6 +12,10 @@ class FeedRunnerJob < ApplicationJob
       IcalImportJob.new.perform(feed.url, source_type: "ical", source_name: feed.name)
     when "eventbrite"
       EventbriteImportJob.new.perform
+    when "reddit"
+      RedditImportJob.new.perform
+    when "email"
+      EmailImportJob.new.perform
     end
 
     feed.mark_fetched!

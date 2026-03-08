@@ -27,6 +27,59 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // --- Column distribution (greedy bin-pack, sections stay whole) ---
+  function buildEventColumns() {
+    var grid = document.querySelector('.events-grid');
+    if (!grid) return;
+
+    // Collect sections, pulling them back out of any existing col wrappers
+    var sections = [];
+    Array.from(grid.children).forEach(function (child) {
+      if (child.classList.contains('events-col')) {
+        Array.from(child.children).forEach(function (s) { sections.push(s); });
+      } else {
+        sections.push(child);
+      }
+    });
+    if (!sections.length) return;
+
+    var w = grid.offsetWidth;
+    var colCount = w >= 1000 ? 4 : w >= 700 ? 3 : w >= 460 ? 2 : 1;
+
+    // Clear grid
+    while (grid.firstChild) grid.removeChild(grid.firstChild);
+
+    if (colCount === 1) {
+      sections.forEach(function (s) { grid.appendChild(s); });
+      return;
+    }
+
+    // Create column wrappers
+    var cols = [], weights = new Array(colCount).fill(0);
+    for (var i = 0; i < colCount; i++) {
+      var col = document.createElement('div');
+      col.className = 'events-col';
+      grid.appendChild(col);
+      cols.push(col);
+    }
+
+    // Greedy: place each section into the lightest column
+    sections.forEach(function (s) {
+      var count = parseInt(s.getAttribute('data-count') || '1', 10);
+      var minIdx = weights.indexOf(Math.min.apply(null, weights));
+      cols[minIdx].appendChild(s);
+      weights[minIdx] += count;
+    });
+  }
+
+  buildEventColumns();
+
+  var _colTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(_colTimer);
+    _colTimer = setTimeout(buildEventColumns, 200);
+  }, { passive: true });
+
   // Fade-in on scroll
   var elements = document.querySelectorAll('.fade-in');
   if (elements.length) {
@@ -49,18 +102,6 @@ document.addEventListener('DOMContentLoaded', function () {
     elements.forEach(function (el) {
       observer.observe(el);
     });
-  }
-
-  // Byline fade-out on scroll
-  var byline = document.querySelector('.byline');
-  if (byline) {
-    window.addEventListener('scroll', function () {
-      if (window.scrollY > 30) {
-        byline.classList.add('scrolled');
-      } else {
-        byline.classList.remove('scrolled');
-      }
-    }, { passive: true });
   }
 
   // Continuous marquee for bottom banner

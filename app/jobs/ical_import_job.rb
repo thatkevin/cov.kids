@@ -1,11 +1,13 @@
 require "net/http"
 require "icalendar"
+require "cgi"
 
 class IcalImportJob < ApplicationJob
   queue_as :default
 
   CATEGORY_MAP = {
-    /folk|shanty|trad|ceilidh|ceili|ballad|bluegrass|acoustic/i    => "folk",
+    /irish|ceili|ceilidh|trad.*irish|irish.*trad/i                 => "irish",
+    /folk|shanty|trad|ballad|bluegrass|acoustic/i                  => "folk",
     /concert|gig|singaround|singers|performers|club.guest/i        => "music",
     /workshop/i                                                     => "other",
     /comedy/i                                                       => "comedy",
@@ -16,7 +18,10 @@ class IcalImportJob < ApplicationJob
     /\bdrink\b/i                                                    => "drink",
     /film|cinema/i                                                  => "film",
     /family|kids|children/i                                        => "family",
-    /community|charity/i                                           => "community"
+    /community|charity/i                                           => "community",
+    /museum|heritage|historic|antiquit/i                           => "museums",
+    /\bhistory\b|\bhistorical\b/i                                  => "history",
+    /quiz|trivia/i                                                  => "quiz",
   }.freeze
 
   # perform(feed_url, source_type: "ical", source_name: nil)
@@ -50,7 +55,7 @@ class IcalImportJob < ApplicationJob
         ticket_url = ticket_url_from(ev) || ev.url.to_s.presence
         start_date = date_of(ev.dtstart)
 
-        existing = Event.similar_to(ev.summary.to_s).first
+        existing = Event.similar_to(CGI.unescapeHTML(ev.summary.to_s)).first
         if existing
           best_url = ticket_url || (existing.event_url.presence if existing.event_url&.match?(TICKET_DOMAINS)) || existing.event_url
           existing.update!(
@@ -62,17 +67,19 @@ class IcalImportJob < ApplicationJob
           updated += 1
         else
           Event.create!(
-            name:       ev.summary.to_s,
-            venue:      ev.location.to_s.presence,
-            venue_id:   Venue.find_or_create_for(ev.location.to_s.presence)&.id,
-            category:   map_category(ev.categories.to_a.first.to_s, default: @default_category),
-            date_text:  format_date(ev.dtstart, ev.dtend),
-            event_url:  ticket_url,
-            start_date: start_date,
-            source:     source,
-            first_seen: today_s,
-            last_seen:  today_s,
-            status:     :pending
+            name:        CGI.unescapeHTML(ev.summary.to_s),
+            venue:       CGI.unescapeHTML(ev.location.to_s).strip.presence,
+            venue_id:    Venue.find_or_create_for(ev.location.to_s.presence)&.id,
+            category:    map_category(ev.categories.to_a.first.to_s, default: @default_category),
+            date_text:   format_date(ev.dtstart, ev.dtend),
+            event_url:   ticket_url,
+            description: clean_description(ev.description.to_s),
+            image_url:   image_url_from(ev),
+            start_date:  start_date,
+            source:      source,
+            first_seen:  today_s,
+            last_seen:   today_s,
+            status:      :pending
           )
           imported += 1
         end
@@ -139,5 +146,26 @@ class IcalImportJob < ApplicationJob
   def ticket_url_from(ev)
     desc = ev.description.to_s.gsub("\\n", "\n").gsub("&amp;", "&")
     desc.scan(URL_PATTERN).find { |url| url.match?(TICKET_DOMAINS) }
+  end
+
+  def clean_description(raw)
+    return nil if raw.blank?
+    CGI.unescapeHTML(raw.to_s)
+       .gsub(/<[^>]+>/, " ")
+       .gsub(/\\n/, "\n")
+       .gsub(/\s+/, " ")
+       .strip
+       .presence
+  end
+
+  IMAGE_EXTENSIONS = /\.(jpg|jpeg|png|gif|webp)(\?[^\s]*)?$/i
+
+  def image_url_from(ev)
+    ev.attachments.to_a.each do |a|
+      url = a.to_s
+      return url if url.start_with?("http") && url.match?(IMAGE_EXTENSIONS)
+    end
+    desc = ev.description.to_s
+    desc.scan(URL_PATTERN).find { |url| url.match?(IMAGE_EXTENSIONS) }
   end
 end

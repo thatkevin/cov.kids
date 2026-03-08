@@ -1,60 +1,119 @@
-<div class="page-title">
-  <h1>This Week in Coventry</h1>
-  <p class="subtitle"><%= @week_label %></p>
-</div>
-
-<%
-  next_months = (1..6).map do |i|
-    d = Date.today >> i
-    { label: d.strftime("%B"), path: "#{root_path}#{d.year}/#{d.strftime('%m')}" }
-  end
-%>
-<nav class="month-nav" aria-label="Browse by month">
-  <% next_months.each do |m| %>
-    <a href="<%= m[:path] %>" class="month-tab"><%= m[:label] %></a>
-  <% end %>
-</nav>
-
-<% if @events_by_category.empty? %>
-  <p class="no-events">No events listed for this week yet.</p>
-<% else %>
-  <% @events_by_category.each do |category, events| %>
-    <section class="category-section">
-      <div class="category-header">
-        <h2><%= category %></h2>
-        <span class="category-count"><%= events.length %> event<%= events.length == 1 ? '' : 's' %></span>
-      </div>
-      <% events.each do |event| %>
-        <div class="event-card fade-in">
-          <div class="event-name">
-            <% if event[:url] && !event[:url].empty? %>
-              <a href="<%= event[:url] %>"><%= event[:name] %></a>
-            <% else %>
-              <%= event[:name] %>
-            <% end %>
-            <% if event[:times_listed] && event[:times_listed] > 2 %>
-              <span class="times-badge">seen <%= event[:times_listed] %>x</span>
-            <% end %>
-            <% if respond_to?(:user_signed_in?) && user_signed_in? && current_user.admin? %>
-              <a href="<%= edit_admin_event_path(event[:id]) %>" class="admin-edit-link">edit</a>
-            <% end %>
-          </div>
-          <div class="event-meta">
-            <% if event[:date_text] && !event[:date_text].empty? %>
-              <span class="date"><%= event[:date_text] %></span>
-            <% end %>
-            <% if event[:venue] && !event[:venue].empty? %>
-              <span class="venue"><%= event[:venue] %></span>
-            <% end %>
-          </div>
-        </div>
+<%# ── Featured / Image of the Week ───────────────────────── %>
+<% if @featured_event %>
+  <div class="featured-hero">
+    <% if @featured_event.image_url.present? %>
+      <img src="<%= @featured_event.image_url %>" alt="<%= @featured_event.effective_name %>" class="featured-hero-image">
+    <% end %>
+    <div class="featured-hero-body">
+      <p class="featured-hero-label">Image of the Week</p>
+      <% if @featured_event.effective_event_url.present? %>
+        <a href="<%= @featured_event.effective_event_url %>" class="featured-hero-title"><%= @featured_event.effective_name %></a>
+      <% else %>
+        <span class="featured-hero-title"><%= @featured_event.effective_name %></span>
       <% end %>
+      <div class="featured-hero-meta">
+        <% if @featured_event.effective_venue.present? %><span><%= @featured_event.effective_venue %></span><% end %>
+        <% if @featured_event.effective_date_text.present? %><span><%= @featured_event.effective_date_text %></span><% end %>
+      </div>
+      <% if @featured_event.description.present? %>
+        <p class="featured-hero-description"><%= @featured_event.description.truncate(300) %></p>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<%# ── Proportional events grid ────────────────────────────── %>
+<% if @events_by_category.empty? %>
+  <p style="color: #999; padding: 3rem 0; text-align: center;">No events listed for this week yet.</p>
+<% else %>
+  <%
+    other_events   = @events_by_category["other"]
+    main_categories = @events_by_category.reject { |cat, _| cat == "other" }
+  %>
+  <div class="events-grid">
+    <% main_categories.each do |category, events| %>
+      <section class="category-section" data-count="<%= events.length %>">
+        <div class="category-header">
+          <h2><%= category %></h2>
+          <span class="category-count"><%= events.length %></span>
+        </div>
+        <div class="event-list">
+          <% events.each do |event| %>
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                <% if event[:image_url].present? %>
+                  <img src="<%= event[:image_url] %>" alt="" class="event-card-image" loading="lazy">
+                <% end %>
+                <div class="event-card-content">
+                  <div class="event-name">
+                    <% if event[:url].present? %>
+                      <a href="<%= event[:url] %>"><%= event[:name] %></a>
+                    <% else %>
+                      <%= event[:name] %>
+                    <% end %>
+                    <% if event[:times_listed] && event[:times_listed] > 2 %>
+                      <span class="times-badge"><%= event[:times_listed] %>×</span>
+                    <% end %>
+                    <% if respond_to?(:user_signed_in?) && user_signed_in? && current_user.admin? %>
+                      <a href="<%= edit_admin_event_path(event[:id]) %>" class="admin-edit-link">edit</a>
+                    <% end %>
+                  </div>
+                  <div class="event-meta">
+                    <% if event[:date_text].present? %><span class="date"><%= event[:date_text] %></span><% end %>
+                    <% if event[:venue].present? %><span class="venue"><%= event[:venue] %></span><% end %>
+                  </div>
+                  <% if event[:description].present? %>
+                    <p class="event-description"><%= event[:description].truncate(160) %></p>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </section>
+    <% end %>
+  </div>
+
+  <% if other_events.present? %>
+    <section class="category-section category-section--other" data-count="<%= other_events.length %>">
+      <div class="category-header">
+        <h2>other</h2>
+        <span class="category-count"><%= other_events.length %></span>
+      </div>
+      <div class="event-list event-list--wide">
+        <% other_events.each do |event| %>
+          <div class="event-card fade-in">
+            <div class="event-card-inner">
+              <% if event[:image_url].present? %>
+                <img src="<%= event[:image_url] %>" alt="" class="event-card-image" loading="lazy">
+              <% end %>
+              <div class="event-card-content">
+                <div class="event-name">
+                  <% if event[:url].present? %>
+                    <a href="<%= event[:url] %>"><%= event[:name] %></a>
+                  <% else %>
+                    <%= event[:name] %>
+                  <% end %>
+                  <% if event[:times_listed] && event[:times_listed] > 2 %>
+                    <span class="times-badge"><%= event[:times_listed] %>×</span>
+                  <% end %>
+                  <% if respond_to?(:user_signed_in?) && user_signed_in? && current_user.admin? %>
+                    <a href="<%= edit_admin_event_path(event[:id]) %>" class="admin-edit-link">edit</a>
+                  <% end %>
+                </div>
+                <div class="event-meta">
+                  <% if event[:date_text].present? %><span class="date"><%= event[:date_text] %></span><% end %>
+                  <% if event[:venue].present? %><span class="venue"><%= event[:venue] %></span><% end %>
+                </div>
+                <% if event[:description].present? %>
+                  <p class="event-description"><%= event[:description].truncate(160) %></p>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
     </section>
   <% end %>
 <% end %>
 
-<% if respond_to?(:user_signed_in?) && user_signed_in? && current_user.admin? %>
-  <div class="admin-publish-bar">
-    <%= button_to "Publish Site", publish_admin_site_path, method: :post, class: "publish-btn" %>
-  </div>
-<% end %>

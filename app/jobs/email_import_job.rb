@@ -10,11 +10,13 @@ class EmailImportJob < ApplicationJob
   EXTRACT_PROMPT = <<~PROMPT.freeze
     Extract all events from the provided content. Return ONLY a JSON array, no markdown, no explanation.
     Each element should have these fields (use null for any that are missing):
-      name       - event name (required, skip if blank)
-      date_text  - date/time as written in the source
-      venue      - venue name
-      category   - one of: music, comedy, arts, sport, food, film, family, community, other
-      event_url  - URL to buy tickets or get more info
+      name        - event name (required, skip if blank)
+      date_text   - date/time as written in the source
+      venue       - venue name
+      category    - one of: music, folk, irish, comedy, arts, sport, food, drink, film, family, community, museums, history, quiz, other
+      event_url   - URL to buy tickets or get more info
+      description - a short description of the event (1-3 sentences), taken from the source text
+      image_url   - direct URL to an image for the event, if one is present in the source
 
     If no events are found, return [].
   PROMPT
@@ -140,16 +142,18 @@ class EmailImportJob < ApplicationJob
         existing.update!(last_seen: today, source_id: existing.source_id || source.id)
       else
         Event.create!(
-          name:       data["name"],
-          venue:      data["venue"].presence || "Unknown",
-          venue_id:   Venue.find_or_create_for(data["venue"].presence)&.id,
-          category:   data["category"],
-          date_text:  data["date_text"],
-          event_url:  data["event_url"],
-          source:     source,
-          first_seen: today,
-          last_seen:  today,
-          status:     :pending
+          name:        data["name"],
+          venue:       data["venue"].presence || "Unknown",
+          venue_id:    Venue.find_or_create_for(data["venue"].presence)&.id,
+          category:    data["category"],
+          date_text:   data["date_text"],
+          event_url:   data["event_url"],
+          description: data["description"].presence,
+          image_url:   data["image_url"].presence,
+          source:      source,
+          first_seen:  today,
+          last_seen:   today,
+          status:      :pending
         )
       end
     rescue ActiveRecord::RecordInvalid => e

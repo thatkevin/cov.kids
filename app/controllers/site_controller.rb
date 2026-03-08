@@ -18,6 +18,7 @@ class SiteController < ApplicationController
     end
 
     @events_by_category = group_by_category(events)
+    @featured_event     = Event.approved.find_by(featured: true)
     @week_label = "#{week_start.strftime('%-d %B')} – #{week_end.strftime('%-d %B %Y')}"
     @nav_active = :home
   end
@@ -142,6 +143,10 @@ class SiteController < ApplicationController
   def date_sort_key(event)
     return event.start_date if event.start_date
 
+    # Recurring events (e.g. "Jazz Fridays / Until 3rd Jul") — use next occurrence
+    next_occ = event.next_occurrence_date
+    return next_occ if next_occ
+
     text = event.effective_date_text.to_s
     return Date.new(9999) if text.blank? || text.match?(/\buntil\b|\bongoing\b|\bvarious\b|\btbc\b/i)
 
@@ -156,12 +161,24 @@ class SiteController < ApplicationController
   end
 
   def event_to_hash(event)
+    # For recurring events without a concrete start_date, compute the next occurrence
+    # and display that ("Fri 27 Feb") rather than the raw "Until 3rd Jul" text.
+    next_occ   = event.start_date.nil? ? event.next_occurrence_date : nil
+    date_label = if next_occ
+      next_occ.strftime("%a %-d %b")
+    else
+      event.effective_date_text
+    end
+
     { id:           event.id,
       name:         event.effective_name,
       url:          event.effective_event_url,
       times_listed: event.times_listed,
-      date_text:    event.effective_date_text,
+      date_text:    date_label,
       venue:        event.effective_venue,
-      category:     event.effective_category }
+      category:     event.effective_category,
+      description:  event.description,
+      image_url:    event.image_url,
+      featured:     event.featured? }
   end
 end

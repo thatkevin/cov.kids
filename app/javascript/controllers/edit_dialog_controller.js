@@ -31,6 +31,7 @@ export default class extends Controller {
     document.removeEventListener("keydown", this._onKeydown)
     const dialog = document.getElementById("edit-dialog")
     dialog?.removeEventListener("click", this._onDialogClick)
+    if (dialog?.open) dialog.close()
   }
 
   close() {

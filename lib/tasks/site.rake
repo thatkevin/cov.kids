@@ -302,7 +302,9 @@ module SiteGenerator
         venue:        event.effective_venue,
         category:     event.effective_category,
         url:          event.effective_event_url,
-        times_listed: event.times_listed
+        times_listed: event.times_listed,
+        description:  event.description,
+        image_url:    event.image_url
       }
     end
 
@@ -311,25 +313,76 @@ module SiteGenerator
 
   # --- Page Generation ---
 
+  ZONE_VARIANTS = [
+    { zones: %w[coventry],                         path: "index.html",              root_path: "./"  },
+    { zones: %w[coventry warwickshire],            path: "warwickshire/index.html", root_path: "../" },
+    { zones: %w[coventry birmingham],              path: "birmingham/index.html",   root_path: "../" },
+    { zones: %w[coventry warwickshire birmingham], path: "all/index.html",          root_path: "../" },
+  ].freeze
+
   def generate_homepage(week, archive_years)
     return unless week
 
-    events_by_category = group_by_category(week[:events])
+    featured_event = Event.approved.find_by(featured: true)
 
-    html = render_template("index.html.erb",
-      week_label:         week[:label],
-      events_by_category: events_by_category,
-      root_path:          "./"
-    )
+    ZONE_VARIANTS.each do |variant|
+      events         = fetch_homepage_events(variant[:zones])
+      events_by_cat  = group_by_category_from_model(events)
 
-    write_page("index.html", html,
-      page_title:    nil,
-      nav_active:    :home,
-      archive_years: archive_years,
-      root_path:     "./"
-    )
+      html = render_template("index.html.erb",
+        week_label:         week[:label],
+        events_by_category: events_by_cat,
+        featured_event:     featured_event,
+        root_path:          variant[:root_path]
+      )
 
-    puts "  Generated homepage (#{week[:id]})"
+      write_page(variant[:path], html,
+        page_title:    nil,
+        nav_active:    :home,
+        archive_years: archive_years,
+        root_path:     variant[:root_path],
+        week_label:    week[:label],
+        active_zones:  variant[:zones]
+      )
+    end
+
+    puts "  Generated homepage (#{week[:id]}) [4 zone variants]"
+  end
+
+  def fetch_homepage_events(zones)
+    week_start = Date.current.beginning_of_week(:monday)
+    week_end   = Date.current.end_of_week(:monday)
+    base       = Event.approved.where(zone: zones)
+
+    dated   = base.where(start_date: week_start..week_end)
+    undated = base.where(start_date: nil).where(last_seen: week_start.to_s..week_end.to_s)
+    events  = dated.or(undated).order(Arel.sql("start_date NULLS LAST"), :category, :name)
+
+    events = base.where(start_date: Date.current..(Date.current + 28)).order(:start_date, :category, :name) if events.empty?
+    events.to_a
+  end
+
+  def group_by_category_from_model(events)
+    grouped = events.group_by { |e| e.effective_category.presence || "other" }
+                    .transform_values { |evs| evs.map { |e| event_to_hash_from_model(e) } }
+    Event::CATEGORIES.filter_map { |cat| [cat, grouped[cat]] if grouped.key?(cat) }.to_h
+  end
+
+  def event_to_hash_from_model(event)
+    next_occ   = event.start_date.nil? ? event.next_occurrence_date : nil
+    date_label = next_occ ? next_occ.strftime("%a %-d %b") : event.effective_date_text
+    {
+      id:           event.id,
+      name:         event.effective_name,
+      url:          event.effective_event_url,
+      times_listed: event.times_listed,
+      date_text:    date_label,
+      venue:        event.effective_venue,
+      category:     event.effective_category.presence || "other",
+      description:  event.description,
+      image_url:    event.image_url,
+      featured:     event.featured?
+    }
   end
 
   def generate_week_page(week, archive_years)

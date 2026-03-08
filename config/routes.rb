@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       member do
         patch :approve
         patch :reject
+        patch :feature
       end
     end
     resources :feeds do
@@ -25,7 +26,7 @@ Rails.application.routes.draw do
         patch :unarchive
       end
     end
-    resource :site, only: [] do
+    resource :site, only: [], controller: "site" do
       post :publish
     end
     root to: "events#index"

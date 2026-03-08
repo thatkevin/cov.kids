@@ -1,5 +1,6 @@
 require "net/http"
 require "open3"
+require "cgi"
 
 class WebScraperJob < ApplicationJob
   queue_as :default
@@ -7,11 +8,13 @@ class WebScraperJob < ApplicationJob
   EXTRACT_PROMPT = <<~PROMPT.freeze
     Extract all upcoming events from the provided web page content. Return ONLY a JSON array, no markdown, no explanation.
     Each element should have these fields (use null for any that are missing):
-      name       - event name (required, skip if blank)
-      date_text  - date/time as written in the source
-      venue      - venue name
-      category   - one of: music, comedy, arts, sport, food, film, family, community, other
-      event_url  - URL to buy tickets or get more info
+      name        - event name (required, skip if blank)
+      date_text   - date/time as written in the source
+      venue       - venue name
+      category    - one of: music, folk, irish, comedy, arts, sport, food, drink, film, family, community, museums, history, quiz, other
+      event_url   - URL to buy tickets or get more info
+      description - a short description of the event (1-3 sentences), taken from the page content
+      image_url   - direct URL to an image for the event, if one is visible on the page
 
     Skip past events if dates are visible. If no events are found, return [].
   PROMPT
@@ -93,22 +96,27 @@ class WebScraperJob < ApplicationJob
     events.each do |data|
       next if data["name"].blank?
 
-      existing = Event.similar_to(data["name"]).first
+      name  = CGI.unescapeHTML(data["name"].to_s).strip
+      venue = CGI.unescapeHTML(data["venue"].to_s).strip.presence
+
+      existing = Event.similar_to(name).first
       if existing
         existing.increment!(:times_listed)
         existing.update!(last_seen: today)
       else
         Event.create!(
-          name:       data["name"],
-          venue:      data["venue"].presence,
-          venue_id:   Venue.find_or_create_for(data["venue"].presence)&.id,
-          category:   data["category"],
-          date_text:  data["date_text"],
-          event_url:  data["event_url"],
-          source:     source,
-          first_seen: today,
-          last_seen:  today,
-          status:     :pending
+          name:        name,
+          venue:       venue,
+          venue_id:    Venue.find_or_create_for(data["venue"].presence)&.id,
+          category:    data["category"],
+          date_text:   data["date_text"],
+          event_url:   data["event_url"],
+          description: CGI.unescapeHTML(data["description"].to_s).strip.presence,
+          image_url:   data["image_url"].presence,
+          source:      source,
+          first_seen:  today,
+          last_seen:   today,
+          status:      :pending
         )
       end
     rescue ActiveRecord::RecordInvalid => e

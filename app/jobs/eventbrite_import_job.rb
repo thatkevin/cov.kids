@@ -1,5 +1,6 @@
 require "net/http"
 require "open3"
+require "cgi"
 
 class EventbriteImportJob < ApplicationJob
   queue_as :default
@@ -13,7 +14,7 @@ class EventbriteImportJob < ApplicationJob
       name       - event name (required, skip if blank)
       date_text  - date/time as written on the page
       venue      - venue or location name
-      category   - one of: music, comedy, arts, sport, food, film, family, community, other
+      category   - one of: music, folk, irish, comedy, arts, sport, food, drink, film, family, community, museums, history, quiz, other
       event_url  - full Eventbrite URL for the event (e.g. https://www.eventbrite.co.uk/e/...)
 
     Only include events in or near Coventry. Skip events that are clearly in other cities.
@@ -68,6 +69,7 @@ class EventbriteImportJob < ApplicationJob
     html
       .gsub(/<(script|style|nav|header|footer|aside|noscript)[^>]*>.*?<\/\1>/im, " ")
       .gsub(/<!--.*?-->/m, " ")
+      .gsub(/<a\s[^>]*href=["']([^"']+)["'][^>]*>(.*?)<\/a>/im) { "#{$2} (#{$1})" }
       .gsub(/<[^>]+>/, " ")
       .gsub(/&nbsp;/, " ").gsub(/&amp;/, "&").gsub(/&lt;/, "<").gsub(/&gt;/, ">")
       .gsub(/&#\d+;/, " ").gsub(/&[a-z]+;/, " ")
@@ -95,7 +97,10 @@ class EventbriteImportJob < ApplicationJob
     events.each do |data|
       next if data["name"].blank?
 
-      existing = Event.similar_to(data["name"]).first
+      name  = CGI.unescapeHTML(data["name"].to_s).strip
+      venue = CGI.unescapeHTML(data["venue"].to_s).strip.presence
+
+      existing = Event.similar_to(name).first
       if existing
         existing.increment!(:times_listed)
         existing.update!(
@@ -105,8 +110,8 @@ class EventbriteImportJob < ApplicationJob
         )
       else
         Event.create!(
-          name:       data["name"],
-          venue:      data["venue"].presence,
+          name:       name,
+          venue:      venue,
           category:   data["category"],
           date_text:  data["date_text"],
           event_url:  data["event_url"],

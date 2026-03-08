@@ -10,13 +10,19 @@ class RedditImportJob < ApplicationJob
 
   CATEGORY_MAP = {
     /music|gig|concert|band|live/i          => "music",
+    /irish|ceili|ceilidh|trad.*irish|irish.*trad/i => "irish",
+    /folk|shanty|bluegrass|acoustic/i       => "folk",
     /comedy|stand.?up/i                     => "comedy",
     /art|exhib|galler|theatre|theater|drama|perform|dance/i => "arts",
     /sport|fitness|run|cycle|swim|football|match/i => "sport",
-    /food|drink|market|restaurant|cafe|dining/i => "food",
+    /food|market|restaurant|cafe|dining/i   => "food",
+    /\bdrink\b|\bpub\b|\bbar\b/i            => "drink",
     /film|cinema|screen/i                   => "film",
     /family|kids|children/i                 => "family",
-    /community|charity|volunteer/i          => "community"
+    /community|charity|volunteer/i          => "community",
+    /museum|heritage|historic|antiquit/i    => "museums",
+    /\bhistory\b|\bhistorical\b/i           => "history",
+    /quiz|trivia/i                          => "quiz",
   }.freeze
 
   def perform

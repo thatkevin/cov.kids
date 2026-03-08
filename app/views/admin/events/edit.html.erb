@@ -8,7 +8,7 @@
     Overrides are shown to visitors; original imported values are preserved.
   </p>
 
-  <%= form_with model: [:admin, @event], method: :patch do |f| %>
+  <%= form_with model: [:admin, @event], method: :patch, data: { turbo: false } do |f| %>
     <div class="space-y-4">
 
       <div>

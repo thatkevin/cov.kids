@@ -83,17 +83,18 @@ a:hover { color: #3a9ad4; text-decoration: underline; }
 /* --- Site Header --- */
 .site-header {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 0.75rem 1.5rem;
+  gap: 1rem;
   padding: 1.25rem 0 0.75rem;
   border-bottom: 1px solid #e8e8e8;
-  transform: rotate(-1.5deg);
-  transform-origin: top left;
 }
 
-.site-header .month-nav {
-  margin-left: auto;
+.header-filters {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  flex: 1;
 }
 
 .page-context-identity {
@@ -105,12 +106,16 @@ a:hover { color: #3a9ad4; text-decoration: underline; }
 
 .page-tagline {
   font-family: 'Inter', sans-serif;
-  font-size: 0.65rem;
-  font-weight: 700;
+  font-size: 0.9rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.12em;
   color: #5EB3E4;
   white-space: nowrap;
+}
+
+.page-tagline .tagline-zone {
+  color: #5EB3E4;
 }
 
 .page-week {
@@ -190,8 +195,13 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
 
 .events-grid {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
   gap: 3rem;
+}
+
+.category-section {
+  flex: 1 1 260px;
 }
 
 .events-col {
@@ -201,6 +211,29 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
 
 .category-section {
   margin-bottom: 3rem;
+}
+
+/* ── Other category (full-width, multi-column) ───────────── */
+
+.category-section--other {
+  margin-top: 1rem;
+}
+
+.event-list--wide {
+  columns: 4 220px;
+  column-gap: 3rem;
+}
+
+.event-list--wide .event-card {
+  break-inside: avoid;
+}
+
+@media (max-width: 768px) {
+  .event-list--wide { columns: 2 180px; }
+}
+
+@media (max-width: 520px) {
+  .event-list--wide { columns: 1; }
 }
 
 /* ── Category Header ─────────────────────────────────────── */
@@ -509,6 +542,11 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   .featured-hero-image { width: 100%; min-height: 180px; max-height: 240px; }
   .featured-hero-body { padding: 1.25rem; }
   .events-grid { gap: 2rem; }
+  .category-section { flex-basis: calc(50% - 1rem); }
+}
+
+@media (max-width: 520px) {
+  .category-section { flex-basis: 100%; }
 }
 
 @media (max-width: 480px) {

@@ -1,3 +1,62 @@
+<%# ── Featured / Image of the Week panel ───────────────────────────────── %>
+<div class="mb-8 bg-white border border-gray-200 rounded-lg p-5">
+  <h2 class="text-sm font-semibold text-gray-700 mb-3">★ Image of the Week</h2>
+  <% if @featured_event %>
+    <div class="flex items-start gap-4">
+      <% if @featured_event.image_url.present? %>
+        <img src="<%= @featured_event.image_url %>" alt="" class="w-32 h-32 object-cover rounded shrink-0">
+      <% end %>
+      <div class="min-w-0 flex-1">
+        <p class="font-medium text-gray-900"><%= @featured_event.effective_name %></p>
+        <p class="text-sm text-gray-500 mt-1">
+          <%= @featured_event.effective_venue.presence %>
+          <% if @featured_event.effective_date_text.present? %>
+            · <%= @featured_event.effective_date_text %>
+          <% end %>
+        </p>
+        <% if @featured_event.description.present? %>
+          <p class="text-sm text-gray-600 mt-1.5"><%= @featured_event.description.truncate(200) %></p>
+        <% end %>
+      </div>
+      <div class="shrink-0">
+        <%= button_to "★ Unfeature", feature_admin_event_path(@featured_event), method: :patch,
+              class: "px-3 py-1.5 text-sm font-medium text-yellow-700 bg-yellow-100 hover:bg-yellow-200 rounded" %>
+      </div>
+    </div>
+  <% else %>
+    <p class="text-sm text-gray-400">No event featured yet. Approve events with images and use the ☆ Feature button to set one.</p>
+  <% end %>
+
+  <% if @imageable.any? %>
+    <div class="mt-4 border-t border-gray-100 pt-4">
+      <p class="text-xs text-gray-500 mb-3">Approved events with images — click to feature:</p>
+      <div class="flex flex-wrap gap-3">
+        <% @imageable.each do |ev| %>
+          <%= button_to feature_admin_event_path(ev), method: :patch,
+                class: "group relative w-20 h-20 rounded overflow-hidden border border-gray-200 hover:border-blue-400 focus:outline-none" do %>
+            <img src="<%= ev.image_url %>" alt="<%= ev.effective_name %>" class="w-full h-full object-cover">
+            <span class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition flex items-end p-1">
+              <span class="text-white text-xs leading-tight opacity-0 group-hover:opacity-100 line-clamp-2"><%= ev.effective_name %></span>
+            </span>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<%# ── Publish panel ──────────────────────────────────────────────────────── %>
+<div class="mb-8 bg-white border border-gray-200 rounded-lg p-5">
+  <div class="flex items-center justify-between mb-3">
+    <h2 class="text-sm font-semibold text-gray-700">Publish Site</h2>
+    <%= button_to "Publish →", publish_admin_site_path, method: :post,
+          class: "px-4 py-1.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded transition-colors" %>
+  </div>
+  <%= turbo_stream_from "site_publish_log" %>
+  <div id="publish-log-lines" class="font-mono text-xs text-gray-600 bg-gray-50 rounded p-3 min-h-6 empty:hidden space-y-0"></div>
+</div>
+
+<%# ── Pending queue ─────────────────────────────────────────────────────── %>
 <div class="flex items-center justify-between mb-6">
   <h1 class="text-xl font-semibold text-gray-900">
     Pending Events

@@ -30,25 +30,33 @@
             { label: d.strftime("%b"), path: "#{root_path}#{d.year}/#{d.strftime('%m')}" }
           end
         %>
+        <div class="header-filters">
+          <nav class="month-nav" aria-label="Browse by month">
+            <% next_months.each do |m| %>
+              <a href="<%= m[:path] %>" class="month-tab"><%= m[:label] %></a>
+            <% end %>
+          </nav>
+          <% if defined?(active_zones) && active_zones %>
+            <% warks_on = active_zones.include?("warwickshire") %>
+            <% brum_on  = active_zones.include?("birmingham") %>
+            <nav class="zone-nav" aria-label="Area filter">
+              <% warks_url = warks_on ? (brum_on ? "#{root_path}birmingham/" : "#{root_path}") : (brum_on ? "#{root_path}all/" : "#{root_path}warwickshire/") %>
+              <% brum_url  = brum_on  ? (warks_on ? "#{root_path}warwickshire/" : "#{root_path}") : (warks_on ? "#{root_path}all/" : "#{root_path}birmingham/") %>
+              <a href="<%= warks_url %>" class="zone-tab<%= " active" if warks_on %>">+ Warks</a>
+              <a href="<%= brum_url %>"  class="zone-tab<%= " active" if brum_on  %>">+ Brum</a>
+            </nav>
+          <% end %>
+        </div>
         <div class="page-context-identity">
-          <span class="page-tagline">what's on in cov</span>
+          <span class="page-tagline">
+            what's on in cov
+            <% if defined?(active_zones) && active_zones %>
+              <% if active_zones.include?("warwickshire") %><span class="tagline-zone"> + warks</span><% end %>
+              <% if active_zones.include?("birmingham") %><span class="tagline-zone"> + brum</span><% end %>
+            <% end %>
+          </span>
           <span class="page-week"><%= week_label %></span>
         </div>
-        <nav class="month-nav" aria-label="Browse by month">
-          <% next_months.each do |m| %>
-            <a href="<%= m[:path] %>" class="month-tab"><%= m[:label] %></a>
-          <% end %>
-        </nav>
-        <% if defined?(active_zones) && active_zones %>
-          <% warks_on = active_zones.include?("warwickshire") %>
-          <% brum_on  = active_zones.include?("birmingham") %>
-          <nav class="zone-nav" aria-label="Area filter">
-            <% warks_url = warks_on ? (brum_on ? "#{root_path}birmingham/" : "#{root_path}") : (brum_on ? "#{root_path}all/" : "#{root_path}warwickshire/") %>
-            <% brum_url  = brum_on  ? (warks_on ? "#{root_path}warwickshire/" : "#{root_path}") : (warks_on ? "#{root_path}all/" : "#{root_path}birmingham/") %>
-            <a href="<%= warks_url %>" class="zone-tab<%= " active" if warks_on %>">+ Warks</a>
-            <a href="<%= brum_url %>"  class="zone-tab<%= " active" if brum_on  %>">+ Brum</a>
-          </nav>
-        <% end %>
       <% end %>
     </header>
 
