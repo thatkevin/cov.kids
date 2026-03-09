@@ -80,6 +80,26 @@ document.addEventListener('DOMContentLoaded', function () {
     _colTimer = setTimeout(buildEventColumns, 200);
   }, { passive: true });
 
+  // Top banner — measure after fonts load for pixel-perfect seamless loop
+  var bannerTrack = document.querySelector('.top-banner-track');
+  if (bannerTrack) {
+    var bannerSet = bannerTrack.querySelector('.top-banner-set');
+    document.fonts.ready.then(function () {
+      var setWidth = bannerSet.offsetWidth;
+      if (!setWidth) return;
+      var pos = 0;
+      bannerTrack.style.willChange = 'transform';
+      // Remove CSS animation now that JS takes over
+      bannerTrack.style.animation = 'none';
+      (function tick() {
+        pos -= 0.5;
+        if (pos <= -setWidth) pos += setWidth;
+        bannerTrack.style.transform = 'translateX(' + pos + 'px)';
+        requestAnimationFrame(tick);
+      })();
+    });
+  }
+
   // Fade-in on scroll
   var elements = document.querySelectorAll('.fade-in');
   if (elements.length) {

@@ -51,6 +51,7 @@ a:hover { color: #3a9ad4; text-decoration: underline; }
   left: -2.5%;
   width: 105%;
   height: 48px;
+  text-decoration: none;
   background: #1a1a1a;
   overflow: hidden;
   transform: rotate(-1.5deg) scale(1.03);
@@ -63,7 +64,6 @@ a:hover { color: #3a9ad4; text-decoration: underline; }
   align-items: center;
   height: 100%;
   white-space: nowrap;
-  animation: marquee-right 22s linear infinite;
 }
 
 .top-banner-set {
@@ -496,17 +496,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
 .site-footer a { color: #bbb; }
 .site-footer a:hover { color: #5EB3E4; }
 
-/* --- Top banner scrolling keyframe --- */
-@keyframes marquee-right {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
+/* Top banner scroll handled by JS after document.fonts.ready */
 
-/* --- Bottom banner scrolling keyframe --- */
-@keyframes marquee-banner {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
 
 /* --- Fade-in --- */
 .fade-in {
@@ -517,44 +508,26 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
 
 .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-/* --- Bottom Coventry banner (fixed, mirrored diagonal) --- */
+/* --- Bottom two-tone checker banner (fixed, diagonal) --- */
 .coventry-banner {
   position: fixed;
   bottom: 0;
   left: -2.5%;
   width: 105%;
   height: 48px;
-  background: #1a1a1a;
-  overflow: hidden;
+  background-color: #000;
+  background-image: repeating-conic-gradient(#000 0% 25%, #fff 0% 50%);
+  background-size: 24px 24px;
+  animation: checker-scroll 4s linear infinite;
   z-index: 100;
   transform: rotate(-1.5deg) scale(1.06);
   transform-origin: bottom right;
 }
 
-.banner-track {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  white-space: nowrap;
-  animation: marquee-banner 30s linear infinite;
+@keyframes checker-scroll {
+  from { background-position: 0 0; }
+  to   { background-position: 48px 0; }
 }
-
-.banner-set {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.banner-set img {
-  height: 42px;
-  width: auto;
-  margin: 0 2.5rem;
-  opacity: 0.35;
-  flex-shrink: 0;
-  filter: invert(1);
-}
-
-.banner-set img.accent { opacity: 0.75; filter: none; }
 
 /* ── Responsive ──────────────────────────────────────────── */
 /* The columns: N MIN-WIDTH shorthand auto-collapses at narrow widths,
