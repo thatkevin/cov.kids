@@ -21,6 +21,7 @@
           <%= link_to "Venues",  admin_venues_path,  class: "text-sm #{request.path.start_with?('/admin/venues')  ? 'text-blue-600 font-medium' : 'text-gray-600 hover:text-gray-900'}" %>
           <%= link_to "Sources", admin_sources_path, class: "text-sm #{request.path.start_with?('/admin/sources') ? 'text-blue-600 font-medium' : 'text-gray-600 hover:text-gray-900'}" %>
           <%= link_to "Feeds",   admin_feeds_path,   class: "text-sm #{request.path.start_with?('/admin/feeds')   ? 'text-blue-600 font-medium' : 'text-gray-600 hover:text-gray-900'}" %>
+          <%= link_to "↗ Site", root_path, target: "_blank", rel: "noopener", class: "text-sm text-gray-400 hover:text-gray-600" %>
         <% end %>
       </nav>
       <% if user_signed_in? %>

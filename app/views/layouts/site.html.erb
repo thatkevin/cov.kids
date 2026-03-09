@@ -47,12 +47,18 @@
         </div>
         <div class="header-filters">
           <nav class="month-nav" aria-label="Browse by month">
+            <% unless @nav_active == :home %>
+              <a href="<%= root_path %>" class="month-tab month-tab--home">this week</a>
+            <% end %>
             <% next_months.each do |m| %>
               <a href="<%= m[:path] %>" class="month-tab"><%= m[:label] %></a>
             <% end %>
           </nav>
           <select class="month-select" onchange="location.href=this.value" aria-label="Browse by month">
             <option value="">Month...</option>
+            <% unless @nav_active == :home %>
+              <option value="<%= root_path %>">this week</option>
+            <% end %>
             <% next_months.each do |m| %>
               <option value="<%= m[:path] %>"><%= m[:label] %></option>
             <% end %>

@@ -441,6 +441,11 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   white-space: nowrap;
 }
 
+.month-tab--home {
+  border-style: dashed;
+  color: #888;
+}
+
 .month-tab:hover, .month-tab:focus {
   background: #5EB3E4;
   color: #fff;
@@ -579,3 +584,5 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
 @media (max-width: 480px) {
   .featured-hero-title { font-size: 1.3rem; }
 }
+
+.about-content h2 { margin-top: 2.5rem; }
