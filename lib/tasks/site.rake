@@ -90,6 +90,11 @@ module SiteGenerator
       FileUtils.cp(ASSETS_DIR.join(file), DOCS_DIR.join(file))
     end
 
+    # Verification files (Google Search Console etc.)
+    Dir[ASSETS_DIR.join("google*.html")].each do |f|
+      FileUtils.cp(f, DOCS_DIR.join(File.basename(f)))
+    end
+
     images_dest = DOCS_DIR.join("images")
     FileUtils.mkdir_p(images_dest)
     Dir[ASSETS_DIR.join("images", "*")].each do |img|

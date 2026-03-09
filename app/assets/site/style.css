@@ -36,6 +36,7 @@ a {
 }
 
 a:hover { color: #3a9ad4; text-decoration: underline; }
+a.top-banner, a.top-banner:hover { text-decoration: none; }
 
 /* --- Layout --- */
 .container {
