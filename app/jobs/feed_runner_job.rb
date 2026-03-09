@@ -16,6 +16,8 @@ class FeedRunnerJob < ApplicationJob
       RedditImportJob.new.perform
     when "email"
       EmailImportJob.new.perform
+    when "facebook"
+      FacebookScraperJob.new.perform(feed_id)
     end
 
     feed.mark_fetched!

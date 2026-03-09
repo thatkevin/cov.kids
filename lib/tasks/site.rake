@@ -1,6 +1,9 @@
 require "erb"
 require "fileutils"
 require "date"
+require "net/http"
+require "digest"
+require "uri"
 
 namespace :site do
   desc "Generate static HTML site into docs/ for GitHub Pages"
@@ -337,7 +340,11 @@ module SiteGenerator
   def generate_homepage(week, archive_years)
     return unless week
 
-    featured_event = Event.approved.find_by(featured: true)
+    week_end = week[:sunday]
+    featured_event = Event.approved.where(featured: true)
+                          .where("start_date IS NULL OR start_date <= ?", week_end)
+                          .order(Arel.sql("start_date DESC NULLS LAST"))
+                          .first
 
     ZONE_VARIANTS.each do |variant|
       events         = fetch_homepage_events(variant[:zones])
@@ -367,7 +374,7 @@ module SiteGenerator
     today      = effective_date
     week_start = today.beginning_of_week(:monday)
     week_end   = today.end_of_week(:monday)
-    undated_from = Date.today.beginning_of_week(:monday)
+    undated_from = [week_start, Date.today].min
     base       = Event.approved.where(zone: zones)
 
     dated   = base.where(start_date: week_start..week_end)
@@ -495,22 +502,36 @@ module SiteGenerator
           }
         end.sort_by { |d| d[:path] }
 
-        html = render_template("month.html.erb",
-          year: year,
-          month_name: MONTH_NAMES[month_num - 1],
-          month_path: month_path,
-          days: days,
-          events_by_category: group_by_category(month_events),
-          total_events: month_events.length,
-          root_path: "../../"
-        )
+        month_label = "#{MONTH_NAMES[month_num - 1]} #{year}"
+        month_start = Date.new(year, month_num, 1)
+        month_end   = Date.new(year, month_num, -1)
 
-        write_page(File.join(year.to_s, month_path, "index.html"), html,
-          page_title: "#{MONTH_NAMES[month_num - 1]} #{year}",
-          nav_active: year.to_s,
-          archive_years: archive_years,
-          root_path: "../../"
-        )
+        [
+          { zones: %w[coventry],                         path: File.join(year.to_s, month_path, "index.html"),              root_path: "../../"    },
+          { zones: %w[coventry warwickshire],            path: File.join(year.to_s, month_path, "warwickshire/index.html"), root_path: "../../../" },
+          { zones: %w[coventry birmingham],              path: File.join(year.to_s, month_path, "birmingham/index.html"),   root_path: "../../../" },
+          { zones: %w[coventry warwickshire birmingham], path: File.join(year.to_s, month_path, "all/index.html"),          root_path: "../../../" },
+        ].each do |variant|
+          zone_events = Event.approved.where(zone: variant[:zones]).where(
+            "(start_date BETWEEN ? AND ?) OR (start_date IS NULL AND first_seen LIKE ?)",
+            month_start, month_end, "#{year}-#{month_path}-%"
+          ).order(Arel.sql("start_date NULLS LAST"), :category, :name).to_a
+
+          html = render_template("month.html.erb",
+            month_name: MONTH_NAMES[month_num - 1],
+            events_by_category: group_by_category_from_model(zone_events),
+            root_path: variant[:root_path]
+          )
+
+          write_page(variant[:path], html,
+            page_title:    month_label,
+            week_label:    month_label,
+            nav_active:    year.to_s,
+            archive_years: archive_years,
+            root_path:     variant[:root_path],
+            active_zones:  variant[:zones]
+          )
+        end
 
         # Day pages
         by_day.each do |day_num, day_entries|
@@ -540,6 +561,48 @@ module SiteGenerator
 
     year_count = by_year.keys.length
     puts "  Generated date archives (#{year_count} years)"
+  end
+
+  # --- Image Handling ---
+
+  # Called from ERB templates. Downloads external images into docs/images/events/
+  # and returns a local root-relative path so GitHub Pages can serve them.
+  def proxied_image_url(url)
+    return url if url.blank?
+    return url unless url.start_with?("http://", "https://")
+
+    ext      = File.extname(URI(url).path).downcase
+    ext      = ".jpg" unless %w[.jpg .jpeg .png .gif .webp].include?(ext)
+    filename = "#{Digest::SHA256.hexdigest(url)}#{ext}"
+    dest     = DOCS_DIR.join("images", "events", filename)
+
+    unless File.exist?(dest)
+      FileUtils.mkdir_p(dest.dirname)
+      data = fetch_remote_image(url)
+      File.binwrite(dest, data) if data
+    end
+
+    File.exist?(dest) ? "#{@root_path}images/events/#{filename}" : url
+  rescue => e
+    Rails.logger.warn("SiteGenerator: image download failed for #{url}: #{e.message}")
+    url
+  end
+
+  def fetch_remote_image(url)
+    uri = URI(url)
+    response = Net::HTTP.start(uri.host, uri.port,
+                               use_ssl: uri.scheme == "https",
+                               open_timeout: 5, read_timeout: 10) do |http|
+      http.get(uri.request_uri,
+               "User-Agent" => "Mozilla/5.0 (compatible; CoventryEvents/1.0)",
+               "Referer"    => "#{uri.scheme}://#{uri.host}")
+    end
+    return nil unless response.is_a?(Net::HTTPSuccess)
+    return nil if response.body.bytesize > 5 * 1024 * 1024
+    response.body
+  rescue => e
+    Rails.logger.warn("SiteGenerator: fetch_remote_image failed for #{url}: #{e.message}")
+    nil
   end
 
   # --- Helpers ---

@@ -1,11 +1,11 @@
-<%# ── Featured / Image of the Week ───────────────────────── %>
+<%# ── Featured / Event of the Week ───────────────────────── %>
 <% if @featured_event %>
   <div class="featured-hero">
     <% if @featured_event.image_url.present? %>
-      <img src="<%= @featured_event.image_url %>" alt="<%= @featured_event.effective_name %>" class="featured-hero-image">
+      <img src="<%= proxied_image_url(@featured_event.image_url) %>" alt="<%= @featured_event.effective_name %>" class="featured-hero-image">
     <% end %>
     <div class="featured-hero-body">
-      <p class="featured-hero-label">Image of the Week</p>
+      <p class="featured-hero-label">Event of the Week</p>
       <% if @featured_event.effective_event_url.present? %>
         <a href="<%= @featured_event.effective_event_url %>" class="featured-hero-title"><%= @featured_event.effective_name %></a>
       <% else %>
@@ -27,8 +27,9 @@
   <p style="color: #999; padding: 3rem 0; text-align: center;">No events listed for this week yet.</p>
 <% else %>
   <%
-    other_events   = @events_by_category["other"]
-    main_categories = @events_by_category.reject { |cat, _| cat == "other" }
+    other_events     = @events_by_category["other"]
+    community_events = @events_by_category["community"]
+    main_categories  = @events_by_category.reject { |cat, _| %w[other community].include?(cat) }
   %>
   <div class="events-grid">
     <% main_categories.each do |category, events| %>
@@ -42,7 +43,7 @@
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 <% if event[:image_url].present? %>
-                  <img src="<%= event[:image_url] %>" alt="" class="event-card-image" loading="lazy">
+                  <img src="<%= proxied_image_url(event[:image_url]) %>" alt="" class="event-card-image" loading="lazy">
                 <% end %>
                 <div class="event-card-content">
                   <div class="event-name">
@@ -74,6 +75,48 @@
     <% end %>
   </div>
 
+  <% if community_events.present? %>
+    <section class="category-section category-section--other" data-count="<%= community_events.length %>">
+      <div class="category-header">
+        <h2>community</h2>
+        <span class="category-count"><%= community_events.length %></span>
+      </div>
+      <div class="event-list event-list--wide">
+        <% community_events.each do |event| %>
+          <div class="event-card fade-in">
+            <div class="event-card-inner">
+              <% if event[:image_url].present? %>
+                <img src="<%= proxied_image_url(event[:image_url]) %>" alt="" class="event-card-image" loading="lazy">
+              <% end %>
+              <div class="event-card-content">
+                <div class="event-name">
+                  <% if event[:url].present? %>
+                    <a href="<%= event[:url] %>"><%= event[:name] %></a>
+                  <% else %>
+                    <%= event[:name] %>
+                  <% end %>
+                  <% if event[:times_listed] && event[:times_listed] > 2 %>
+                    <span class="times-badge"><%= event[:times_listed] %>×</span>
+                  <% end %>
+                  <% if respond_to?(:user_signed_in?) && user_signed_in? && current_user.admin? %>
+                    <a href="<%= edit_admin_event_path(event[:id]) %>" class="admin-edit-link">edit</a>
+                  <% end %>
+                </div>
+                <div class="event-meta">
+                  <% if event[:date_text].present? %><span class="date"><%= event[:date_text] %></span><% end %>
+                  <% if event[:venue].present? %><span class="venue"><%= event[:venue] %></span><% end %>
+                </div>
+                <% if event[:description].present? %>
+                  <p class="event-description"><%= event[:description].truncate(160) %></p>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
   <% if other_events.present? %>
     <section class="category-section category-section--other" data-count="<%= other_events.length %>">
       <div class="category-header">
@@ -85,7 +128,7 @@
           <div class="event-card fade-in">
             <div class="event-card-inner">
               <% if event[:image_url].present? %>
-                <img src="<%= event[:image_url] %>" alt="" class="event-card-image" loading="lazy">
+                <img src="<%= proxied_image_url(event[:image_url]) %>" alt="" class="event-card-image" loading="lazy">
               <% end %>
               <div class="event-card-content">
                 <div class="event-name">

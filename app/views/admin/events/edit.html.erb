@@ -4,9 +4,14 @@
   </div>
 
   <h1 class="text-xl font-semibold text-gray-900 mb-1">Edit event</h1>
-  <p class="text-sm text-gray-400 mb-6">
-    Overrides are shown to visitors; original imported values are preserved.
-  </p>
+  <p class="text-sm text-gray-400 mb-1">Overrides are shown to visitors; original imported values are preserved.</p>
+  <% if @event.source %>
+    <p class="text-xs text-gray-400 mb-6">
+      <span class="font-medium text-gray-500"><%= @event.source.source_type %></span>
+      · <%= link_to @event.source.title, @event.source.url, target: "_blank", rel: "noopener", class: "hover:underline" %>
+      <% if @event.source.published_at %>· scraped <%= @event.source.published_at.strftime("%-d %b %Y") %><% end %>
+    </p>
+  <% end %>
 
   <%= form_with model: [:admin, @event], method: :patch, data: { turbo: false } do |f| %>
     <div class="space-y-4">
@@ -28,10 +33,22 @@
       </div>
 
       <div>
-        <label class="block text-xs font-medium text-gray-500 mb-0.5">Date</label>
+        <label class="block text-xs font-medium text-gray-500 mb-0.5">Date text <span class="font-normal text-gray-400">(shown to visitors)</span></label>
         <p class="text-xs text-gray-400 mb-1 font-mono">Original: <%= @event.date_text.presence || "—" %></p>
         <%= f.text_field :curated_date_text,
             value: @event.effective_date_text,
+            class: "w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" %>
+      </div>
+
+      <div>
+        <label class="block text-xs font-medium text-gray-500 mb-0.5">Start date <span class="font-normal text-gray-400">(used for week filtering — YYYY-MM-DD)</span></label>
+        <p class="text-xs text-gray-400 mb-1 font-mono">
+          Parsed automatically: <%= @event.start_date&.strftime("%-d %b %Y") || "—" %>
+          &nbsp;·&nbsp; First seen: <%= @event.first_seen.presence || "—" %>
+          &nbsp;·&nbsp; Last seen: <%= @event.last_seen.presence || "—" %>
+        </p>
+        <%= f.date_field :start_date,
+            value: @event.start_date,
             class: "w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" %>
       </div>
 
@@ -56,6 +73,32 @@
     <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
       <%= link_to "Cancel", :back, class: "text-sm text-gray-500 hover:text-gray-700" %>
       <%= f.submit "Save changes", class: "px-4 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-md cursor-pointer" %>
+    </div>
+  <% end %>
+
+  <% if @similar_events&.any? %>
+    <div class="mt-8 pt-6 border-t border-gray-200">
+      <h2 class="text-sm font-semibold text-gray-700 mb-3">Similar events — merge duplicates</h2>
+      <p class="text-xs text-gray-400 mb-3">This event will be kept; the selected duplicate will be absorbed and deleted.</p>
+      <div class="space-y-2">
+        <% @similar_events.each do |other| %>
+          <div class="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded px-3 py-2">
+            <div class="min-w-0 flex-1">
+              <p class="text-sm font-medium text-gray-800 truncate"><%= other.effective_name %></p>
+              <p class="text-xs text-gray-400">
+                <%= other.effective_date_text.presence || "no date" %>
+                · <%= other.source&.source_type || "unknown" %>
+                · <%= other.status %>
+              </p>
+            </div>
+            <%= button_to "Merge in →",
+                merge_admin_event_path(@event),
+                params: { duplicate_event_ids: [other.id] },
+                data: { turbo_confirm: "Absorb '#{other.effective_name}' into this event and delete it?" },
+                class: "shrink-0 text-xs font-medium text-white bg-amber-600 hover:bg-amber-700 px-3 py-1.5 rounded" %>
+          </div>
+        <% end %>
+      </div>
     </div>
   <% end %>
 </div>

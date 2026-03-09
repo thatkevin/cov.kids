@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><%= @page_title.present? ? "#{@page_title} — cov.kids" : "cov.kids — What's On in Coventry" %></title>
+  <title><%= @page_title.present? ? "#{@page_title} : cov.kids" : "cov.kids: what's on in coventry" %></title>
   <meta name="description" content="<%= @page_description.presence || "What's on in Coventry this week — events, gigs, markets, comedy, theatre, sport and more." %>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,14 +12,18 @@
 </head>
 <body>
 
-  <div class="top-banner">
+  <a href="<%= root_path %>" class="top-banner">
     <div class="top-banner-track">
-      <% 6.times do %>
-        <span>cov<span class="dot">.</span>kids</span>
-        <span class="banner-preview">preview mode — there will be errors!</span>
+      <% 2.times do %>
+        <div class="top-banner-set">
+          <% 4.times do %>
+            <span>cov<span class="dot">.</span>kids</span>
+            <span class="banner-preview">preview mode — there will be errors!</span>
+          <% end %>
+        </div>
       <% end %>
     </div>
-  </div>
+  </a>
 
   <div class="container">
     <header class="site-header">
@@ -30,21 +34,6 @@
             { label: d.strftime("%b"), path: "#{root_path}#{d.year}/#{d.strftime('%m')}" }
           end
         %>
-        <div class="header-filters">
-          <nav class="month-nav" aria-label="Browse by month">
-            <% next_months.each do |m| %>
-              <a href="<%= m[:path] %>" class="month-tab"><%= m[:label] %></a>
-            <% end %>
-          </nav>
-          <nav class="zone-nav" aria-label="Area filter">
-            <% warks_on = params[:warwickshire] == "1" %>
-            <% brum_on  = params[:birmingham]   == "1" %>
-            <a href="<%= url_for(params.to_unsafe_hash.merge(warwickshire: warks_on ? nil : "1")) %>"
-               class="zone-tab<%= " active" if warks_on %>">+ Warks</a>
-            <a href="<%= url_for(params.to_unsafe_hash.merge(birmingham: brum_on ? nil : "1")) %>"
-               class="zone-tab<%= " active" if brum_on %>">+ Brum</a>
-          </nav>
-        </div>
         <div class="page-context-identity">
           <span class="page-tagline">
             what's on in cov
@@ -54,6 +43,27 @@
             <% if brum_on  %><span class="tagline-zone"> + brum</span><% end %>
           </span>
           <span class="page-week"><%= @week_label %></span>
+        </div>
+        <div class="header-filters">
+          <nav class="month-nav" aria-label="Browse by month">
+            <% next_months.each do |m| %>
+              <a href="<%= m[:path] %>" class="month-tab"><%= m[:label] %></a>
+            <% end %>
+          </nav>
+          <select class="month-select" onchange="location.href=this.value" aria-label="Browse by month">
+            <option value="">Month...</option>
+            <% next_months.each do |m| %>
+              <option value="<%= m[:path] %>"><%= m[:label] %></option>
+            <% end %>
+          </select>
+          <nav class="zone-nav" aria-label="Area filter">
+            <% warks_on = params[:warwickshire] == "1" %>
+            <% brum_on  = params[:birmingham]   == "1" %>
+            <a href="<%= url_for(params.to_unsafe_hash.merge(warwickshire: warks_on ? nil : "1")) %>"
+               class="zone-tab<%= " active" if warks_on %>">+ Warks</a>
+            <a href="<%= url_for(params.to_unsafe_hash.merge(birmingham: brum_on ? nil : "1")) %>"
+               class="zone-tab<%= " active" if brum_on %>">+ Brum</a>
+          </nav>
         </div>
       <% end %>
     </header>
@@ -69,14 +79,16 @@
 
   <div class="coventry-banner">
     <div class="banner-track">
-      <div class="banner-set">
-        <img src="<%= asset_path('images/two-tone.svg') %>" alt="" aria-hidden="true">
-        <img src="<%= asset_path('images/three-spires.svg') %>" alt="" aria-hidden="true">
-        <img src="<%= asset_path('images/cathedral-ruins.svg') %>" alt="" aria-hidden="true">
-        <img src="<%= asset_path('images/transport-museum.svg') %>" alt="" aria-hidden="true">
-        <img src="<%= asset_path('images/the-wave.svg') %>" alt="" aria-hidden="true">
-        <img src="<%= asset_path('images/whittle-arch.svg') %>" alt="" aria-hidden="true" class="accent">
-      </div>
+      <% 2.times do %>
+        <div class="banner-set">
+          <img src="<%= asset_path('images/two-tone.svg') %>" alt="" aria-hidden="true">
+          <img src="<%= asset_path('images/three-spires.svg') %>" alt="" aria-hidden="true">
+          <img src="<%= asset_path('images/cathedral-ruins.svg') %>" alt="" aria-hidden="true">
+          <img src="<%= asset_path('images/transport-museum.svg') %>" alt="" aria-hidden="true">
+          <img src="<%= asset_path('images/the-wave.svg') %>" alt="" aria-hidden="true">
+          <img src="<%= asset_path('images/whittle-arch.svg') %>" alt="" aria-hidden="true" class="accent">
+        </div>
+      <% end %>
     </div>
   </div>
 

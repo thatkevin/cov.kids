@@ -1,5 +1,5 @@
 class Feed < ApplicationRecord
-  FEED_TYPES = %w[web ical eventbrite email reddit].freeze
+  FEED_TYPES = %w[web ical eventbrite email reddit facebook].freeze
 
   validates :name, presence: true
   validates :url, presence: true, uniqueness: true

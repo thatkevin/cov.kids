@@ -2,7 +2,7 @@ class Event < ApplicationRecord
   include ZoneDetectable
 
   SIMILARITY_THRESHOLD = 0.6
-  CATEGORIES = %w[music folk irish comedy arts sport food drink film family community museums history quiz other].freeze
+  CATEGORIES = %w[music folk irish comedy arts sport food drink film family community museums history quiz tabletop other].freeze
   ZONES = %w[coventry warwickshire birmingham].freeze
   VENUE_SIMILARITY_THRESHOLD = 0.75
 
@@ -95,6 +95,45 @@ class Event < ApplicationRecord
     # No year-bumping: if the date has passed this year, the event is over.
     # A future end date (e.g. "Until 3rd Jul" in February) naturally parses correctly.
     Date.new(Date.current.year, month_num, day) rescue nil
+  end
+
+  # Try to parse a concrete Date from a date_text string.
+  # Returns nil for ongoing/recurring/unparseable values.
+  def self.parse_start_date(text)
+    return nil if text.blank?
+    t = text.strip
+
+    # Skip ongoing/recurring patterns
+    return nil if t.match?(/\buntil\b|\bongoing\b|\bvarious\b|\bevery\b|\bweekly\b|\bmonthly\b/i)
+    return nil if t.match?(/\A\s*tbc\s*\z/i) # bare "TBC" only — "SAT 4TH APRIL, tbc" has a real date
+
+    today = Date.current
+
+    # "Today at ..."
+    return today if t.match?(/\Atoday\b/i)
+
+    # "Sat, Apr 18, 12:15 PM" or "Thu, Mar 26, 8:00 PM"
+    if (m = t.match(/\A\w{3},?\s+(\w{3})\s+(\d{1,2}),?/i))
+      month = MONTH_ABBR_NUM[m[1].downcase[0,3]]
+      day   = m[2].to_i
+      return nil unless month
+      year  = (month >= today.month ? today.year : today.year + 1)
+      return Date.new(year, month, day) rescue nil
+    end
+
+    # "Fri 6th Mar 7:30pm" or "Thu 5th Mar"
+    if (m = t.match(/\d{1,2}(?:st|nd|rd|th)?\s+(#{UNTIL_MONTH_RE.source})/i))
+      day_m = t.match(/(\d{1,2})(?:st|nd|rd|th)?/)
+      mon_m = t.match(/(#{UNTIL_MONTH_RE.source})/i)
+      return nil unless day_m && mon_m
+      month = MONTH_ABBR_NUM[mon_m[1].downcase[0,3]]
+      day   = day_m[1].to_i
+      return nil unless month
+      year  = (month >= today.month ? today.year : today.year + 1)
+      return Date.new(year, month, day) rescue nil
+    end
+
+    nil
   end
 
   def auto_set_zone

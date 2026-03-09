@@ -1,57 +1,109 @@
-<div class="breadcrumbs">
-  <a href="<%= root_path %>">Home</a>
-  <span class="separator">/</span>
-  <a href="<%= root_path %><%= @year %>"><%= @year %></a>
-  <span class="separator">/</span>
-  <%= @month_name %>
-</div>
-
-<div class="page-title">
-  <h1><%= @month_name %> <%= @year %></h1>
-  <p class="subtitle"><%= @total_events %> events</p>
-</div>
-
-<% if @days.any? %>
-  <h3>Browse by day</h3>
-  <ul class="archive-list" style="margin-bottom: 2rem;">
-    <% @days.each do |day| %>
-      <li>
-        <a href="<%= root_path %><%= @year %>/<%= @month_path %>/<%= day[:path] %>">
-          <span class="label"><%= day[:label] %></span>
-          <span class="meta"><%= day[:event_count] %> events</span>
-        </a>
-      </li>
+<% if @events_by_category.empty? %>
+  <p style="color: #999; padding: 3rem 0; text-align: center;">No events listed for <%= @month_name %> yet.</p>
+<% else %>
+  <%
+    other_events     = @events_by_category["other"]
+    community_events = @events_by_category["community"]
+    main_categories  = @events_by_category.reject { |cat, _| %w[other community].include?(cat) }
+  %>
+  <div class="events-grid">
+    <% main_categories.each do |category, events| %>
+      <section class="category-section" data-count="<%= events.length %>">
+        <div class="category-header">
+          <h2><%= category %></h2>
+          <span class="category-count"><%= events.length %></span>
+        </div>
+        <div class="event-list">
+          <% events.each do |event| %>
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                <% if event[:image_url].present? %>
+                  <img src="<%= event[:image_url] %>" alt="" class="event-card-image" loading="lazy">
+                <% end %>
+                <div class="event-card-content">
+                  <div class="event-name">
+                    <% if event[:url].present? %>
+                      <a href="<%= event[:url] %>"><%= event[:name] %></a>
+                    <% else %>
+                      <%= event[:name] %>
+                    <% end %>
+                    <% if event[:times_listed] && event[:times_listed] > 2 %>
+                      <span class="times-badge"><%= event[:times_listed] %>×</span>
+                    <% end %>
+                  </div>
+                  <div class="event-meta">
+                    <% if event[:date_text].present? %><span class="date"><%= event[:date_text] %></span><% end %>
+                    <% if event[:venue].present? %><span class="venue"><%= event[:venue] %></span><% end %>
+                  </div>
+                  <% if event[:description].present? %>
+                    <p class="event-description"><%= event[:description].truncate(160) %></p>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </section>
     <% end %>
-  </ul>
-<% end %>
+  </div>
 
-<% @events_by_category.each do |category, events| %>
-  <section class="category-section">
-    <div class="category-header">
-      <h2><%= category %></h2>
-      <span class="category-count"><%= events.length %></span>
-    </div>
-    <% events.each do |event| %>
-      <div class="event-card fade-in">
-        <div class="event-name">
-          <% if event[:url] && !event[:url].empty? %>
-            <a href="<%= event[:url] %>"><%= event[:name] %></a>
-          <% else %>
-            <%= event[:name] %>
-          <% end %>
-          <% if event[:times_listed] && event[:times_listed] > 2 %>
-            <span class="times-badge">seen <%= event[:times_listed] %>x</span>
-          <% end %>
-        </div>
-        <div class="event-meta">
-          <% if event[:date_text] && !event[:date_text].empty? %>
-            <span class="date"><%= event[:date_text] %></span>
-          <% end %>
-          <% if event[:venue] && !event[:venue].empty? %>
-            <span class="venue"><%= event[:venue] %></span>
-          <% end %>
-        </div>
+  <% if community_events.present? %>
+    <section class="category-section category-section--other" data-count="<%= community_events.length %>">
+      <div class="category-header">
+        <h2>community</h2>
+        <span class="category-count"><%= community_events.length %></span>
       </div>
-    <% end %>
-  </section>
+      <div class="event-list event-list--wide">
+        <% community_events.each do |event| %>
+          <div class="event-card fade-in">
+            <div class="event-card-inner">
+              <div class="event-card-content">
+                <div class="event-name">
+                  <% if event[:url].present? %>
+                    <a href="<%= event[:url] %>"><%= event[:name] %></a>
+                  <% else %>
+                    <%= event[:name] %>
+                  <% end %>
+                </div>
+                <div class="event-meta">
+                  <% if event[:date_text].present? %><span class="date"><%= event[:date_text] %></span><% end %>
+                  <% if event[:venue].present? %><span class="venue"><%= event[:venue] %></span><% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
+  <% if other_events.present? %>
+    <section class="category-section category-section--other" data-count="<%= other_events.length %>">
+      <div class="category-header">
+        <h2>other</h2>
+        <span class="category-count"><%= other_events.length %></span>
+      </div>
+      <div class="event-list event-list--wide">
+        <% other_events.each do |event| %>
+          <div class="event-card fade-in">
+            <div class="event-card-inner">
+              <div class="event-card-content">
+                <div class="event-name">
+                  <% if event[:url].present? %>
+                    <a href="<%= event[:url] %>"><%= event[:name] %></a>
+                  <% else %>
+                    <%= event[:name] %>
+                  <% end %>
+                </div>
+                <div class="event-meta">
+                  <% if event[:date_text].present? %><span class="date"><%= event[:date_text] %></span><% end %>
+                  <% if event[:venue].present? %><span class="venue"><%= event[:venue] %></span><% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
 <% end %>

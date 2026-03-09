@@ -9,9 +9,10 @@ class SiteController < ApplicationController
     week_start = today.beginning_of_week(:monday)
     week_end   = today.end_of_week(:monday)
 
-    # For undated events, look back to the real current week start so recently
-    # imported events aren't excluded when we've shifted to "next week" on Sunday evening
-    undated_from = Date.current.beginning_of_week(:monday)
+    # For undated events, use today as the lower bound so recently imported events
+    # aren't excluded when we've shifted to "next week" on Sunday evening, but we
+    # don't pull in stale events from earlier in the week
+    undated_from = [week_start, Date.current].min
 
     dated   = zoned_events.where(start_date: week_start..week_end)
     undated = zoned_events.where(start_date: nil).where(last_seen: undated_from.to_s..week_end.to_s)
@@ -23,7 +24,10 @@ class SiteController < ApplicationController
     end
 
     @events_by_category = group_by_category(events)
-    @featured_event     = Event.approved.find_by(featured: true)
+    @featured_event     = Event.approved.where(featured: true)
+                                        .where("start_date IS NULL OR start_date <= ?", week_end)
+                                        .order(Arel.sql("start_date DESC NULLS LAST"))
+                                        .first
     @week_label = "#{week_start.strftime('%-d %B')} – #{week_end.strftime('%-d %B %Y')}"
     @nav_active = :home
   end
@@ -80,20 +84,19 @@ class SiteController < ApplicationController
     @year       = params[:year].to_i
     @month_path = params[:month]
     month_date  = Date.new(@year, @month_path.to_i, 1)
+    month_end   = month_date.end_of_month
     @month_name = month_date.strftime("%B")
+    @week_label = "#{@month_name} #{@year}"
 
-    events = zoned_events.where("first_seen LIKE ?", "#{@year}-#{@month_path}-%").order(:category, :name)
-    @total_events = events.count
+    dated   = zoned_events.where(start_date: month_date..month_end)
+    undated = zoned_events.where(start_date: nil).where("first_seen LIKE ?", "#{@year}-#{@month_path}-%")
+    events  = dated.or(undated).order(Arel.sql("start_date NULLS LAST"), :category, :name)
+
     @events_by_category = group_by_category(events)
-
-    @days = events.pluck(:first_seen)
-                  .filter_map { |d| Date.parse(d) rescue nil }
-                  .map(&:day).uniq.sort
-                  .map do |day_num|
-                    d = Date.new(@year, @month_path.to_i, day_num)
-                    count = events.where(first_seen: d.to_s).count
-                    { path: d.strftime("%d"), label: d.strftime("%-d %B"), event_count: count }
-                  end
+    @featured_event     = Event.approved.where(featured: true)
+                                        .where("start_date IS NULL OR start_date <= ?", month_end)
+                                        .order(Arel.sql("start_date DESC NULLS LAST"))
+                                        .first
   end
 
   def about

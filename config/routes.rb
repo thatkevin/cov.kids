@@ -7,6 +7,7 @@ Rails.application.routes.draw do
         patch :approve
         patch :reject
         patch :feature
+        post  :merge
       end
     end
     resources :feeds do
@@ -40,6 +41,8 @@ Rails.application.routes.draw do
   get ":year",          to: "site#year",      constraints: { year: /\d{4}/ }
   get ":year/:month",   to: "site#month",     constraints: { year: /\d{4}/, month: /\d{2}/ }
   get ":year/:month/:day", to: "site#day",    constraints: { year: /\d{4}/, month: /\d{2}/, day: /\d{2}/ }
+
+  get "img", to: "image_proxy#show", as: :image_proxy
 
   get "up" => "rails/health#show", as: :rails_health_check
 end

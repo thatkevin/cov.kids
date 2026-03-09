@@ -14,7 +14,7 @@ class EventbriteImportJob < ApplicationJob
       name       - event name (required, skip if blank)
       date_text  - date/time as written on the page
       venue      - venue or location name
-      category   - one of: music, folk, irish, comedy, arts, sport, food, drink, film, family, community, museums, history, quiz, other
+      category   - one of: music, folk, irish, comedy, arts, sport, food, drink, film, family, community, museums, history, quiz, tabletop, other
       event_url  - full Eventbrite URL for the event (e.g. https://www.eventbrite.co.uk/e/...)
 
     Only include events in or near Coventry. Skip events that are clearly in other cities.
@@ -114,6 +114,7 @@ class EventbriteImportJob < ApplicationJob
           venue:      venue,
           category:   data["category"],
           date_text:  data["date_text"],
+          start_date: Event.parse_start_date(data["date_text"]),
           event_url:  data["event_url"],
           source:     source,
           first_seen: today,
@@ -133,6 +134,6 @@ class EventbriteImportJob < ApplicationJob
   end
 
   def strip_fences(text)
-    text.gsub(/\A```(?:json)?\n?/, "").gsub(/\n?```\z/, "").strip
+    text.gsub(/\A```(?:json)?\s*\n?/, "").gsub(/\n?```\s*\z/, "").strip
   end
 end

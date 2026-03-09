@@ -43,7 +43,7 @@
           <span class="font-medium text-gray-500"><%= event.source.title %></span>
           · <%= event.source.source_type %>
           <% if event.source.published_at %>
-            · <%= event.source.published_at.strftime("%-d %b %Y") %>
+            · scraped <%= event.source.published_at.strftime("%-d %b %Y") %>
           <% end %>
         </p>
       <% end %>

@@ -13,7 +13,7 @@ class EmailImportJob < ApplicationJob
       name        - event name (required, skip if blank)
       date_text   - date/time as written in the source
       venue       - venue name
-      category    - one of: music, folk, irish, comedy, arts, sport, food, drink, film, family, community, museums, history, quiz, other
+      category    - one of: music, folk, irish, comedy, arts, sport, food, drink, film, family, community, museums, history, quiz, tabletop, other
       event_url   - URL to buy tickets or get more info
       description - a short description of the event (1-3 sentences), taken from the source text
       image_url   - direct URL to an image for the event, if one is present in the source
@@ -147,6 +147,7 @@ class EmailImportJob < ApplicationJob
           venue_id:    Venue.find_or_create_for(data["venue"].presence)&.id,
           category:    data["category"],
           date_text:   data["date_text"],
+          start_date:  Event.parse_start_date(data["date_text"]),
           event_url:   data["event_url"],
           description: data["description"].presence,
           image_url:   data["image_url"].presence,
