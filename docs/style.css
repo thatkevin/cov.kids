@@ -143,7 +143,6 @@ a:hover { color: #3a9ad4; text-decoration: underline; }
   display: flex;
   gap: 2rem;
   background: #fff;
-  border: 1.5px solid #5EB3E4;
   border-radius: 8px;
   overflow: hidden;
   margin-bottom: 3rem;
