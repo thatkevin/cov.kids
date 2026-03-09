@@ -72,12 +72,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  buildEventColumns();
+  requestAnimationFrame(buildEventColumns);
 
   var _colTimer;
   window.addEventListener('resize', function () {
     clearTimeout(_colTimer);
-    _colTimer = setTimeout(buildEventColumns, 200);
+    _colTimer = setTimeout(function () { requestAnimationFrame(buildEventColumns); }, 200);
   }, { passive: true });
 
   // Top banner — measure after fonts load for pixel-perfect seamless loop
