@@ -579,3 +579,5 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
 @media (max-width: 480px) {
   .featured-hero-title { font-size: 1.3rem; }
 }
+
+.about-content h2 { margin-top: 2.5rem; }
