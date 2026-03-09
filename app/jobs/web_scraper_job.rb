@@ -14,9 +14,9 @@ class WebScraperJob < ApplicationJob
       date_text   - date/time as written in the source
       venue       - venue name
       category    - one of: music, folk, irish, comedy, arts, sport, food, drink, film, family, community, museums, history, quiz, tabletop, other
-      event_url   - URL to buy tickets or get more info
+      event_url   - URL to buy tickets or get more info — ONLY use a URL that appears verbatim in the content (shown as [https://...]), never construct or guess one
       description - a short description of the event (1-3 sentences), taken from the page content
-      image_url   - direct URL to an image for the event, if one is visible on the page
+      image_url   - direct URL to an image for the event (shown as [image: https://...]), if present
 
     Skip past events if dates are visible. If no events are found, return [].
   PROMPT
@@ -56,7 +56,7 @@ class WebScraperJob < ApplicationJob
     text = strip_html(html, feed.url)
     if text.present?
       source.update!(body: text)
-      events_json = run_claude(EXTRACT_PROMPT + "\n\nPage content:\n#{text.slice(0, 10_000)}")
+      events_json = run_claude(EXTRACT_PROMPT + "\n\nPage content:\n#{text.slice(0, 20_000)}")
       save_events(events_json, source)
     end
 
@@ -195,7 +195,10 @@ class WebScraperJob < ApplicationJob
         existing.increment!(:times_listed)
         updates = { last_seen: today }
         needs_url = data["event_url"].present? &&
-                    (existing.event_url.blank? || !existing.event_url.to_s.start_with?("http"))
+                    data["event_url"] != source.url &&
+                    (existing.event_url.blank? ||
+                     !existing.event_url.to_s.start_with?("http") ||
+                     existing.event_url == source.url)
         updates[:event_url]   = data["event_url"] if needs_url
         updates[:image_url]   = image_url if existing.image_url.blank? && image_url.present?
         existing.update!(updates)

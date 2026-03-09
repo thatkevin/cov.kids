@@ -38,6 +38,9 @@ module SiteGenerator
     # Write CNAME
     File.write(DOCS_DIR.join("CNAME"), "cov.kids")
 
+    # favicon.ico fallback (browsers request this regardless of <link> tags)
+    FileUtils.cp(ASSETS_DIR.join("images", "favicon.svg"), DOCS_DIR.join("favicon.ico"))
+
     # Load data
     sources = Source.order(published_at: :desc).to_a
     events = Event.approved.order(:category, :name).to_a

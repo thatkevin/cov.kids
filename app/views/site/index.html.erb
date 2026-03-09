@@ -52,9 +52,6 @@
                     <% else %>
                       <%= event[:name] %>
                     <% end %>
-                    <% if event[:times_listed] && event[:times_listed] > 2 %>
-                      <span class="times-badge"><%= event[:times_listed] %>×</span>
-                    <% end %>
                     <% if respond_to?(:user_signed_in?) && user_signed_in? && current_user.admin? %>
                       <a href="<%= edit_admin_event_path(event[:id]) %>" class="admin-edit-link">edit</a>
                     <% end %>
@@ -95,9 +92,6 @@
                   <% else %>
                     <%= event[:name] %>
                   <% end %>
-                  <% if event[:times_listed] && event[:times_listed] > 2 %>
-                    <span class="times-badge"><%= event[:times_listed] %>×</span>
-                  <% end %>
                   <% if respond_to?(:user_signed_in?) && user_signed_in? && current_user.admin? %>
                     <a href="<%= edit_admin_event_path(event[:id]) %>" class="admin-edit-link">edit</a>
                   <% end %>
@@ -136,9 +130,6 @@
                     <a href="<%= event[:url] %>"><%= event[:name] %></a>
                   <% else %>
                     <%= event[:name] %>
-                  <% end %>
-                  <% if event[:times_listed] && event[:times_listed] > 2 %>
-                    <span class="times-badge"><%= event[:times_listed] %>×</span>
                   <% end %>
                   <% if respond_to?(:user_signed_in?) && user_signed_in? && current_user.admin? %>
                     <a href="<%= edit_admin_event_path(event[:id]) %>" class="admin-edit-link">edit</a>

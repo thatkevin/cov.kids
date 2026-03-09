@@ -21,9 +21,6 @@
       <% else %>
         <%= event[:name] %>
       <% end %>
-      <% if event[:times_listed] && event[:times_listed] > 2 %>
-        <span class="times-badge">seen <%= event[:times_listed] %>x</span>
-      <% end %>
     </div>
     <div class="event-meta">
       <% if event[:date_text] && !event[:date_text].empty? %>
