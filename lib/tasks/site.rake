@@ -573,27 +573,48 @@ module SiteGenerator
 
   # --- Image Handling ---
 
-  # Called from ERB templates. Downloads external images into docs/images/events/
-  # and returns a local root-relative path so GitHub Pages can serve them.
+  # Called from ERB templates. Downloads external images into docs/images/events/,
+  # resizes to max 600px wide and converts to WebP for fast page loads.
   def proxied_image_url(url)
     return url if url.blank?
     return url unless url.start_with?("http://", "https://")
 
-    ext      = File.extname(URI(url).path).downcase
-    ext      = ".jpg" unless %w[.jpg .jpeg .png .gif .webp].include?(ext)
-    filename = "#{Digest::SHA256.hexdigest(url)}#{ext}"
+    filename = "#{Digest::SHA256.hexdigest(url)}.webp"
     dest     = DOCS_DIR.join("images", "events", filename)
 
     unless File.exist?(dest)
       FileUtils.mkdir_p(dest.dirname)
       data = fetch_remote_image(url)
-      File.binwrite(dest, data) if data
+      if data
+        converted = convert_to_webp(data)
+        File.binwrite(dest, converted || data)
+      end
     end
 
     File.exist?(dest) ? "#{@root_path}images/events/#{filename}" : url
   rescue => e
     Rails.logger.warn("SiteGenerator: image download failed for #{url}: #{e.message}")
     url
+  end
+
+  def convert_to_webp(data)
+    require "tempfile"
+    Tempfile.create(["ck_img", ".bin"]) do |tmp|
+      tmp.binmode
+      tmp.write(data)
+      tmp.flush
+      out_path = "#{tmp.path}.webp"
+      # vips thumbnail: resize to max 600px wide, convert to webp at quality 75
+      result = system("vips", "thumbnail", tmp.path, out_path, "600",
+                      "--size", "down", "--export-profile", "srgb",
+                      out: File::NULL, err: File::NULL)
+      if result && File.exist?(out_path)
+        File.binread(out_path).tap { File.unlink(out_path) }
+      end
+    end
+  rescue => e
+    Rails.logger.warn("SiteGenerator: webp conversion failed: #{e.message}")
+    nil
   end
 
   def fetch_remote_image(url)

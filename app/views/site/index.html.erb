@@ -2,7 +2,7 @@
 <% if @featured_event %>
   <div class="featured-hero">
     <% if @featured_event.image_url.present? %>
-      <img src="<%= proxied_image_url(@featured_event.image_url) %>" alt="<%= @featured_event.effective_name %>" class="featured-hero-image">
+      <img src="<%= proxied_image_url(@featured_event.image_url) %>" alt="<%= @featured_event.effective_name %>" class="featured-hero-image" fetchpriority="high">
     <% end %>
     <div class="featured-hero-body">
       <p class="featured-hero-label">Event of the Week</p>

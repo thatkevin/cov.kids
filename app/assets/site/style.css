@@ -30,12 +30,12 @@ h1, h2, h3, h4 {
 }
 
 a {
-  color: #5EB3E4;
+  color: #1a7ab5;
   text-decoration: none;
   transition: color 0.15s ease;
 }
 
-a:hover { color: #3a9ad4; text-decoration: underline; }
+a:hover { color: #1a6b99; text-decoration: underline; }
 a.top-banner, a.top-banner:hover { text-decoration: none; }
 
 /* --- Layout --- */
@@ -118,12 +118,12 @@ a.top-banner, a.top-banner:hover { text-decoration: none; }
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: #5EB3E4;
+  color: #1a1a1a;
   white-space: nowrap;
 }
 
 .page-tagline .tagline-zone {
-  color: #5EB3E4;
+  color: #1a7ab5;
 }
 
 .page-week {
@@ -137,7 +137,7 @@ a.top-banner, a.top-banner:hover { text-decoration: none; }
 /* --- Page Title (archive pages) --- */
 .page-title { margin: 2rem 0 1.75rem; }
 .page-title h1 { font-size: 2rem; }
-.page-title .subtitle { color: #888; font-size: 0.95rem; margin-top: 0.3rem; }
+.page-title .subtitle { color: #595959; font-size: 0.95rem; margin-top: 0.3rem; }
 
 /* --- Featured Hero --- */
 .featured-hero {
@@ -168,7 +168,7 @@ a.top-banner, a.top-banner:hover { text-decoration: none; }
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  color: #5EB3E4;
+  color: #1a7ab5;
   margin-bottom: 0.6rem;
 }
 
@@ -187,7 +187,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   display: flex;
   gap: 1rem;
   font-size: 0.85rem;
-  color: #888;
+  color: #595959;
   margin-bottom: 0.85rem;
   flex-wrap: wrap;
 }
@@ -267,7 +267,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
 .category-count {
   font-family: 'Inter', sans-serif;
   font-size: 0.62rem;
-  color: #bbb;
+  color: #767676;
   font-weight: 500;
   margin-left: auto;
   letter-spacing: 0.04em;
@@ -315,7 +315,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   display: flex;
   gap: 0.85rem;
   font-size: 0.78rem;
-  color: #999;
+  color: #595959;
   flex-wrap: wrap;
   line-height: 1.4;
 }
@@ -336,7 +336,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   font-family: 'Inter', sans-serif;
   font-size: 0.65rem;
   font-weight: 600;
-  color: #5EB3E4;
+  color: #1a7ab5;
   padding: 0.1rem 0.45rem;
   border: 1px solid #c8e4f5;
   border-radius: 99px;
@@ -400,7 +400,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   padding: 0.2rem 0.7rem;
   border-radius: 999px;
   border: 1px solid #ddd;
-  color: #888;
+  color: #595959;
   text-decoration: none;
   transition: all 0.15s ease;
   white-space: nowrap;
@@ -424,7 +424,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   padding: 0.25rem 0.6rem;
   border-radius: 99px;
   border: 1px solid #d0e8f5;
-  color: #5EB3E4;
+  color: #1a7ab5;
   background: #fff;
   cursor: pointer;
 }
@@ -436,7 +436,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   padding: 0.2rem 0.75rem;
   border-radius: 99px;
   border: 1px solid #d0e8f5;
-  color: #5EB3E4;
+  color: #1a7ab5;
   text-decoration: none;
   transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
   white-space: nowrap;
@@ -444,7 +444,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
 
 .month-tab--home {
   border-style: dashed;
-  color: #888;
+  color: #595959;
 }
 
 .month-tab:hover, .month-tab:focus {
@@ -471,18 +471,18 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
 
 .archive-list a:hover { background: #f5fafd; text-decoration: none; }
 .archive-list .label { font-family: 'Playfair Display', Georgia, serif; font-size: 1.1rem; }
-.archive-list .meta { color: #999; font-size: 0.85rem; }
+.archive-list .meta { color: #595959; font-size: 0.85rem; }
 
 /* --- Breadcrumbs --- */
 .breadcrumbs {
   font-size: 0.82rem;
-  color: #bbb;
+  color: #767676;
   margin-bottom: 1.5rem;
   margin-top: 1.5rem;
 }
 
-.breadcrumbs a { color: #bbb; }
-.breadcrumbs a:hover { color: #5EB3E4; }
+.breadcrumbs a { color: #767676; }
+.breadcrumbs a:hover { color: #1a7ab5; }
 .breadcrumbs .separator { margin: 0 0.4rem; }
 
 /* --- Footer --- */
@@ -490,12 +490,12 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   margin-top: 4rem;
   padding: 2rem 0;
   border-top: 1px solid #eee;
-  color: #bbb;
+  color: #767676;
   font-size: 0.82rem;
 }
 
-.site-footer a { color: #bbb; }
-.site-footer a:hover { color: #5EB3E4; }
+.site-footer a { color: #767676; }
+.site-footer a:hover { color: #1a7ab5; }
 
 /* Top banner scroll handled by JS after document.fonts.ready */
 
