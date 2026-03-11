@@ -28,7 +28,8 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // --- Column distribution (greedy bin-pack, sections stay whole) ---
-  function buildEventColumns() {
+  // Width is supplied by ResizeObserver to avoid a forced reflow.
+  function buildEventColumns(w) {
     var grid = document.querySelector('.events-grid');
     if (!grid) return;
 
@@ -43,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     if (!sections.length) return;
 
-    var w = grid.offsetWidth;
     var colCount = w >= 1000 ? 4 : w >= 700 ? 3 : w >= 460 ? 2 : 1;
 
     // Clear grid
@@ -72,19 +72,20 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  requestAnimationFrame(buildEventColumns);
-
-  var _colTimer;
-  window.addEventListener('resize', function () {
-    clearTimeout(_colTimer);
-    _colTimer = setTimeout(function () { requestAnimationFrame(buildEventColumns); }, 200);
-  }, { passive: true });
+  // ResizeObserver fires after layout — no forced reflow.
+  var grid = document.querySelector('.events-grid');
+  if (grid) {
+    new ResizeObserver(function (entries) {
+      buildEventColumns(entries[0].contentRect.width);
+    }).observe(grid);
+  }
 
   // Top banner — measure after fonts load for pixel-perfect seamless loop
   var bannerTrack = document.querySelector('.top-banner-track');
   if (bannerTrack) {
     var bannerSet = bannerTrack.querySelector('.top-banner-set');
     document.fonts.ready.then(function () {
+      requestAnimationFrame(function () {
       var setWidth = bannerSet.offsetWidth;
       if (!setWidth) return;
       var pos = 0;
@@ -97,7 +98,8 @@ document.addEventListener('DOMContentLoaded', function () {
         bannerTrack.style.transform = 'translateX(' + pos + 'px)';
         requestAnimationFrame(tick);
       })();
-    });
+      }); // end rAF
+    }); // end fonts.ready
   }
 
   // Fade-in on scroll
