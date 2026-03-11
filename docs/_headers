@@ -1,0 +1,15 @@
+# HTML — always revalidate so updates are visible immediately
+/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Event images — content-hashed filenames, safe to cache forever
+/images/events/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Static assets — no cache-busting so use a reasonable TTL
+/style.css
+  Cache-Control: public, max-age=86400
+/site.js
+  Cache-Control: public, max-age=86400
+/images/*
+  Cache-Control: public, max-age=604800

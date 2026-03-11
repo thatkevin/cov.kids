@@ -8,7 +8,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <%# Load Google Fonts non-blocking — media=print swaps to all once loaded %>
-  <link rel="stylesheet" href="<%= root_path %>style.css">
+  <% if defined?(inline_css) && inline_css %>
+    <style><%= inline_css.html_safe %></style>
+  <% else %>
+    <link rel="stylesheet" href="<%= root_path %>style.css">
+  <% end %>
   <link rel="icon" type="image/svg+xml" href="<%= root_path %>images/favicon.svg">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>

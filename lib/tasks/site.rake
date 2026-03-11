@@ -35,9 +35,6 @@ module SiteGenerator
     # Copy assets
     copy_assets
 
-    # Write CNAME
-    File.write(DOCS_DIR.join("CNAME"), "cov.kids")
-
     # favicon.ico fallback (browsers request this regardless of <link> tags)
     FileUtils.cp(ASSETS_DIR.join("images", "favicon.svg"), DOCS_DIR.join("favicon.ico"))
 
@@ -86,7 +83,7 @@ module SiteGenerator
   # --- Asset Copying ---
 
   def copy_assets
-    %w[style.css site.js].each do |file|
+    %w[style.css site.js _headers].each do |file|
       FileUtils.cp(ASSETS_DIR.join(file), DOCS_DIR.join(file))
     end
 
@@ -657,6 +654,10 @@ module SiteGenerator
     template.result(b)
   end
 
+  def inlined_css
+    @inlined_css ||= File.read(ASSETS_DIR.join("style.css"))
+  end
+
   def write_page(relative_path, content, layout_vars = {})
     layout_vars[:content] = content
     layout_vars[:page_title] ||= nil
@@ -664,6 +665,7 @@ module SiteGenerator
     layout_vars[:nav_active] ||= nil
     layout_vars[:archive_years] ||= []
     layout_vars[:root_path] ||= "./"
+    layout_vars[:inline_css] = inlined_css
 
     layout_template = ERB.new(File.read(VIEWS_DIR.join("_layout.html.erb")), trim_mode: "-")
     b = binding
