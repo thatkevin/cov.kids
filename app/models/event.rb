@@ -2,7 +2,7 @@ class Event < ApplicationRecord
   include ZoneDetectable
 
   SIMILARITY_THRESHOLD = 0.6
-  CATEGORIES = %w[music folk irish comedy arts sport food drink film family community museums history quiz tabletop other].freeze
+  CATEGORIES = %w[music folk irish comedy arts theatre sport food drink film family community museums history quiz tabletop other].freeze
   ZONES = %w[coventry warwickshire birmingham].freeze
   VENUE_SIMILARITY_THRESHOLD = 0.75
 
@@ -118,6 +118,14 @@ class Event < ApplicationRecord
       day   = m[2].to_i
       return nil unless month
       year  = (month >= today.month ? today.year : today.year + 1)
+      return Date.new(year, month, day) rescue nil
+    end
+
+    # "Wednesday March 18th 2026" or "March 18th 2026" — month before day, optional year
+    if (m = t.match(/(#{UNTIL_MONTH_RE.source})\s+(\d{1,2})(?:st|nd|rd|th)?(?:\s+(\d{4}))?/i))
+      month = MONTH_ABBR_NUM[m[1].downcase[0,3]]
+      day   = m[2].to_i
+      year  = m[3] ? m[3].to_i : (month >= today.month ? today.year : today.year + 1)
       return Date.new(year, month, day) rescue nil
     end
 
