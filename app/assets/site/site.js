@@ -1,6 +1,86 @@
 // cov.kids — Scroll-triggered fade-in + venue filter
 document.addEventListener('DOMContentLoaded', function () {
 
+  // --- Category collapse (localStorage-persisted) ---
+  var CAT_STORAGE_KEY = 'ck-hidden-cats';
+
+  function getHiddenCats() {
+    try { return JSON.parse(localStorage.getItem(CAT_STORAGE_KEY) || '[]'); } catch(e) { return []; }
+  }
+  function setHiddenCats(cats) {
+    try { localStorage.setItem(CAT_STORAGE_KEY, JSON.stringify(cats)); } catch(e) {}
+  }
+
+  function updateToggleBtn(section) {
+    var btn = section.querySelector('.category-toggle');
+    if (btn) btn.textContent = section.classList.contains('is-collapsed') ? '+' : '−';
+  }
+
+  function animateCollapse(list) {
+    list.style.height     = list.offsetHeight + 'px';
+    list.style.overflow   = 'hidden';
+    list.style.transition = 'height 0.25s ease';
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        list.style.height = '0';
+        list.addEventListener('transitionend', function done() {
+          list.removeEventListener('transitionend', done);
+          list.style.display    = 'none';
+          list.style.height     = '';
+          list.style.overflow   = '';
+          list.style.transition = '';
+        });
+      });
+    });
+  }
+
+  function animateExpand(list) {
+    list.style.display    = '';
+    list.style.height     = '0';
+    list.style.overflow   = 'hidden';
+    list.style.transition = 'height 0.25s ease';
+    var target = list.scrollHeight;
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        list.style.height = target + 'px';
+        list.addEventListener('transitionend', function done() {
+          list.removeEventListener('transitionend', done);
+          list.style.height     = '';
+          list.style.overflow   = '';
+          list.style.transition = '';
+        });
+      });
+    });
+  }
+
+  // On load: apply stored collapsed state instantly (no animation)
+  document.querySelectorAll('.category-section[data-category]').forEach(function(section) {
+    var cat = section.dataset.category;
+    if (getHiddenCats().indexOf(cat) !== -1) {
+      section.classList.add('is-collapsed');
+      var list = section.querySelector('.event-list');
+      if (list) list.style.display = 'none';
+    }
+    updateToggleBtn(section);
+  });
+
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.category-header')) return;
+    var section = e.target.closest('.category-section[data-category]');
+    if (!section) return;
+    var list = section.querySelector('.event-list');
+    if (!list) return;
+    var cat = section.dataset.category;
+    var hidden = getHiddenCats();
+    var idx = hidden.indexOf(cat);
+    var collapsing = idx === -1;
+    if (collapsing) { hidden.push(cat); } else { hidden.splice(idx, 1); }
+    setHiddenCats(hidden);
+    section.classList.toggle('is-collapsed', collapsing);
+    updateToggleBtn(section);
+    if (collapsing) { animateCollapse(list); } else { animateExpand(list); }
+  });
+
   // --- Venue filter ---
   var filterEl = document.getElementById('venue-filter');
   if (filterEl) {
@@ -27,79 +107,25 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // --- Column distribution (greedy bin-pack, sections stay whole) ---
-  // Width is supplied by ResizeObserver to avoid a forced reflow.
-  function buildEventColumns(w) {
-    var grid = document.querySelector('.events-grid');
-    if (!grid) return;
-
-    // Collect sections, pulling them back out of any existing col wrappers
-    var sections = [];
-    Array.from(grid.children).forEach(function (child) {
-      if (child.classList.contains('events-col')) {
-        Array.from(child.children).forEach(function (s) { sections.push(s); });
-      } else {
-        sections.push(child);
-      }
-    });
-    if (!sections.length) return;
-
-    var colCount = w >= 1000 ? 4 : w >= 700 ? 3 : w >= 460 ? 2 : 1;
-
-    // Clear grid
-    while (grid.firstChild) grid.removeChild(grid.firstChild);
-
-    if (colCount === 1) {
-      sections.forEach(function (s) { grid.appendChild(s); });
-      return;
-    }
-
-    // Create column wrappers
-    var cols = [], weights = new Array(colCount).fill(0);
-    for (var i = 0; i < colCount; i++) {
-      var col = document.createElement('div');
-      col.className = 'events-col';
-      grid.appendChild(col);
-      cols.push(col);
-    }
-
-    // Greedy: place each section into the lightest column
-    sections.forEach(function (s) {
-      var count = parseInt(s.getAttribute('data-count') || '1', 10);
-      var minIdx = weights.indexOf(Math.min.apply(null, weights));
-      cols[minIdx].appendChild(s);
-      weights[minIdx] += count;
-    });
-  }
-
-  // ResizeObserver fires after layout — no forced reflow.
-  var grid = document.querySelector('.events-grid');
-  if (grid) {
-    new ResizeObserver(function (entries) {
-      buildEventColumns(entries[0].contentRect.width);
-    }).observe(grid);
-  }
-
   // Top banner — measure after fonts load for pixel-perfect seamless loop
   var bannerTrack = document.querySelector('.top-banner-track');
   if (bannerTrack) {
     var bannerSet = bannerTrack.querySelector('.top-banner-set');
     document.fonts.ready.then(function () {
       requestAnimationFrame(function () {
-      var setWidth = bannerSet.offsetWidth;
-      if (!setWidth) return;
-      var pos = 0;
-      bannerTrack.style.willChange = 'transform';
-      // Remove CSS animation now that JS takes over
-      bannerTrack.style.animation = 'none';
-      (function tick() {
-        pos -= 0.5;
-        if (pos <= -setWidth) pos += setWidth;
-        bannerTrack.style.transform = 'translateX(' + pos + 'px)';
-        requestAnimationFrame(tick);
-      })();
-      }); // end rAF
-    }); // end fonts.ready
+        var setWidth = bannerSet.offsetWidth;
+        if (!setWidth) return;
+        var pos = 0;
+        bannerTrack.style.willChange = 'transform';
+        bannerTrack.style.animation = 'none';
+        (function tick() {
+          pos -= 0.5;
+          if (pos <= -setWidth) pos += setWidth;
+          bannerTrack.style.transform = 'translateX(' + pos + 'px)';
+          requestAnimationFrame(tick);
+        })();
+      });
+    });
   }
 
   // Fade-in on scroll

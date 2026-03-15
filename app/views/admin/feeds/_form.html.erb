@@ -33,6 +33,15 @@
         class: "w-32 rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" %>
   </div>
 
+  <div>
+    <%= f.label :default_category, "Default category", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <p class="text-xs text-gray-400 mb-1">If set, all events from this feed will be assigned this category regardless of what is extracted.</p>
+    <%= f.select :default_category,
+        [["— let Claude decide", ""]] + Event::CATEGORIES.map { |c| [c.capitalize, c] },
+        { selected: feed.default_category.presence || "" },
+        class: "w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" %>
+  </div>
+
   <div class="flex items-center gap-2">
     <%= f.check_box :active, class: "rounded border-gray-300" %>
     <%= f.label :active, "Active", class: "text-sm text-gray-700" %>

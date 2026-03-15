@@ -1,5 +1,6 @@
 require "net/http"
 require "json"
+require "cgi"
 
 class RedditImportJob < ApplicationJob
   queue_as :default
@@ -23,6 +24,7 @@ class RedditImportJob < ApplicationJob
     /museum|heritage|historic|antiquit/i    => "museums",
     /\bhistory\b|\bhistorical\b/i           => "history",
     /quiz|trivia/i                          => "quiz",
+    /tabletop|board.?game|wargame|warhammer|dungeons|d&d|rpg|roleplay/i => "tabletop",
   }.freeze
 
   def perform
@@ -104,6 +106,7 @@ class RedditImportJob < ApplicationJob
       next if cols.length < 3
 
       name, event_url = parse_event_cell(cols[0])
+      name = CGI.unescapeHTML(name) if name
       next if name.blank?
 
       existing = Event.similar_to(name).first

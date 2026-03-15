@@ -19,7 +19,9 @@ puts "Admin user: #{admin_email} (password: #{admin_password})"
   { name: "Earlsdon Library",       url: "https://earlsdonlibrary.org.uk/whats-on/",                         feed_type: "web",        fetch_interval_hours: 48 },
   { name: "LTB Showrooms",          url: "https://www.ltbshowrooms.com/events",                              feed_type: "web",        fetch_interval_hours: 48 },
   { name: "Eventbrite Coventry",    url: "https://www.eventbrite.co.uk/d/united-kingdom--coventry/events/",  feed_type: "eventbrite", fetch_interval_hours: 24 },
-  { name: "Humanitix Coventry",     url: "https://events.humanitix.com/uk/coventry",                         feed_type: "web",        fetch_interval_hours: 24 }
+  { name: "Humanitix Coventry",     url: "https://events.humanitix.com/uk/coventry",                         feed_type: "web",        fetch_interval_hours: 24 },
+  { name: "Coventry Music",         url: "https://www.coventrymusic.co.uk/events",                           feed_type: "web",        fetch_interval_hours: 48 },
+  { name: "Cheylesmore Library",    url: "https://cheylesmorecentre.co.uk/library-events/",                  feed_type: "web",        fetch_interval_hours: 48 }
 ].each do |attrs|
   Feed.find_or_create_by!(url: attrs[:url]) do |f|
     f.assign_attributes(attrs.merge(active: true))

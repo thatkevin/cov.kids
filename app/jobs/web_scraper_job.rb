@@ -52,18 +52,20 @@ class WebScraperJob < ApplicationJob
       published_at: Time.current
     )
 
+    default_category = feed.default_category.presence
+
     # Extract text
     text = strip_html(html, feed.url)
     if text.present?
       source.update!(body: text)
       events_json = run_claude(EXTRACT_PROMPT + "\n\nPage content:\n#{text.slice(0, 20_000)}")
-      save_events(events_json, source)
+      save_events(events_json, source, default_category: default_category)
     end
 
     # Extract and process image flyers
     image_urls = extract_flyer_urls(html, feed.url)
     Rails.logger.info("WebScraperJob [#{feed.url}]: found #{image_urls.length} flyer image(s)")
-    image_urls.each { |url| process_image(url, source) }
+    image_urls.each { |url| process_image(url, source, default_category: default_category) }
 
     Rails.logger.info("WebScraperJob [#{feed.url}]: done")
   end
@@ -87,7 +89,7 @@ class WebScraperJob < ApplicationJob
     end.uniq.first(10) # cap at 10 images per page
   end
 
-  def process_image(image_url, source)
+  def process_image(image_url, source, default_category: nil)
     ext  = File.extname(URI(image_url).path).downcase.presence || ".jpg"
     data = fetch_binary(image_url)
     return unless data
@@ -97,7 +99,7 @@ class WebScraperJob < ApplicationJob
       f.write(data)
       f.flush
       events_json = run_claude_with_image(IMAGE_EXTRACT_PROMPT, f.path)
-      save_events(events_json, source, default_image_url: image_url)
+      save_events(events_json, source, default_image_url: image_url, default_category: default_category)
     end
   rescue => e
     Rails.logger.error("WebScraperJob: failed to process image #{image_url}: #{e.message}")
@@ -179,7 +181,7 @@ class WebScraperJob < ApplicationJob
     "[]"
   end
 
-  def save_events(raw, source, default_image_url: nil)
+  def save_events(raw, source, default_image_url: nil, default_category: nil)
     events = JSON.parse(strip_fences(raw))
     today  = Date.current.to_s
 
@@ -189,6 +191,7 @@ class WebScraperJob < ApplicationJob
       name      = CGI.unescapeHTML(data["name"].to_s).strip
       venue     = CGI.unescapeHTML(data["venue"].to_s).strip.presence
       image_url = data["image_url"].presence || default_image_url
+      category  = default_category.presence || data["category"]
 
       existing = Event.similar_to(name).first
       if existing
@@ -207,7 +210,7 @@ class WebScraperJob < ApplicationJob
           name:        name,
           venue:       venue,
           venue_id:    Venue.find_or_create_for(data["venue"].presence)&.id,
-          category:    data["category"],
+          category:    category,
           date_text:   data["date_text"],
           start_date:  Event.parse_start_date(data["date_text"]),
           event_url:   data["event_url"].presence || source.url,

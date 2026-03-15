@@ -83,7 +83,7 @@ module SiteGenerator
   # --- Asset Copying ---
 
   def copy_assets
-    %w[style.css site.js _headers].each do |file|
+    %w[style.css site.js _headers CNAME].each do |file|
       FileUtils.cp(ASSETS_DIR.join(file), DOCS_DIR.join(file))
     end
 

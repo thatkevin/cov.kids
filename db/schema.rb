@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_27_175543) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_15_211217) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -55,6 +55,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_175543) do
   create_table "feeds", force: :cascade do |t|
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
+    t.string "default_category"
     t.string "feed_type", default: "web", null: false
     t.integer "fetch_interval_hours", default: 24, null: false
     t.datetime "last_fetched_at"

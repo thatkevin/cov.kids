@@ -24,7 +24,7 @@
         <div class="event-card fade-in">
           <div class="event-name">
             <% if event[:url] && !event[:url].empty? %>
-              <a href="<%= event[:url] %>"><%= event[:name] %></a>
+              <a href="<%= event[:url] %>" target="_blank" rel="noopener"><%= event[:name] %></a>
             <% else %>
               <%= event[:name] %>
             <% end %>

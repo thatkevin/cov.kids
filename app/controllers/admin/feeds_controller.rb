@@ -57,6 +57,6 @@ class Admin::FeedsController < Admin::ApplicationController
   end
 
   def feed_params
-    params.require(:feed).permit(:name, :url, :feed_type, :active, :fetch_interval_hours)
+    params.require(:feed).permit(:name, :url, :feed_type, :active, :fetch_interval_hours, :default_category)
   end
 end

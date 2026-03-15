@@ -33,10 +33,11 @@
   %>
   <div class="events-grid">
     <% main_categories.each do |category, events| %>
-      <section class="category-section" data-count="<%= events.length %>">
+      <section class="category-section" data-category="<%= category %>">
         <div class="category-header">
           <h2><%= category %></h2>
           <span class="category-count"><%= events.length %></span>
+          <button class="category-toggle" aria-label="Toggle <%= category %>">−</button>
         </div>
         <div class="event-list">
           <% events.each do |event| %>
@@ -48,7 +49,7 @@
                 <div class="event-card-content">
                   <div class="event-name">
                     <% if event[:url].present? %>
-                      <a href="<%= event[:url] %>"><%= event[:name] %></a>
+                      <a href="<%= event[:url] %>" target="_blank" rel="noopener"><%= event[:name] %></a>
                     <% else %>
                       <%= event[:name] %>
                     <% end %>
@@ -73,12 +74,13 @@
   </div>
 
   <% if community_events.present? %>
-    <section class="category-section category-section--other" data-count="<%= community_events.length %>">
+    <section class="category-section" data-category="community">
       <div class="category-header">
         <h2>community</h2>
         <span class="category-count"><%= community_events.length %></span>
+        <button class="category-toggle" aria-label="Toggle community">−</button>
       </div>
-      <div class="event-list event-list--wide">
+      <div class="event-list">
         <% community_events.each do |event| %>
           <div class="event-card fade-in">
             <div class="event-card-inner">
@@ -88,7 +90,7 @@
               <div class="event-card-content">
                 <div class="event-name">
                   <% if event[:url].present? %>
-                    <a href="<%= event[:url] %>"><%= event[:name] %></a>
+                    <a href="<%= event[:url] %>" target="_blank" rel="noopener"><%= event[:name] %></a>
                   <% else %>
                     <%= event[:name] %>
                   <% end %>
@@ -112,12 +114,13 @@
   <% end %>
 
   <% if other_events.present? %>
-    <section class="category-section category-section--other" data-count="<%= other_events.length %>">
+    <section class="category-section" data-category="other">
       <div class="category-header">
         <h2>other</h2>
         <span class="category-count"><%= other_events.length %></span>
+        <button class="category-toggle" aria-label="Toggle other">−</button>
       </div>
-      <div class="event-list event-list--wide">
+      <div class="event-list">
         <% other_events.each do |event| %>
           <div class="event-card fade-in">
             <div class="event-card-inner">
@@ -127,7 +130,7 @@
               <div class="event-card-content">
                 <div class="event-name">
                   <% if event[:url].present? %>
-                    <a href="<%= event[:url] %>"><%= event[:name] %></a>
+                    <a href="<%= event[:url] %>" target="_blank" rel="noopener"><%= event[:name] %></a>
                   <% else %>
                     <%= event[:name] %>
                   <% end %>
