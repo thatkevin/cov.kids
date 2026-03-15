@@ -121,23 +121,21 @@ class Event < ApplicationRecord
       return Date.new(year, month, day) rescue nil
     end
 
+    # "Fri 6th Mar 7:30pm", "28 February 2026, 3pm", "Thu 5th Mar" — day before month
+    # (checked first to avoid the month-before-day pattern stealing time digits)
+    if (m = t.match(/(\d{1,2})(?:st|nd|rd|th)?\s+(#{UNTIL_MONTH_RE.source})(?:\s+(\d{4}))?/i))
+      day   = m[1].to_i
+      month = MONTH_ABBR_NUM[m[2].downcase[0,3]]
+      return nil unless month
+      year  = m[3] ? m[3].to_i : (month >= today.month ? today.year : today.year + 1)
+      return Date.new(year, month, day) rescue nil
+    end
+
     # "Wednesday March 18th 2026" or "March 18th 2026" — month before day, optional year
     if (m = t.match(/(#{UNTIL_MONTH_RE.source})\s+(\d{1,2})(?:st|nd|rd|th)?(?:\s+(\d{4}))?/i))
       month = MONTH_ABBR_NUM[m[1].downcase[0,3]]
       day   = m[2].to_i
       year  = m[3] ? m[3].to_i : (month >= today.month ? today.year : today.year + 1)
-      return Date.new(year, month, day) rescue nil
-    end
-
-    # "Fri 6th Mar 7:30pm" or "Thu 5th Mar"
-    if (m = t.match(/\d{1,2}(?:st|nd|rd|th)?\s+(#{UNTIL_MONTH_RE.source})/i))
-      day_m = t.match(/(\d{1,2})(?:st|nd|rd|th)?/)
-      mon_m = t.match(/(#{UNTIL_MONTH_RE.source})/i)
-      return nil unless day_m && mon_m
-      month = MONTH_ABBR_NUM[mon_m[1].downcase[0,3]]
-      day   = day_m[1].to_i
-      return nil unless month
-      year  = (month >= today.month ? today.year : today.year + 1)
       return Date.new(year, month, day) rescue nil
     end
 

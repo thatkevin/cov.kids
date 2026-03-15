@@ -60,6 +60,52 @@ class EventTest < ActiveSupport::TestCase
     end
   end
 
+  # Regression: month-before-day pattern must not steal time digits.
+  # "Sat 21st Mar 8pm" was mis-parsed as March 8th (from "Mar 8pm") when the
+  # month-before-day pattern ran before the day-before-month pattern.
+  test "parse_start_date: does not confuse time digits for the day (Sat 21st Mar 8pm)" do
+    travel_to Date.new(2026, 3, 15) do
+      assert_equal Date.new(2026, 3, 21), Event.parse_start_date("Sat 21st Mar 8pm")
+    end
+  end
+
+  test "parse_start_date: does not confuse time digits for the day (Fri 20th Mar 7:45pm)" do
+    travel_to Date.new(2026, 3, 15) do
+      assert_equal Date.new(2026, 3, 20), Event.parse_start_date("Fri 20th Mar 7:45pm")
+    end
+  end
+
+  test "parse_start_date: does not confuse time digits for the day (Sat 21st Mar 5pm)" do
+    travel_to Date.new(2026, 3, 15) do
+      assert_equal Date.new(2026, 3, 21), Event.parse_start_date("Sat 21st Mar 5pm & 7:45pm")
+    end
+  end
+
+  test "parse_start_date: parses month-before-day with full month name and year" do
+    travel_to Date.new(2026, 3, 15) do
+      assert_equal Date.new(2026, 3, 18), Event.parse_start_date("Wednesday March 18th 2026, 7.30pm")
+    end
+  end
+
+  test "parse_start_date: parses month-before-day without year, future month" do
+    travel_to Date.new(2026, 3, 15) do
+      assert_equal Date.new(2026, 4, 15), Event.parse_start_date("Wednesday April 15th, 7.30pm")
+    end
+  end
+
+  test "parse_start_date: uses explicit year to avoid rolling past months into next year" do
+    travel_to Date.new(2026, 3, 15) do
+      assert_equal Date.new(2026, 2, 28), Event.parse_start_date("28 February 2026, 3pm")
+      assert_equal Date.new(2026, 2, 24), Event.parse_start_date("24 February 2026, 7pm")
+    end
+  end
+
+  test "parse_start_date: rolls past month into next year when no explicit year" do
+    travel_to Date.new(2026, 3, 15) do
+      assert_equal Date.new(2027, 2, 1), Event.parse_start_date("1st Feb")
+    end
+  end
+
   # ── next_occurrence_date ───────────────────────────────────────────────────
 
   test "next_occurrence_date: returns start_date when set" do

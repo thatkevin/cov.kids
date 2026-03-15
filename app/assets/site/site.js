@@ -16,38 +16,56 @@ document.addEventListener('DOMContentLoaded', function () {
     if (btn) btn.textContent = section.classList.contains('is-collapsed') ? '+' : '−';
   }
 
+  function makeWrapper(height) {
+    var w = document.createElement('div');
+    w.className        = 'event-list-clip';
+    w.style.overflow   = 'hidden';
+    w.style.height     = height;
+    w.style.transition = 'height 0.25s ease';
+    return w;
+  }
+
+  // If an animation is in progress, immediately resolve it and return true.
+  function resolveAnimation(list) {
+    var w = list.parentNode;
+    if (!w || !w.classList.contains('event-list-clip')) return false;
+    w.parentNode.insertBefore(list, w);
+    w.parentNode.removeChild(w);
+    return true;
+  }
+
   function animateCollapse(list) {
-    list.style.height     = list.offsetHeight + 'px';
-    list.style.overflow   = 'hidden';
-    list.style.transition = 'height 0.25s ease';
+    if (resolveAnimation(list)) { list.style.display = 'none'; return; }
+    var w = makeWrapper(list.offsetHeight + 'px');
+    list.parentNode.insertBefore(w, list);
+    w.appendChild(list);
     requestAnimationFrame(function() {
       requestAnimationFrame(function() {
-        list.style.height = '0';
-        list.addEventListener('transitionend', function done() {
-          list.removeEventListener('transitionend', done);
-          list.style.display    = 'none';
-          list.style.height     = '';
-          list.style.overflow   = '';
-          list.style.transition = '';
+        w.style.height = '0';
+        w.addEventListener('transitionend', function done() {
+          w.removeEventListener('transitionend', done);
+          w.parentNode.insertBefore(list, w);
+          w.parentNode.removeChild(w);
+          list.style.display = 'none';
         });
       });
     });
   }
 
   function animateExpand(list) {
-    list.style.display    = '';
-    list.style.height     = '0';
-    list.style.overflow   = 'hidden';
-    list.style.transition = 'height 0.25s ease';
-    var target = list.scrollHeight;
+    if (resolveAnimation(list)) { list.style.display = ''; return; }
+    list.style.display = '';
+    var naturalHeight = list.offsetHeight;
+    var w = makeWrapper('0');
+    list.parentNode.insertBefore(w, list);
+    w.appendChild(list);
     requestAnimationFrame(function() {
       requestAnimationFrame(function() {
-        list.style.height = target + 'px';
-        list.addEventListener('transitionend', function done() {
-          list.removeEventListener('transitionend', done);
-          list.style.height     = '';
-          list.style.overflow   = '';
-          list.style.transition = '';
+        w.style.height = naturalHeight + 'px';
+        w.addEventListener('transitionend', function done() {
+          w.removeEventListener('transitionend', done);
+          w.parentNode.insertBefore(list, w);
+          w.parentNode.removeChild(w);
         });
       });
     });
