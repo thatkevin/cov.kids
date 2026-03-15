@@ -1,6 +1,43 @@
 // cov.kids — Scroll-triggered fade-in + venue filter
 document.addEventListener('DOMContentLoaded', function () {
 
+  // --- Category collapse (localStorage-persisted) ---
+  var CAT_STORAGE_KEY = 'ck-hidden-cats';
+
+  function getHiddenCats() {
+    try { return JSON.parse(localStorage.getItem(CAT_STORAGE_KEY) || '[]'); } catch(e) { return []; }
+  }
+  function setHiddenCats(cats) {
+    try { localStorage.setItem(CAT_STORAGE_KEY, JSON.stringify(cats)); } catch(e) {}
+  }
+
+  function updateToggleBtn(section) {
+    var btn = section.querySelector('.category-toggle');
+    if (btn) btn.textContent = section.classList.contains('is-collapsed') ? '+' : '−';
+  }
+
+  document.querySelectorAll('.category-section[data-category]').forEach(function(section) {
+    var cat = section.dataset.category;
+    if (getHiddenCats().indexOf(cat) !== -1) section.classList.add('is-collapsed');
+    updateToggleBtn(section);
+  });
+
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('.category-toggle');
+    if (!btn) return;
+    var section = btn.closest('.category-section[data-category]');
+    if (!section) return;
+    var cat = section.dataset.category;
+    var hidden = getHiddenCats();
+    var idx = hidden.indexOf(cat);
+    if (idx === -1) { hidden.push(cat); } else { hidden.splice(idx, 1); }
+    setHiddenCats(hidden);
+    section.classList.toggle('is-collapsed', idx === -1);
+    updateToggleBtn(section);
+    var g = document.querySelector('.events-grid');
+    if (g) { lastColCount = -1; buildEventColumns(g.getBoundingClientRect().width); }
+  });
+
   // --- Venue filter ---
   var filterEl = document.getElementById('venue-filter');
   if (filterEl) {
@@ -29,9 +66,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // --- Column distribution (greedy bin-pack, sections stay whole) ---
   // Width is supplied by ResizeObserver to avoid a forced reflow.
+  var lastColCount = -1;
   function buildEventColumns(w) {
     var grid = document.querySelector('.events-grid');
     if (!grid) return;
+
+    var colCount = w >= 1000 ? 4 : w >= 700 ? 3 : w >= 460 ? 2 : 1;
+    if (colCount === lastColCount) return;
+    lastColCount = colCount;
 
     // Collect sections, pulling them back out of any existing col wrappers
     var sections = [];
@@ -43,8 +85,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
     if (!sections.length) return;
-
-    var colCount = w >= 1000 ? 4 : w >= 700 ? 3 : w >= 460 ? 2 : 1;
 
     // Clear grid
     while (grid.firstChild) grid.removeChild(grid.firstChild);

@@ -31,7 +31,7 @@ body {
   color: #1a1a1a;
   line-height: 1.65;
   padding-top: 56px;
-  padding-bottom: 90px;
+  padding-bottom: 54px;
 }
 
 h1, h2, h3, h4 {
@@ -284,6 +284,23 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   letter-spacing: 0.04em;
 }
 
+.category-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 0 0 0.6rem;
+  color: #bbb;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.category-toggle:hover { color: #1a1a1a; }
+
+.is-collapsed .category-toggle { color: #999; }
+.is-collapsed .event-list { display: none; }
+.is-collapsed .category-header { margin-bottom: 0; border-bottom-color: #ccc; }
+
 /* ── Event Cards (editorial, border-bottom style) ─────────── */
 
 .event-card {
@@ -527,6 +544,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   left: -2.5%;
   width: 105%;
   height: 48px;
+  height: 29px;
   background-color: #000;
   background-image: repeating-conic-gradient(#000 0% 25%, #fff 0% 50%);
   background-size: 24px 24px;
@@ -638,17 +656,17 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
               <a href="../../" class="month-tab month-tab--home">this week</a>
             
             
-              <a href="../../2026/03" class="month-tab">Mar</a>
+              <a href="../../2026/03/" class="month-tab">Mar</a>
             
-              <a href="../../2026/04" class="month-tab">Apr</a>
+              <a href="../../2026/04/" class="month-tab">Apr</a>
             
-              <a href="../../2026/05" class="month-tab">May</a>
+              <a href="../../2026/05/" class="month-tab">May</a>
             
-              <a href="../../2026/06" class="month-tab">Jun</a>
+              <a href="../../2026/06/" class="month-tab">Jun</a>
             
-              <a href="../../2026/07" class="month-tab">Jul</a>
+              <a href="../../2026/07/" class="month-tab">Jul</a>
             
-              <a href="../../2026/08" class="month-tab">Aug</a>
+              <a href="../../2026/08/" class="month-tab">Aug</a>
             
           </nav>
           <select class="month-select" onchange="location.href=this.value" aria-label="Browse by month">
@@ -657,27 +675,25 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
               <option value="../../">this week</option>
             
             
-              <option value="../../2026/03">Mar</option>
+              <option value="../../2026/03/">Mar</option>
             
-              <option value="../../2026/04">Apr</option>
+              <option value="../../2026/04/">Apr</option>
             
-              <option value="../../2026/05">May</option>
+              <option value="../../2026/05/">May</option>
             
-              <option value="../../2026/06">Jun</option>
+              <option value="../../2026/06/">Jun</option>
             
-              <option value="../../2026/07">Jul</option>
+              <option value="../../2026/07/">Jul</option>
             
-              <option value="../../2026/08">Aug</option>
+              <option value="../../2026/08/">Aug</option>
             
           </select>
           
-            
-            
             <nav class="zone-nav" aria-label="Area filter">
               
               
-              <a href="../../warwickshire/" class="zone-tab">+ Warks</a>
-              <a href="../../birmingham/"  class="zone-tab">+ Brum</a>
+              <a href="./warwickshire/" class="zone-tab">+ Warks</a>
+              <a href="./birmingham/"  class="zone-tab">+ Brum</a>
             </nav>
           
         </div>
@@ -689,10 +705,11 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   
   <div class="events-grid">
     
-      <section class="category-section" data-count="3">
+      <section class="category-section" data-count="4" data-category="music">
         <div class="category-header">
           <h2>music</h2>
-          <span class="category-count">3</span>
+          <span class="category-count">4</span>
+          <button class="category-toggle" aria-label="Toggle music">−</button>
         </div>
         <div class="event-list">
           
@@ -707,7 +724,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                   </div>
                   <div class="event-meta">
                     <span class="date">Sat, 2 May at 20:00 BST</span>
-                    <span class="venue">Arches Venue, Coventry</span>
+                    <span class="venue">Arches Venue</span>
                   </div>
                   
                     <p class="event-description">Dire Straits tribute.</p>
@@ -719,10 +736,34 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://www.coventrymusic.co.uk/coventrymusichub/images/singing_after_sats_26_logo.jpg" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
-                      <a href="https://www.belgrade.co.uk/whats-on/">The Simon and Garfunkel Story</a>
+                      <a href="https://www.coventrymusic.co.uk/events/event/97/singing-after-sats-26">Singing after SATS 26</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">19th May 2026</span>
+                    
+                  </div>
+                  
+                    <p class="event-description">A chance for year 6 students to have fun after their exams.</p>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                  <img src="https://e2bai8ubb5z.exactdn.com/wp-content/uploads/2025/08/1080x1080-664x374.jpg?strip=all&quality=90&webp=90&avif=80" alt="" class="event-card-image" loading="lazy">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.belgrade.co.uk/events/simon-and-garfunkel/">The Simon and Garfunkel Story</a>
                     
                   </div>
                   <div class="event-meta">
@@ -747,7 +788,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                   </div>
                   <div class="event-meta">
                     <span class="date">Sat, 23 May at 20:00 BST</span>
-                    <span class="venue">Arches Venue, Coventry</span>
+                    <span class="venue">Arches Venue</span>
                   </div>
                   
                     <p class="event-description">Double header night.</p>
@@ -759,10 +800,11 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
         </div>
       </section>
     
-      <section class="category-section" data-count="2">
+      <section class="category-section" data-count="2" data-category="folk">
         <div class="category-header">
           <h2>folk</h2>
           <span class="category-count">2</span>
+          <button class="category-toggle" aria-label="Toggle folk">−</button>
         </div>
         <div class="event-list">
           
@@ -805,10 +847,11 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
         </div>
       </section>
     
-      <section class="category-section" data-count="6">
+      <section class="category-section" data-count="1" data-category="comedy">
         <div class="category-header">
-          <h2>arts</h2>
-          <span class="category-count">6</span>
+          <h2>comedy</h2>
+          <span class="category-count">1</span>
+          <button class="category-toggle" aria-label="Toggle comedy">−</button>
         </div>
         <div class="event-list">
           
@@ -818,7 +861,40 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                 <div class="event-card-content">
                   <div class="event-name">
                     
-                      <a href="https://www.belgrade.co.uk/whats-on/">Poor</a>
+                      <a href="https://www.albanytheatre.co.uk/shows/fun-with-barbara-nice/">FUN! with Barbara Nice</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Friday 1st May 2026</span>
+                    <span class="venue">Albany Theatre</span>
+                  </div>
+                  
+                    <p class="event-description">A comedy show with Barbara Nice at The Albany Theatre. Tickets from £16.</p>
+                  
+                </div>
+              </div>
+            </div>
+          
+        </div>
+      </section>
+    
+      <section class="category-section" data-count="6" data-category="arts">
+        <div class="category-header">
+          <h2>arts</h2>
+          <span class="category-count">6</span>
+          <button class="category-toggle" aria-label="Toggle arts">−</button>
+        </div>
+        <div class="event-list">
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                  <img src="https://e2bai8ubb5z.exactdn.com/wp-content/uploads/2025/08/Poor-664x374.jpg?strip=all&quality=90&webp=90&avif=80" alt="" class="event-card-image" loading="lazy">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.belgrade.co.uk/events/poor/">Poor</a>
                     
                   </div>
                   <div class="event-meta">
@@ -835,10 +911,12 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://e2bai8ubb5z.exactdn.com/wp-content/uploads/2024/03/Copy-of-Belgrade-Book-Club-Web-1-664x374.jpg?strip=all&quality=90&webp=90&avif=80" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
-                      <a href="https://www.belgrade.co.uk/whats-on/">Belgrade Book Club: Poor</a>
+                      <a href="https://www.belgrade.co.uk/events/book-club-poor/">Belgrade Book Club: Poor</a>
                     
                   </div>
                   <div class="event-meta">
@@ -855,10 +933,12 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://e2bai8ubb5z.exactdn.com/wp-content/uploads/2026/01/BOX-OFFICE-LANDSCAPE-2-664x374.jpg?strip=all&quality=90&webp=90&avif=80" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
-                      <a href="https://www.belgrade.co.uk/whats-on/">Flashbang</a>
+                      <a href="https://www.belgrade.co.uk/events/flashbang/">Flashbang</a>
                     
                   </div>
                   <div class="event-meta">
@@ -875,10 +955,12 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://e2bai8ubb5z.exactdn.com/wp-content/uploads/2026/01/FALLING-flyer_2025-4-664x374.jpg?strip=all&quality=90&webp=90&avif=80" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
-                      <a href="https://www.belgrade.co.uk/whats-on/">FALLING</a>
+                      <a href="https://www.belgrade.co.uk/events/falling/">FALLING</a>
                     
                   </div>
                   <div class="event-meta">
@@ -895,10 +977,12 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://e2bai8ubb5z.exactdn.com/wp-content/uploads/2025/09/Glorious-1920x1444-1-664x374.jpg?strip=all&quality=90&webp=90&avif=80" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
-                      <a href="https://www.belgrade.co.uk/whats-on/">Glorious!</a>
+                      <a href="https://www.belgrade.co.uk/events/glorious/">Glorious!</a>
                     
                   </div>
                   <div class="event-meta">
@@ -915,10 +999,12 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://e2bai8ubb5z.exactdn.com/wp-content/uploads/2025/09/BC24-femmefatale_11-664x374.jpg?strip=all&quality=90&webp=90&avif=80" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
-                      <a href="https://www.belgrade.co.uk/whats-on/">Breakin Convention</a>
+                      <a href="https://www.belgrade.co.uk/events/breakin-convention/">Breakin Convention</a>
                     
                   </div>
                   <div class="event-meta">
@@ -935,20 +1021,23 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
         </div>
       </section>
     
-      <section class="category-section" data-count="2">
+      <section class="category-section" data-count="2" data-category="family">
         <div class="category-header">
           <h2>family</h2>
           <span class="category-count">2</span>
+          <button class="category-toggle" aria-label="Toggle family">−</button>
         </div>
         <div class="event-list">
           
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://e2bai8ubb5z.exactdn.com/wp-content/uploads/2025/09/MT26_Belgrade_Simple_1920x1444-664x374.jpg?strip=all&quality=90&webp=90&avif=80" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
-                      <a href="https://www.belgrade.co.uk/whats-on/">Malory Towers</a>
+                      <a href="https://www.belgrade.co.uk/events/malory-towers/">Malory Towers</a>
                     
                   </div>
                   <div class="event-meta">

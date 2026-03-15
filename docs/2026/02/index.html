@@ -31,7 +31,7 @@ body {
   color: #1a1a1a;
   line-height: 1.65;
   padding-top: 56px;
-  padding-bottom: 90px;
+  padding-bottom: 54px;
 }
 
 h1, h2, h3, h4 {
@@ -284,6 +284,23 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   letter-spacing: 0.04em;
 }
 
+.category-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 0 0 0.6rem;
+  color: #bbb;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.category-toggle:hover { color: #1a1a1a; }
+
+.is-collapsed .category-toggle { color: #999; }
+.is-collapsed .event-list { display: none; }
+.is-collapsed .category-header { margin-bottom: 0; border-bottom-color: #ccc; }
+
 /* ── Event Cards (editorial, border-bottom style) ─────────── */
 
 .event-card {
@@ -527,6 +544,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   left: -2.5%;
   width: 105%;
   height: 48px;
+  height: 29px;
   background-color: #000;
   background-image: repeating-conic-gradient(#000 0% 25%, #fff 0% 50%);
   background-size: 24px 24px;
@@ -638,17 +656,17 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
               <a href="../../" class="month-tab month-tab--home">this week</a>
             
             
-              <a href="../../2026/03" class="month-tab">Mar</a>
+              <a href="../../2026/03/" class="month-tab">Mar</a>
             
-              <a href="../../2026/04" class="month-tab">Apr</a>
+              <a href="../../2026/04/" class="month-tab">Apr</a>
             
-              <a href="../../2026/05" class="month-tab">May</a>
+              <a href="../../2026/05/" class="month-tab">May</a>
             
-              <a href="../../2026/06" class="month-tab">Jun</a>
+              <a href="../../2026/06/" class="month-tab">Jun</a>
             
-              <a href="../../2026/07" class="month-tab">Jul</a>
+              <a href="../../2026/07/" class="month-tab">Jul</a>
             
-              <a href="../../2026/08" class="month-tab">Aug</a>
+              <a href="../../2026/08/" class="month-tab">Aug</a>
             
           </nav>
           <select class="month-select" onchange="location.href=this.value" aria-label="Browse by month">
@@ -657,27 +675,25 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
               <option value="../../">this week</option>
             
             
-              <option value="../../2026/03">Mar</option>
+              <option value="../../2026/03/">Mar</option>
             
-              <option value="../../2026/04">Apr</option>
+              <option value="../../2026/04/">Apr</option>
             
-              <option value="../../2026/05">May</option>
+              <option value="../../2026/05/">May</option>
             
-              <option value="../../2026/06">Jun</option>
+              <option value="../../2026/06/">Jun</option>
             
-              <option value="../../2026/07">Jul</option>
+              <option value="../../2026/07/">Jul</option>
             
-              <option value="../../2026/08">Aug</option>
+              <option value="../../2026/08/">Aug</option>
             
           </select>
           
-            
-            
             <nav class="zone-nav" aria-label="Area filter">
               
               
-              <a href="../../warwickshire/" class="zone-tab">+ Warks</a>
-              <a href="../../birmingham/"  class="zone-tab">+ Brum</a>
+              <a href="./warwickshire/" class="zone-tab">+ Warks</a>
+              <a href="./birmingham/"  class="zone-tab">+ Brum</a>
             </nav>
           
         </div>
@@ -689,10 +705,11 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   
   <div class="events-grid">
     
-      <section class="category-section" data-count="1">
+      <section class="category-section" data-count="1" data-category="music">
         <div class="category-header">
           <h2>music</h2>
           <span class="category-count">1</span>
+          <button class="category-toggle" aria-label="Toggle music">−</button>
         </div>
         <div class="event-list">
           
@@ -706,7 +723,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                     
                   </div>
                   <div class="event-meta">
-                    <span class="date">Fri 13 Mar</span>
+                    <span class="date">Fri 20 Mar</span>
                     <span class="venue">Warwick Arts Centre</span>
                   </div>
                   
@@ -717,10 +734,11 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
         </div>
       </section>
     
-      <section class="category-section" data-count="3">
+      <section class="category-section" data-count="3" data-category="folk">
         <div class="category-header">
           <h2>folk</h2>
           <span class="category-count">3</span>
+          <button class="category-toggle" aria-label="Toggle folk">−</button>
         </div>
         <div class="event-list">
           
@@ -781,15 +799,18 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
         </div>
       </section>
     
-      <section class="category-section" data-count="10">
+      <section class="category-section" data-count="10" data-category="arts">
         <div class="category-header">
           <h2>arts</h2>
           <span class="category-count">10</span>
+          <button class="category-toggle" aria-label="Toggle arts">−</button>
         </div>
         <div class="event-list">
           
             <div class="event-card fade-in">
               <div class="event-card-inner">
+                
+                  <img src="https://www.theherbert.org/_userfiles/thumbs/208cb56ca10e978b4106b1aceafe9454.png" alt="" class="event-card-image" loading="lazy">
                 
                 <div class="event-card-content">
                   <div class="event-name">
@@ -881,6 +902,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://www.theherbert.org/_userfiles/thumbs/3b7aaf8aefc25100273d2695e533cfd7.png" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
@@ -953,6 +976,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://www.theherbert.org/_userfiles/thumbs/3e5e0b808ad4a77e3e6ffae24e52142c.png" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
@@ -971,10 +996,11 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
         </div>
       </section>
     
-      <section class="category-section" data-count="6">
+      <section class="category-section" data-count="6" data-category="film">
         <div class="category-header">
           <h2>film</h2>
           <span class="category-count">6</span>
+          <button class="category-toggle" aria-label="Toggle film">−</button>
         </div>
         <div class="event-list">
           
@@ -1089,10 +1115,11 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
         </div>
       </section>
     
-      <section class="category-section" data-count="9">
+      <section class="category-section" data-count="9" data-category="family">
         <div class="category-header">
           <h2>family</h2>
           <span class="category-count">9</span>
+          <button class="category-toggle" aria-label="Toggle family">−</button>
         </div>
         <div class="event-list">
           
@@ -1171,6 +1198,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://www.transport-museum.com/_userfiles/thumbs/906508506bea84fa4ce491be66006e06/mini%20museum%20engineers%20thumbnail.png" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
@@ -1188,6 +1217,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
           
             <div class="event-card fade-in">
               <div class="event-card-inner">
+                
+                  <img src="https://www.transport-museum.com/_userfiles/thumbs/7d09af367b0a50a899bdd56253f7c3af/processed-89F63279-6698-4CF3-BABB-08B4E386A3F5_crop2418x1815.png" alt="" class="event-card-image" loading="lazy">
                 
                 <div class="event-card-content">
                   <div class="event-name">
@@ -1225,6 +1256,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://www.theherbert.org/_userfiles/thumbs/d44724bbe3e37d4c80d689ef660e2bf3.png" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
@@ -1242,6 +1275,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
           
             <div class="event-card fade-in">
               <div class="event-card-inner">
+                
+                  <img src="https://www.theherbert.org/_userfiles/thumbs/bb67e874613bbfea0e0b5ee8da860151.png" alt="" class="event-card-image" loading="lazy">
                 
                 <div class="event-card-content">
                   <div class="event-name">
@@ -1266,10 +1301,11 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   
 
   
-    <section class="category-section category-section--other" data-count="9">
+    <section class="category-section category-section--other" data-count="9" data-category="other">
       <div class="category-header">
         <h2>other</h2>
         <span class="category-count">9</span>
+        <button class="category-toggle" aria-label="Toggle other">−</button>
       </div>
       <div class="event-list event-list--wide">
         
@@ -1315,7 +1351,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                 </div>
                 <div class="event-meta">
                   <span class="date">Until 31st Dec</span>
-                  <span class="venue">Earsldon Carnegie Library</span>
+                  <span class="venue">Earlsdon Carnegie Community Library</span>
                 </div>
               </div>
             </div>

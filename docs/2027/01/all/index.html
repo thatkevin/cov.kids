@@ -31,7 +31,7 @@ body {
   color: #1a1a1a;
   line-height: 1.65;
   padding-top: 56px;
-  padding-bottom: 90px;
+  padding-bottom: 54px;
 }
 
 h1, h2, h3, h4 {
@@ -284,6 +284,23 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   letter-spacing: 0.04em;
 }
 
+.category-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 0 0 0.6rem;
+  color: #bbb;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.category-toggle:hover { color: #1a1a1a; }
+
+.is-collapsed .category-toggle { color: #999; }
+.is-collapsed .event-list { display: none; }
+.is-collapsed .category-header { margin-bottom: 0; border-bottom-color: #ccc; }
+
 /* ── Event Cards (editorial, border-bottom style) ─────────── */
 
 .event-card {
@@ -527,6 +544,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   left: -2.5%;
   width: 105%;
   height: 48px;
+  height: 29px;
   background-color: #000;
   background-image: repeating-conic-gradient(#000 0% 25%, #fff 0% 50%);
   background-size: 24px 24px;
@@ -635,49 +653,47 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
         <div class="header-filters">
           <nav class="month-nav" aria-label="Browse by month">
             
-              <a href="../../../" class="month-tab month-tab--home">this week</a>
+              <a href="../../../all/" class="month-tab month-tab--home">this week</a>
             
             
-              <a href="../../../2026/03" class="month-tab">Mar</a>
+              <a href="../../../2026/03/all/" class="month-tab">Mar</a>
             
-              <a href="../../../2026/04" class="month-tab">Apr</a>
+              <a href="../../../2026/04/all/" class="month-tab">Apr</a>
             
-              <a href="../../../2026/05" class="month-tab">May</a>
+              <a href="../../../2026/05/all/" class="month-tab">May</a>
             
-              <a href="../../../2026/06" class="month-tab">Jun</a>
+              <a href="../../../2026/06/all/" class="month-tab">Jun</a>
             
-              <a href="../../../2026/07" class="month-tab">Jul</a>
+              <a href="../../../2026/07/all/" class="month-tab">Jul</a>
             
-              <a href="../../../2026/08" class="month-tab">Aug</a>
+              <a href="../../../2026/08/all/" class="month-tab">Aug</a>
             
           </nav>
           <select class="month-select" onchange="location.href=this.value" aria-label="Browse by month">
             <option value="">Month...</option>
             
-              <option value="../../../">this week</option>
+              <option value="../../../all/">this week</option>
             
             
-              <option value="../../../2026/03">Mar</option>
+              <option value="../../../2026/03/all/">Mar</option>
             
-              <option value="../../../2026/04">Apr</option>
+              <option value="../../../2026/04/all/">Apr</option>
             
-              <option value="../../../2026/05">May</option>
+              <option value="../../../2026/05/all/">May</option>
             
-              <option value="../../../2026/06">Jun</option>
+              <option value="../../../2026/06/all/">Jun</option>
             
-              <option value="../../../2026/07">Jul</option>
+              <option value="../../../2026/07/all/">Jul</option>
             
-              <option value="../../../2026/08">Aug</option>
+              <option value="../../../2026/08/all/">Aug</option>
             
           </select>
           
-            
-            
             <nav class="zone-nav" aria-label="Area filter">
               
               
-              <a href="../../../birmingham/" class="zone-tab active">+ Warks</a>
-              <a href="../../../warwickshire/"  class="zone-tab active">+ Brum</a>
+              <a href="../birmingham/" class="zone-tab active">+ Warks</a>
+              <a href="../warwickshire/"  class="zone-tab active">+ Brum</a>
             </nav>
           
         </div>
@@ -689,15 +705,18 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   
   <div class="events-grid">
     
-      <section class="category-section" data-count="2">
+      <section class="category-section" data-count="2" data-category="family">
         <div class="category-header">
           <h2>family</h2>
           <span class="category-count">2</span>
+          <button class="category-toggle" aria-label="Toggle family">−</button>
         </div>
         <div class="event-list">
           
             <div class="event-card fade-in">
               <div class="event-card-inner">
+                
+                  <img src="https://www.transport-museum.com/_userfiles/thumbs/329f2188aa8cdf55f636c84673cd8ea1/Play%20and%20Make%20zone_crop3427x2501_crop3427x2500.png" alt="" class="event-card-image" loading="lazy">
                 
                 <div class="event-card-content">
                   <div class="event-name">
@@ -718,6 +737,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
           
             <div class="event-card fade-in">
               <div class="event-card-inner">
+                
+                  <img src="https://www.transport-museum.com/_userfiles/thumbs/44175e604c971eafda29534951762234/car%2038%20lo_crop582x388.png" alt="" class="event-card-image" loading="lazy">
                 
                 <div class="event-card-content">
                   <div class="event-name">
@@ -742,10 +763,11 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   </div>
 
   
-    <section class="category-section category-section--other" data-count="1">
+    <section class="category-section category-section--other" data-count="1" data-category="community">
       <div class="category-header">
         <h2>community</h2>
         <span class="category-count">1</span>
+        <button class="category-toggle" aria-label="Toggle community">−</button>
       </div>
       <div class="event-list event-list--wide">
         

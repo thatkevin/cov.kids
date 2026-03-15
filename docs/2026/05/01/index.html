@@ -31,7 +31,7 @@ body {
   color: #1a1a1a;
   line-height: 1.65;
   padding-top: 56px;
-  padding-bottom: 90px;
+  padding-bottom: 54px;
 }
 
 h1, h2, h3, h4 {
@@ -284,6 +284,23 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   letter-spacing: 0.04em;
 }
 
+.category-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 0 0 0.6rem;
+  color: #bbb;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.category-toggle:hover { color: #1a1a1a; }
+
+.is-collapsed .category-toggle { color: #999; }
+.is-collapsed .event-list { display: none; }
+.is-collapsed .category-header { margin-bottom: 0; border-bottom-color: #ccc; }
+
 /* ── Event Cards (editorial, border-bottom style) ─────────── */
 
 .event-card {
@@ -527,6 +544,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   left: -2.5%;
   width: 105%;
   height: 48px;
+  height: 29px;
   background-color: #000;
   background-image: repeating-conic-gradient(#000 0% 25%, #fff 0% 50%);
   background-size: 24px 24px;
@@ -636,14 +654,14 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
 
 <div class="page-title">
   <h1>Friday 1 May 2026</h1>
-  <p class="subtitle">1 event</p>
+  <p class="subtitle">2 events</p>
 </div>
 
 
   <div class="event-card fade-in">
     <div class="event-name">
       
-        <a href="https://www.belgrade.co.uk/whats-on/">Poor</a>
+        <a href="https://www.belgrade.co.uk/events/poor/">Poor</a>
       
     </div>
     <div class="event-meta">
@@ -652,6 +670,22 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
       
       
         <span class="venue">Belgrade Theatre</span>
+      
+    </div>
+  </div>
+
+  <div class="event-card fade-in">
+    <div class="event-name">
+      
+        <a href="https://www.albanytheatre.co.uk/shows/fun-with-barbara-nice/">FUN! with Barbara Nice</a>
+      
+    </div>
+    <div class="event-meta">
+      
+        <span class="date">Friday 1st May 2026</span>
+      
+      
+        <span class="venue">Albany Theatre</span>
       
     </div>
   </div>

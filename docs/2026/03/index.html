@@ -31,7 +31,7 @@ body {
   color: #1a1a1a;
   line-height: 1.65;
   padding-top: 56px;
-  padding-bottom: 90px;
+  padding-bottom: 54px;
 }
 
 h1, h2, h3, h4 {
@@ -284,6 +284,23 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   letter-spacing: 0.04em;
 }
 
+.category-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 0 0 0.6rem;
+  color: #bbb;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.category-toggle:hover { color: #1a1a1a; }
+
+.is-collapsed .category-toggle { color: #999; }
+.is-collapsed .event-list { display: none; }
+.is-collapsed .category-header { margin-bottom: 0; border-bottom-color: #ccc; }
+
 /* ── Event Cards (editorial, border-bottom style) ─────────── */
 
 .event-card {
@@ -527,6 +544,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   left: -2.5%;
   width: 105%;
   height: 48px;
+  height: 29px;
   background-color: #000;
   background-image: repeating-conic-gradient(#000 0% 25%, #fff 0% 50%);
   background-size: 24px 24px;
@@ -638,17 +656,17 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
               <a href="../../" class="month-tab month-tab--home">this week</a>
             
             
-              <a href="../../2026/03" class="month-tab">Mar</a>
+              <a href="../../2026/03/" class="month-tab">Mar</a>
             
-              <a href="../../2026/04" class="month-tab">Apr</a>
+              <a href="../../2026/04/" class="month-tab">Apr</a>
             
-              <a href="../../2026/05" class="month-tab">May</a>
+              <a href="../../2026/05/" class="month-tab">May</a>
             
-              <a href="../../2026/06" class="month-tab">Jun</a>
+              <a href="../../2026/06/" class="month-tab">Jun</a>
             
-              <a href="../../2026/07" class="month-tab">Jul</a>
+              <a href="../../2026/07/" class="month-tab">Jul</a>
             
-              <a href="../../2026/08" class="month-tab">Aug</a>
+              <a href="../../2026/08/" class="month-tab">Aug</a>
             
           </nav>
           <select class="month-select" onchange="location.href=this.value" aria-label="Browse by month">
@@ -657,27 +675,25 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
               <option value="../../">this week</option>
             
             
-              <option value="../../2026/03">Mar</option>
+              <option value="../../2026/03/">Mar</option>
             
-              <option value="../../2026/04">Apr</option>
+              <option value="../../2026/04/">Apr</option>
             
-              <option value="../../2026/05">May</option>
+              <option value="../../2026/05/">May</option>
             
-              <option value="../../2026/06">Jun</option>
+              <option value="../../2026/06/">Jun</option>
             
-              <option value="../../2026/07">Jul</option>
+              <option value="../../2026/07/">Jul</option>
             
-              <option value="../../2026/08">Aug</option>
+              <option value="../../2026/08/">Aug</option>
             
           </select>
           
-            
-            
             <nav class="zone-nav" aria-label="Area filter">
               
               
-              <a href="../../warwickshire/" class="zone-tab">+ Warks</a>
-              <a href="../../birmingham/"  class="zone-tab">+ Brum</a>
+              <a href="./warwickshire/" class="zone-tab">+ Warks</a>
+              <a href="./birmingham/"  class="zone-tab">+ Brum</a>
             </nav>
           
         </div>
@@ -689,10 +705,11 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   
   <div class="events-grid">
     
-      <section class="category-section" data-count="53">
+      <section class="category-section" data-count="72" data-category="music">
         <div class="category-header">
           <h2>music</h2>
-          <span class="category-count">53</span>
+          <span class="category-count">72</span>
+          <button class="category-toggle" aria-label="Toggle music">−</button>
         </div>
         <div class="event-list">
           
@@ -779,7 +796,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                   </div>
                   <div class="event-meta">
                     <span class="date">Fri 6th Mar 7pm</span>
-                    <span class="venue">HMV Empire</span>
+                    <span class="venue">hmv Empire Coventry</span>
                   </div>
                   
                 </div>
@@ -909,7 +926,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                   </div>
                   <div class="event-meta">
                     <span class="date">Sat 7th Mar 7pm</span>
-                    <span class="venue">HMV Empire</span>
+                    <span class="venue">hmv Empire Coventry</span>
                   </div>
                   
                 </div>
@@ -945,7 +962,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                   </div>
                   <div class="event-meta">
                     <span class="date">Sat 7th Mar 2pm</span>
-                    <span class="venue">HMV Empire</span>
+                    <span class="venue">hmv Empire Coventry</span>
                   </div>
                   
                 </div>
@@ -1048,7 +1065,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                 <div class="event-card-content">
                   <div class="event-name">
                     
-                      <a href="https://www.warwickartscentre.co.uk/whats-on/qvx-knibbs-howard-presentethel-smyth-the-stormy-petrel/">Lunchtime Concert: Knibbs &amp; Howard Present: Ethel Smyth, The Stormy Petrel</a>
+                      <a href="https://www.warwickartscentre.co.uk/whats-on/qvx-knibbs-howard-presentethel-smyth-the-stormy-petrel/">Lunchtime Concert: Knibbs & Howard Present: Ethel Smyth, The Stormy Petrel</a>
                     
                   </div>
                   <div class="event-meta">
@@ -1083,6 +1100,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://images.squarespace-cdn.com/content/v1/65b650f31cd23a122a3f5874/f0fd5d24-39d7-4f0f-a137-25664e5c3b3f/eventsltb.jpeg" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
@@ -1109,7 +1128,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                   </div>
                   <div class="event-meta">
                     <span class="date">Fri 13th Mar 7pm</span>
-                    <span class="venue">HMV Empire</span>
+                    <span class="venue">hmv Empire Coventry</span>
                   </div>
                   
                 </div>
@@ -1371,6 +1390,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://images.squarespace-cdn.com/content/v1/65b650f31cd23a122a3f5874/f0fd5d24-39d7-4f0f-a137-25664e5c3b3f/eventsltb.jpeg" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
@@ -1419,6 +1440,50 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                     <span class="date">Sun 15th Mar 4pm</span>
                     <span class="venue">Warwick Arts Centre</span>
                   </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                  <img src="https://www.coventrymusic.co.uk/coventrymusichub/images/boy_singer.png" alt="" class="event-card-image" loading="lazy">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.coventrymusic.co.uk/events/event/95/spring-gig-night-2026">Spring Gig Night 2026</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">16th March 2026 - 20th March 2026</span>
+                    
+                  </div>
+                  
+                    <p class="event-description">A chance to watch live on stage groups perform live.</p>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                  <img src="https://www.coventrymusic.co.uk/coventrymusichub/images/social_media_images_600x400_2.jpg" alt="" class="event-card-image" loading="lazy">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.coventrymusic.co.uk/events/event/107/lyng-hall-sparks-sharing-concert">Lyng Hall Sparks! Sharing Concert</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">19th March 2026</span>
+                    <span class="venue">Lyng Hall School</span>
+                  </div>
+                  
+                    <p class="event-description">Come and watch the Sparks! group sharing and see what they have been learning this term.</p>
                   
                 </div>
               </div>
@@ -1491,6 +1556,28 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://www.coventrymusic.co.uk/coventrymusichub/images/digital_festival_cropped.jpg" alt="" class="event-card-image" loading="lazy">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.coventrymusic.co.uk/events/event/102/live-music-digital-festival-2026">Live Music Digital Festival 2026</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">20th March 2026</span>
+                    
+                  </div>
+                  
+                    <p class="event-description">An event to celebrate music making across the Heart of England Music Hub.</p>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
@@ -1534,6 +1621,68 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                 <div class="event-card-content">
                   <div class="event-name">
                     
+                      <a href="https://www.eventbrite.co.uk/e/subcarpati-coventry-kasbah-nightclub-21032026-tickets-1981943724031">SUBCARPAȚI | COVENTRY (Kasbah Nightclub) | 21.03.2026</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Sat, Mar 21, 7:00 PM</span>
+                    <span class="venue">Kasbah Nightclub</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                  <img src="https://www.coventrymusic.co.uk/coventrymusichub/images/music_festival_header.jpg" alt="" class="event-card-image" loading="lazy">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.coventrymusic.co.uk/events/event/103/heart-of-england-music-hub-festival">Heart of England Music Hub Festival</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">22nd March 2026</span>
+                    
+                  </div>
+                  
+                    <p class="event-description">Inaugural Heart of England Music Festival celebrating the work the hub does in the community.</p>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                  <img src="https://www.coventrymusic.co.uk/coventrymusichub/images/social_media_images_600x400__1__1.jpg" alt="" class="event-card-image" loading="lazy">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.coventrymusic.co.uk/events/event/108/spring-sharing-for-coventry-music-beginner-albany-groups">Spring Sharing for Coventry Music Beginner Albany groups</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">24th March 2026</span>
+                    <span class="venue">Albany Theatre</span>
+                  </div>
+                  
+                    <p class="event-description">Parents, carers, family and friends are invited to watch children share the music they have been working on this term.</p>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
                       <a href="https://www.eventbrite.co.uk/d/united-kingdom--coventry/events/">JERSEY PARTY COVENTRY</a>
                     
                   </div>
@@ -1548,6 +1697,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
           
             <div class="event-card fade-in">
               <div class="event-card-inner">
+                
+                  <img src="https://e2bai8ubb5z.exactdn.com/wp-content/uploads/2025/08/Q-the-Music-generic-textless-1920x1080-AWƒ-664x374.jpg?strip=all&quality=90&webp=90&avif=80" alt="" class="event-card-image" loading="lazy">
                 
                 <div class="event-card-content">
                   <div class="event-name">
@@ -1694,6 +1845,78 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                 <div class="event-card-content">
                   <div class="event-name">
                     
+                      <a href="https://www.warwickartscentre.co.uk/whats-on/npt-boyzlife/">Boyzlife</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Sun 22nd Mar 7:30pm</span>
+                    <span class="venue">Warwick Arts Centre</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.warwickartscentre.co.uk/whats-on/quY-elles-bailey-cant-take-my-story-away/">Elles Bailey – Can’t Take My Story Away</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Fri 20th Mar 7:30pm</span>
+                    <span class="venue">Warwick Arts Centre</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.warwickartscentre.co.uk/whats-on/qh1-eric-bibb-one-mississippi-uk-tour-2026/">Eric Bibb – One Mississippi UK Tour 2026</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Thu 19th Mar 7:30pm</span>
+                    <span class="venue">Warwick Arts Centre</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://wegottickets.com/f/15834">Midding Plus Special Guests: Ry-Guy</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Sat 21st Mar 7pm</span>
+                    <span class="venue">Just Dropped In</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
                       <a href="https://www.warwickartscentre.co.uk/whats-on/qNc-open-mic/">Open Mic</a>
                     
                   </div>
@@ -1706,13 +1929,180 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
               </div>
             </div>
           
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                  <img src="https://thetinmusicandarts.org.uk/site-v2/wp-content/uploads/2025/11/SSM-NEW-IMAGE-1.jpeg" alt="" class="event-card-image" loading="lazy">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://thetinmusicandarts.org.uk/events/">Power of Dreams</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    
+                    
+                  </div>
+                  
+                    <p class="event-description">Power of Dreams live event featuring Spoon Speaker Man. The flyer has a dramatic sepia-toned aesthetic with masked figures and psychedelic typography.</p>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://ticket247.co.uk/Event/punk-takeover-army-of-skanks-drivelheads-devoid-the-dregs-at-arches-venue-coventry-518750">Punk Takeover - Army of Skanks Drivelheads Devoid + The Dregs</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Sat 21st Mar 7:30pm</span>
+                    <span class="venue">Arches Venue</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.coventrycathedral.org.uk/events/queen-by-candlelight">Queen by Candlelight</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Sat 21st Mar 7:30pm</span>
+                    <span class="venue">Coventry Cathedral</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.warwickartscentre.co.uk/whats-on/qOk-remembering-rafi-celebrating-a-golden-era/">Remembering Rafi – Celebrating A Golden Era</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Sun 22nd Mar 8pm</span>
+                    <span class="venue">Warwick Arts Centre</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.fargovillage.co.uk/events/shanghai-hostage-album-launch-party">Shanghai Hostage Album Launch Party</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Sat 21st Mar 7pm</span>
+                    <span class="venue">Fargo Village</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.kasbahnightclub.com/event/subcarpati-pre-club-show/">Subcarpați</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Sat 21st Mar 6:30pm</span>
+                    <span class="venue">Kasbah</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.fatsoma.com/147-coventry-/promotions/5hkaxy67/the-abba-day-party-coventry">The ABBA Day Party</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Sat 21st Mar 3pm</span>
+                    <span class="venue">147 Nightclub</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.eventim-light.com/uk/a/62aaf91212e4de0a6a8997a8/e/6888ec9b9de24841feb44344">The Prodigy Tribute // Jilted Generation</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Fri 20th Mar 7pm</span>
+                    <span class="venue">hmv Empire Coventry</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.warwickartscentre.co.uk/whats-on/quj-vitamin-string-quartet/">Vitamin String Quartet</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Mon 16th Mar 7:30pm</span>
+                    <span class="venue">Warwick Arts Centre</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
         </div>
       </section>
     
-      <section class="category-section" data-count="10">
+      <section class="category-section" data-count="11" data-category="folk">
         <div class="category-header">
           <h2>folk</h2>
-          <span class="category-count">10</span>
+          <span class="category-count">11</span>
+          <button class="category-toggle" aria-label="Toggle folk">−</button>
         </div>
         <div class="event-list">
           
@@ -1781,7 +2171,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                   </div>
                   <div class="event-meta">
                     <span class="date">14 March 2026, 7:30pm</span>
-                    <span class="venue">Earsldon Carnegie Library</span>
+                    <span class="venue">Earlsdon Carnegie Community Library</span>
                   </div>
                   
                 </div>
@@ -1900,13 +2290,34 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
               </div>
             </div>
           
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.albanytheatre.co.uk/shows/cv-folk-up-close-and-acoustic-sessions/">CV Folk: Up Close and Acoustic – Donelly and South</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Friday 27th March 2026</span>
+                    <span class="venue">Albany Theatre</span>
+                  </div>
+                  
+                    <p class="event-description">An intimate acoustic folk session featuring Donelly and South. Tickets from £10.50.</p>
+                  
+                </div>
+              </div>
+            </div>
+          
         </div>
       </section>
     
-      <section class="category-section" data-count="12">
+      <section class="category-section" data-count="16" data-category="comedy">
         <div class="category-header">
           <h2>comedy</h2>
-          <span class="category-count">12</span>
+          <span class="category-count">16</span>
+          <button class="category-toggle" aria-label="Toggle comedy">−</button>
         </div>
         <div class="event-list">
           
@@ -2130,13 +2541,86 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
               </div>
             </div>
           
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.warwickartscentre.co.uk/whats-on/nE6-ray-bradshaw-coda/">Ray Bradshaw: CODA</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Fri 20th Mar 7:45pm</span>
+                    <span class="venue">Warwick Arts Centre</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.warwickartscentre.co.uk/whats-on/nyI-scott-bennett-stuff/">Scott Bennett: Stuff</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Sat 21st Mar 7:30pm</span>
+                    <span class="venue">Warwick Arts Centre</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.warwickartscentre.co.uk/whats-on/qzX-tom-davis-spudgun/">Tom Davis: Spudgun</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Sat 21st Mar 8pm</span>
+                    <span class="venue">Warwick Arts Centre</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.warwickartscentre.co.uk/whats-on/nv2-tom-rosenthal-whatever-people-say-i-am-thats-what-i-am/">Tom Rosenthal: Whatever People Say I Am, That's What I Am</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Sat 21st Mar 5pm &amp; 7:45pm</span>
+                    <span class="venue">Warwick Arts Centre</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
         </div>
       </section>
     
-      <section class="category-section" data-count="31">
+      <section class="category-section" data-count="33" data-category="arts">
         <div class="category-header">
           <h2>arts</h2>
-          <span class="category-count">31</span>
+          <span class="category-count">33</span>
+          <button class="category-toggle" aria-label="Toggle arts">−</button>
         </div>
         <div class="event-list">
           
@@ -2292,7 +2776,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                 <div class="event-card-content">
                   <div class="event-name">
                     
-                      <a href="https://www.warwickartscentre.co.uk/whats-on/Unl-culture-talks-kuwata-colour/">Culture Talks: Kuwata &amp; Colour</a>
+                      <a href="https://www.warwickartscentre.co.uk/whats-on/Unl-culture-talks-kuwata-colour/">Culture Talks: Kuwata & Colour</a>
                     
                   </div>
                   <div class="event-meta">
@@ -2365,18 +2849,20 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://www.theherbert.org/_userfiles/thumbs/4f402a138927af36783dc07161c5b4ff.png" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
-                      <a href="https://www.belgrade.co.uk/events/book-club-wotw/">Belgrade Book Club: The War of The Worlds</a>
+                      <a href="https://www.theherbert.org/whats-on/1932/viewings">Viewings</a>
                     
                   </div>
                   <div class="event-meta">
-                    <span class="date">Wed 18 Mar 2026</span>
-                    <span class="venue">Belgrade Theatre</span>
+                    <span class="date">18 – 28 March 2026</span>
+                    <span class="venue">Herbert Art Gallery & Museum</span>
                   </div>
                   
-                    <p class="event-description">Join the Belgrade Book Club to read HG Wells's The War of The Worlds ahead of imitating the dog's thrilling and timely stage adaptation.</p>
+                    <p class="event-description">An exhibition of paintings of figures and interiors from a TV programme.</p>
                   
                 </div>
               </div>
@@ -2384,6 +2870,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
           
             <div class="event-card fade-in">
               <div class="event-card-inner">
+                
+                  <img src="https://e2bai8ubb5z.exactdn.com/wp-content/uploads/2025/07/WoW-664x374.jpg?strip=all&quality=90&webp=90&avif=80" alt="" class="event-card-image" loading="lazy">
                 
                 <div class="event-card-content">
                   <div class="event-name">
@@ -2405,10 +2893,12 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://earlsdonlibrary.org.uk/wp-content/uploads/2026/03/Red-Gradient-Modern-Blank-Document-A4-724x1024.jpg" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
-                      Life Drawing at the Library
+                      <a href="https://earlsdonlibrary.org.uk/whatson">Life Drawing at the Library</a>
                     
                   </div>
                   <div class="event-meta">
@@ -2424,6 +2914,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
           
             <div class="event-card fade-in">
               <div class="event-card-inner">
+                
+                  <img src="https://www.theherbert.org/_userfiles/thumbs/d7fb15a0cd2a9d929ec7e1195d04e4d1.png" alt="" class="event-card-image" loading="lazy">
                 
                 <div class="event-card-content">
                   <div class="event-name">
@@ -2445,6 +2937,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://e2bai8ubb5z.exactdn.com/wp-content/uploads/2026/01/1920-x-1444-px-664x374.jpg?strip=all&quality=90&webp=90&avif=80" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
@@ -2464,6 +2958,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
           
             <div class="event-card fade-in">
               <div class="event-card-inner">
+                
+                  <img src="https://earlsdonlibrary.org.uk/wp-content/uploads/2026/01/Oscar-Wilde-724x1024.jpg" alt="" class="event-card-image" loading="lazy">
                 
                 <div class="event-card-content">
                   <div class="event-name">
@@ -2504,6 +3000,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
           
             <div class="event-card fade-in">
               <div class="event-card-inner">
+                
+                  <img src="https://e2bai8ubb5z.exactdn.com/wp-content/uploads/2025/11/grain-664x374.jpg?strip=all&quality=90&webp=90&avif=80" alt="" class="event-card-image" loading="lazy">
                 
                 <div class="event-card-content">
                   <div class="event-name">
@@ -2565,6 +3063,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://e2bai8ubb5z.exactdn.com/wp-content/uploads/2025/10/Image-for-The-Belgrade-Theatre-copy-1-664x374.jpg?strip=all&quality=90&webp=90&avif=80" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
@@ -2584,6 +3084,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
           
             <div class="event-card fade-in">
               <div class="event-card-inner">
+                
+                  <img src="https://www.albanytheatre.co.uk/wp-content/uploads/2025/09/Albany-Youth-theatre-Juniors-42-550x650.png" alt="" class="event-card-image" loading="lazy">
                 
                 <div class="event-card-content">
                   <div class="event-name">
@@ -2608,7 +3110,25 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                 <div class="event-card-content">
                   <div class="event-name">
                     
-                      <a href="https://www.warwickartscentre.co.uk/whats-on/qc5-exhibition-on-screen-turner-constable/">Exhibition On Screen: Turner &amp; Constable</a>
+                      <a href="https://www.warwickartscentre.co.uk/whats-on/qBF-bach-reimagined/">Bach Reimagined</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Tue 17th Mar 7:30pm</span>
+                    <span class="venue">Warwick Arts Centre</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.warwickartscentre.co.uk/whats-on/qc5-exhibition-on-screen-turner-constable/">Exhibition On Screen: Turner & Constable</a>
                     
                   </div>
                   <div class="event-meta">
@@ -2681,6 +3201,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://www.theherbert.org/_userfiles/thumbs/a3f9a628a94c3ad6e8c92da5e82aabe7.png" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
@@ -2698,6 +3220,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
           
             <div class="event-card fade-in">
               <div class="event-card-inner">
+                
+                  <img src="https://e2bai8ubb5z.exactdn.com/wp-content/uploads/2026/01/1920-x-1444-px-664x374.jpg?strip=all&quality=90&webp=90&avif=80" alt="" class="event-card-image" loading="lazy">
                 
                 <div class="event-card-content">
                   <div class="event-name">
@@ -2719,6 +3243,28 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://www.coventrymusic.co.uk/coventrymusichub/images/social_media_images_600x400__1__1.jpg" alt="" class="event-card-image" loading="lazy">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.coventrymusic.co.uk/events">Spring Sharing at the Albany</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    
+                    <span class="venue">The Albany</span>
+                  </div>
+                  
+                    <p class="event-description">Spring Sharing at the Albany, a performance or showcase event held at The Albany venue.</p>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
@@ -2726,7 +3272,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                     
                   </div>
                   <div class="event-meta">
-                    <span class="date">Thu 12 Mar</span>
+                    <span class="date">Thu 19 Mar</span>
                     <span class="venue">Belgrade Theatre</span>
                   </div>
                   
@@ -2737,10 +3283,11 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
         </div>
       </section>
     
-      <section class="category-section" data-count="6">
+      <section class="category-section" data-count="9" data-category="sport">
         <div class="category-header">
           <h2>sport</h2>
-          <span class="category-count">6</span>
+          <span class="category-count">9</span>
+          <button class="category-toggle" aria-label="Toggle sport">−</button>
         </div>
         <div class="event-list">
           
@@ -2852,13 +3399,68 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
               </div>
             </div>
           
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://iceaccount.co.uk/coventry-blaze/event/?event_id=7791">Coventry Blaze vs Fife Flyers</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Sat 21st Mar 7pm</span>
+                    <span class="venue">Skydome Arena</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.coventryrugby.co.uk/matches/fixtures/">Coventry Rugby vs Doncaster</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Sat 21st Mar 3pm</span>
+                    <span class="venue">Nick Newbold Stadium</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.coventryrugby.co.uk/other-events/">The Nick Newbold Stadium Name Unveiling & Tribute Event</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Sat 21st Mar</span>
+                    <span class="venue">Nick Newbold Stadium</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
         </div>
       </section>
     
-      <section class="category-section" data-count="5">
+      <section class="category-section" data-count="7" data-category="food">
         <div class="category-header">
           <h2>food</h2>
-          <span class="category-count">5</span>
+          <span class="category-count">7</span>
+          <button class="category-toggle" aria-label="Toggle food">−</button>
         </div>
         <div class="event-list">
           
@@ -2927,7 +3529,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                   </div>
                   <div class="event-meta">
                     <span class="date">Sat 14th Mar 6pm</span>
-                    <span class="venue">HMV Empire</span>
+                    <span class="venue">hmv Empire Coventry</span>
                   </div>
                   
                 </div>
@@ -2936,6 +3538,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
           
             <div class="event-card fade-in">
               <div class="event-card-inner">
+                
+                  <img src="https://e2bai8ubb5z.exactdn.com/wp-content/uploads/2025/10/Crime-Dine-Web-664x374.jpg?strip=all&quality=90&webp=90&avif=80" alt="" class="event-card-image" loading="lazy">
                 
                 <div class="event-card-content">
                   <div class="event-name">
@@ -2954,13 +3558,50 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
               </div>
             </div>
           
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.facebook.com/events/1456836279308010?locale=en_GB">Irish Whiskey Tasting</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Tue 17th Mar 6:30pm</span>
+                    <span class="venue">The Old Windmill</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://twisted-barrel-brewery-and-tap-house.designmynight.com/63c5594a38692b02b16efd4b/theme-speedquizzing-at-twisted-barrel">Speedquizzing</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Thu 19th Mar 7:30pm</span>
+                    <span class="venue">Twisted Barrel Brewery & Tap House</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
         </div>
       </section>
     
-      <section class="category-section" data-count="14">
+      <section class="category-section" data-count="22" data-category="film">
         <div class="category-header">
           <h2>film</h2>
-          <span class="category-count">14</span>
+          <span class="category-count">22</span>
+          <button class="category-toggle" aria-label="Toggle film">−</button>
         </div>
         <div class="event-list">
           
@@ -3075,6 +3716,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://earlsdonlibrary.org.uk/wp-content/uploads/2026/01/film-club-717x1024.jpg" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
@@ -3082,11 +3725,29 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                     
                   </div>
                   <div class="event-meta">
-                    <span class="date">Wed 11 Mar</span>
+                    <span class="date">Wed 18 Mar</span>
                     <span class="venue">Earlsdon Carnegie Community Library</span>
                   </div>
                   
                     <p class="event-description">A screening of All We Imagine as Light (India, 2024), directed by Payal Kapadia. Part of Film Earlsdon's Season 11 film club programme.</p>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.warwickartscentre.co.uk/whats-on/UgZ-cosy-classic-amelie-25th-anniversary/">Cosy Classic: Amélie (25th Anniversary)</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Wed 18th Mar 8pm</span>
+                    <span class="venue">Warwick Arts Centre</span>
+                  </div>
                   
                 </div>
               </div>
@@ -3138,11 +3799,31 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                 <div class="event-card-content">
                   <div class="event-name">
                     
+                      <a href="https://www.warwickartscentre.co.uk/whats-on/Um0-hard-boiled/">Hard Boiled</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Until 25th Mar</span>
+                    <span class="venue">Warwick Arts Centre</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                  <img src="https://earlsdonlibrary.org.uk/wp-content/uploads/2026/01/film-club-717x1024.jpg" alt="" class="event-card-image" loading="lazy">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
                       <a href="https://filmearlsdon.org.uk">Hard Truths</a>
                     
                   </div>
                   <div class="event-meta">
-                    <span class="date">Wed 11 Mar</span>
+                    <span class="date">Wed 18 Mar</span>
                     <span class="venue">Earlsdon Carnegie Community Library</span>
                   </div>
                   
@@ -3158,11 +3839,31 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                 <div class="event-card-content">
                   <div class="event-name">
                     
+                      <a href="https://www.warwickartscentre.co.uk/whats-on/UMn-jftfp26-ura-aka-laventure/">JFTFP26: Ura Aka: L'Aventure</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Tue 17th Mar 5:30pm</span>
+                    <span class="venue">Warwick Arts Centre</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                  <img src="https://earlsdonlibrary.org.uk/wp-content/uploads/2026/01/film-club-717x1024.jpg" alt="" class="event-card-image" loading="lazy">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
                       <a href="https://filmearlsdon.org.uk">Kneecap</a>
                     
                   </div>
                   <div class="event-meta">
-                    <span class="date">Wed 11 Mar</span>
+                    <span class="date">Wed 18 Mar</span>
                     <span class="venue">Earlsdon Carnegie Community Library</span>
                   </div>
                   
@@ -3196,6 +3897,60 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                 <div class="event-card-content">
                   <div class="event-name">
                     
+                      <a href="https://www.showcasecinemas.co.uk/movies/1000040994-moulin-rouge-25th-anniversary/">Moulin Rouge (25th Anniversary)</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Until 26th Mar</span>
+                    <span class="venue">Showcase Cinemas</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.warwickartscentre.co.uk/whats-on/UgR-mystery-oscars-film-free-poster/">Mystery Oscars Film + Free poster</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Mon 16th Mar 8pm</span>
+                    <span class="venue">Warwick Arts Centre</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.warwickartscentre.co.uk/whats-on/Uml-resurrection/">Resurrection</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Until 26th Mar</span>
+                    <span class="venue">Warwick Arts Centre</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
                       <a href="https://www.warwickartscentre.co.uk/whats-on/UmF-sirat/">Sirāt</a>
                     
                   </div>
@@ -3214,11 +3969,31 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                 <div class="event-card-content">
                   <div class="event-name">
                     
+                      <a href="https://www.warwickartscentre.co.uk/whats-on/UmU-the-love-that-remains/">The Love That Remains</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Until 26th Mar</span>
+                    <span class="venue">Warwick Arts Centre</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                  <img src="https://earlsdonlibrary.org.uk/wp-content/uploads/2026/01/film-club-717x1024.jpg" alt="" class="event-card-image" loading="lazy">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
                       <a href="https://filmearlsdon.org.uk">The Queen of Spades</a>
                     
                   </div>
                   <div class="event-meta">
-                    <span class="date">Wed 11 Mar</span>
+                    <span class="date">Wed 18 Mar</span>
                     <span class="venue">Earlsdon Carnegie Community Library</span>
                   </div>
                   
@@ -3228,13 +4003,32 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
               </div>
             </div>
           
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://www.warwickartscentre.co.uk/whats-on/Ugw-the-secretagent/">The Secret Agent</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Until 19th Mar</span>
+                    <span class="venue">Warwick Arts Centre</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
         </div>
       </section>
     
-      <section class="category-section" data-count="16">
+      <section class="category-section" data-count="17" data-category="family">
         <div class="category-header">
           <h2>family</h2>
-          <span class="category-count">16</span>
+          <span class="category-count">17</span>
+          <button class="category-toggle" aria-label="Toggle family">−</button>
         </div>
         <div class="event-list">
           
@@ -3276,6 +4070,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
           
             <div class="event-card fade-in">
               <div class="event-card-inner">
+                
+                  <img src="https://www.theherbert.org/_userfiles/thumbs/79e7eaa33baecded2190afe2490f21fd.png" alt="" class="event-card-image" loading="lazy">
                 
                 <div class="event-card-content">
                   <div class="event-name">
@@ -3371,6 +4167,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://www.theherbert.org/_userfiles/thumbs/4f9fcf110f06427b2f383379832649af.png" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
@@ -3391,6 +4189,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://www.theherbert.org/_userfiles/thumbs/134c1e9484b210da203210f1ac39f45d.png" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
@@ -3403,6 +4203,24 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                   </div>
                   
                     <p class="event-description">Come and experience a truly unique family overnight experience sleeping under Dippy the Diplodocus.</p>
+                  
+                </div>
+              </div>
+            </div>
+          
+            <div class="event-card fade-in">
+              <div class="event-card-inner">
+                
+                <div class="event-card-content">
+                  <div class="event-name">
+                    
+                      <a href="https://sixsidedsociety.co.uk/products/dungeons-and-dragons-family-session-in-coventry">Family D&D Adventure: Parent + Kid (Ages 6+)</a>
+                    
+                  </div>
+                  <div class="event-meta">
+                    <span class="date">Sun 22nd Mar 11am</span>
+                    <span class="venue">Six Sided Society</span>
+                  </div>
                   
                 </div>
               </div>
@@ -3429,6 +4247,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://earlsdonlibrary.org.uk/wp-content/uploads/2025/07/Regular-events-July2025-732x1024.jpg" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
@@ -3436,7 +4256,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                     
                   </div>
                   <div class="event-meta">
-                    <span class="date">Sat 14 Mar</span>
+                    <span class="date">Sat 21 Mar</span>
                     <span class="venue">Earlsdon Carnegie Community Library</span>
                   </div>
                   
@@ -3449,6 +4269,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://earlsdonlibrary.org.uk/wp-content/uploads/2025/07/Regular-events-July2025-732x1024.jpg" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
@@ -3456,7 +4278,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                     
                   </div>
                   <div class="event-meta">
-                    <span class="date">Sat 14 Mar</span>
+                    <span class="date">Sat 21 Mar</span>
                     <span class="venue">Earlsdon Carnegie Community Library</span>
                   </div>
                   
@@ -3487,6 +4309,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
             <div class="event-card fade-in">
               <div class="event-card-inner">
                 
+                  <img src="https://earlsdonlibrary.org.uk/wp-content/uploads/2025/07/Regular-events-July2025-732x1024.jpg" alt="" class="event-card-image" loading="lazy">
+                
                 <div class="event-card-content">
                   <div class="event-name">
                     
@@ -3494,7 +4318,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                     
                   </div>
                   <div class="event-meta">
-                    <span class="date">Thu 12 Mar</span>
+                    <span class="date">Thu 19 Mar</span>
                     <span class="venue">Earlsdon Carnegie Community Library</span>
                   </div>
                   
@@ -3506,6 +4330,8 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
           
             <div class="event-card fade-in">
               <div class="event-card-inner">
+                
+                  <img src="https://earlsdonlibrary.org.uk/wp-content/uploads/2025/07/Regular-events-July2025-732x1024.jpg" alt="" class="event-card-image" loading="lazy">
                 
                 <div class="event-card-content">
                   <div class="event-name">
@@ -3545,15 +4371,18 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
         </div>
       </section>
     
-      <section class="category-section" data-count="1">
+      <section class="category-section" data-count="1" data-category="history">
         <div class="category-header">
           <h2>history</h2>
           <span class="category-count">1</span>
+          <button class="category-toggle" aria-label="Toggle history">−</button>
         </div>
         <div class="event-list">
           
             <div class="event-card fade-in">
               <div class="event-card-inner">
+                
+                  <img src="https://e2bai8ubb5z.exactdn.com/wp-content/uploads/2026/02/Headshots-3-664x374.jpg?strip=all&quality=90&webp=90&avif=80" alt="" class="event-card-image" loading="lazy">
                 
                 <div class="event-card-content">
                   <div class="event-name">
@@ -3578,10 +4407,11 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   </div>
 
   
-    <section class="category-section category-section--other" data-count="25">
+    <section class="category-section category-section--other" data-count="28" data-category="community">
       <div class="category-header">
         <h2>community</h2>
-        <span class="category-count">25</span>
+        <span class="category-count">28</span>
+        <button class="category-toggle" aria-label="Toggle community">−</button>
       </div>
       <div class="event-list event-list--wide">
         
@@ -3644,6 +4474,22 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                 <div class="event-meta">
                   <span class="date">14th March</span>
                   <span class="venue">Earlsdon Carnegie Community Library</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <div class="event-card fade-in">
+            <div class="event-card-inner">
+              <div class="event-card-content">
+                <div class="event-name">
+                  
+                    <a href="https://www.belgrade.co.uk/events/big-give-26/">The Big Give</a>
+                  
+                </div>
+                <div class="event-meta">
+                  <span class="date">Tue 17 - Tue 24 Mar 2026</span>
+                  <span class="venue">Belgrade Theatre</span>
                 </div>
               </div>
             </div>
@@ -3718,6 +4564,22 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
               <div class="event-card-content">
                 <div class="event-name">
                   
+                    <a href="https://www.albanytheatre.co.uk/shows/albany-youth-theatre-spring-showcase/">Albany Youth Theatre Spring Showcase</a>
+                  
+                </div>
+                <div class="event-meta">
+                  <span class="date">Wednesday 25th March 2026</span>
+                  <span class="venue">Albany Theatre</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <div class="event-card fade-in">
+            <div class="event-card-inner">
+              <div class="event-card-content">
+                <div class="event-name">
+                  
                     <a href="https://www.belgrade.co.uk/events/creative-wellbeing-2026/">Creative Wellbeing Day</a>
                   
                 </div>
@@ -3738,7 +4600,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                   
                 </div>
                 <div class="event-meta">
-                  <span class="date">Thu 12 Mar</span>
+                  <span class="date">Thu 19 Mar</span>
                   <span class="venue">Earlsdon Carnegie Community Library</span>
                 </div>
               </div>
@@ -3786,7 +4648,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                   
                 </div>
                 <div class="event-meta">
-                  <span class="date">Sat 14 Mar</span>
+                  <span class="date">Sat 21 Mar</span>
                   <span class="venue">Earlsdon Carnegie Community Library</span>
                 </div>
               </div>
@@ -3802,7 +4664,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                   
                 </div>
                 <div class="event-meta">
-                  <span class="date">Wed 11 Mar</span>
+                  <span class="date">Wed 18 Mar</span>
                   <span class="venue">Earlsdon Carnegie Community Library</span>
                 </div>
               </div>
@@ -3882,7 +4744,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                   
                 </div>
                 <div class="event-meta">
-                  <span class="date">Sat 14 Mar</span>
+                  <span class="date">Sat 21 Mar</span>
                   <span class="venue">Earlsdon Carnegie Community Library</span>
                 </div>
               </div>
@@ -3898,7 +4760,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                   
                 </div>
                 <div class="event-meta">
-                  <span class="date">Thu 12 Mar</span>
+                  <span class="date">Thu 19 Mar</span>
                   <span class="venue">Earlsdon Carnegie Community Library</span>
                 </div>
               </div>
@@ -3946,8 +4808,24 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                   
                 </div>
                 <div class="event-meta">
-                  <span class="date">Fri 13 Mar</span>
+                  <span class="date">Fri 20 Mar</span>
                   <span class="venue">Earlsdon Carnegie Community Library</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <div class="event-card fade-in">
+            <div class="event-card-inner">
+              <div class="event-card-content">
+                <div class="event-name">
+                  
+                    <a href="https://www.eventbrite.co.uk/e/routes-out-2026-the-national-youth-homelessness-conference-tickets-1720429343479">Routes Out 2026: The National Youth Homelessness Conference</a>
+                  
+                </div>
+                <div class="event-meta">
+                  <span class="date">Tue 17 Mar</span>
+                  <span class="venue">Coventry Building Society Arena</span>
                 </div>
               </div>
             </div>
@@ -3990,10 +4868,11 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
   
 
   
-    <section class="category-section category-section--other" data-count="25">
+    <section class="category-section category-section--other" data-count="34" data-category="other">
       <div class="category-header">
         <h2>other</h2>
-        <span class="category-count">25</span>
+        <span class="category-count">34</span>
+        <button class="category-toggle" aria-label="Toggle other">−</button>
       </div>
       <div class="event-list event-list--wide">
         
@@ -4322,11 +5201,43 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
               <div class="event-card-content">
                 <div class="event-name">
                   
-                    <a href="https://sixsidedsociety.co.uk/products/l3-family-d-d-fortnightly-saturdays-4hrs-march-april">L3 Family D&D Campaign: Fortnightly Saturdays</a>
+                    <a href="https://www.warwickartscentre.co.uk/whats-on/qp8-a-night-with-donna-ashworth-when-hope-speaks/">A Night with Donna Ashworth: When Hope Speaks</a>
                   
                 </div>
                 <div class="event-meta">
-                  <span class="date">Sat 14 Mar</span>
+                  <span class="date">Wed 18th Mar 7:30pm</span>
+                  <span class="venue">Warwick Arts Centre</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <div class="event-card fade-in">
+            <div class="event-card-inner">
+              <div class="event-card-content">
+                <div class="event-name">
+                  
+                    <a href="https://sixsidedsociety.co.uk/products/blood-on-the-clocktower-coventry">Blood on the Clocktower @ Twisted Barrel</a>
+                  
+                </div>
+                <div class="event-meta">
+                  <span class="date">Sun 22nd Mar 1pm</span>
+                  <span class="venue">Twisted Barrel Brewery & Tap House</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <div class="event-card fade-in">
+            <div class="event-card-inner">
+              <div class="event-card-content">
+                <div class="event-name">
+                  
+                    <a href="https://sixsidedsociety.co.uk/products/dnd-coventry-beginner-friendly-session">DnD L5 Beginner Friendly \[Re-run\] the Cyclops Maraude</a>
+                  
+                </div>
+                <div class="event-meta">
+                  <span class="date">Wed 18th Mar 6pm</span>
                   <span class="venue">Six Sided Society</span>
                 </div>
               </div>
@@ -4338,11 +5249,59 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
               <div class="event-card-content">
                 <div class="event-name">
                   
-                    <a href="https://sixsidedsociety.co.uk/products/dnd-fortnightly-wednesday-campaign-coventry">L5 D&amp;D Campaign: Fortnightly Wednesdays</a>
+                    <a href="https://www.coventrycathedral.org.uk/events/embroidery-workshop-18th-march">Embroidery Workshop</a>
                   
                 </div>
                 <div class="event-meta">
-                  <span class="date">Wed 11 Mar</span>
+                  <span class="date">Wed 18th Mar 10am</span>
+                  <span class="venue">Coventry Cathedral</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <div class="event-card fade-in">
+            <div class="event-card-inner">
+              <div class="event-card-content">
+                <div class="event-name">
+                  
+                    <a href="https://talkingbirds.co.uk/2025/11/14/third-fridays/">Growth: a creative writing workshop led by Nirmal Puwar</a>
+                  
+                </div>
+                <div class="event-meta">
+                  <span class="date">Fri 20th Mar 10:30am</span>
+                  <span class="venue">The Nest</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <div class="event-card fade-in">
+            <div class="event-card-inner">
+              <div class="event-card-content">
+                <div class="event-name">
+                  
+                    <a href="https://sixsidedsociety.co.uk/products/l3-family-d-d-fortnightly-saturdays-4hrs-march-april">L3 Family D&D Campaign: Fortnightly Saturdays</a>
+                  
+                </div>
+                <div class="event-meta">
+                  <span class="date">Sat 21 Mar</span>
+                  <span class="venue">Six Sided Society</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <div class="event-card fade-in">
+            <div class="event-card-inner">
+              <div class="event-card-content">
+                <div class="event-name">
+                  
+                    <a href="https://sixsidedsociety.co.uk/products/dnd-fortnightly-wednesday-campaign-coventry">L5 D&D Campaign: Fortnightly Wednesdays</a>
+                  
+                </div>
+                <div class="event-meta">
+                  <span class="date">Wed 18 Mar</span>
                   <span class="venue">Six Sided Society</span>
                 </div>
               </div>
@@ -4370,7 +5329,7 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
               <div class="event-card-content">
                 <div class="event-name">
                   
-                    <a href="https://sixsidedsociety.co.uk/products/d-d-womenonly-sunday-campaign-coventry">L8 D&amp;D Campaign Women-Only: Fortnightly Sundays</a>
+                    <a href="https://sixsidedsociety.co.uk/products/d-d-womenonly-sunday-campaign-coventry">L8 D&D Campaign Women-Only: Fortnightly Sundays</a>
                   
                 </div>
                 <div class="event-meta">
@@ -4390,8 +5349,72 @@ a.featured-hero-title:hover { color: #5EB3E4; text-decoration: none; }
                   
                 </div>
                 <div class="event-meta">
-                  <span class="date">Sat 14 Mar</span>
+                  <span class="date">Sat 21 Mar</span>
                   <span class="venue">Six Sided Society</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <div class="event-card fade-in">
+            <div class="event-card-inner">
+              <div class="event-card-content">
+                <div class="event-name">
+                  
+                    <a href="https://www.waterstones.com/events/pok-mon-swap-shop/coventry-159057">Pokémon Swap Shop</a>
+                  
+                </div>
+                <div class="event-meta">
+                  <span class="date">Sun 22nd Mar 2pm</span>
+                  <span class="venue">Waterstones</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <div class="event-card fade-in">
+            <div class="event-card-inner">
+              <div class="event-card-content">
+                <div class="event-name">
+                  
+                    <a href="https://www.warwickartscentre.co.uk/whats-on/qWT-prof-brian-cox-emergence-preview/">Prof. Brian Cox : Emergence (Preview)</a>
+                  
+                </div>
+                <div class="event-meta">
+                  <span class="date">Fri 20th Mar 7:15pm</span>
+                  <span class="venue">Warwick Arts Centre</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <div class="event-card fade-in">
+            <div class="event-card-inner">
+              <div class="event-card-content">
+                <div class="event-name">
+                  
+                    <a href="https://sixsidedsociety.co.uk/products/coventry-ttrpg-savage-words">Savage Worlds RPG one shot - Coventry in 1941</a>
+                  
+                </div>
+                <div class="event-meta">
+                  <span class="date">Tue 17th Mar 6pm</span>
+                  <span class="venue">Six Sided Society</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <div class="event-card fade-in">
+            <div class="event-card-inner">
+              <div class="event-card-content">
+                <div class="event-name">
+                  
+                    <a href="https://stmarysguildhall-tickets.ticketsolve.com/ticketbooth/shows/1173675336">Tapestry Tour</a>
+                  
+                </div>
+                <div class="event-meta">
+                  <span class="date">Sat 21st Mar</span>
+                  <span class="venue">St Mary's Guildhall</span>
                 </div>
               </div>
             </div>
