@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= page_title ? "#{page_title} : cov.kids" : "cov.kids: what's on in coventry" %></title>
+  <meta name="rating" content="general">
   <meta name="description" content="<%= page_description || "What's on in Coventry this week — events, gigs, markets, comedy, theatre, sport and more." %>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,7 +43,7 @@
           zone_suffix    = warks_on && brum_on ? "all/" : warks_on ? "warwickshire/" : brum_on ? "birmingham/" : ""
           next_months = (0..5).map do |i|
             d = Date.today >> i
-            { label: d.strftime("%b"), path: "#{root_path}#{d.year}/#{d.strftime('%m')}/#{zone_suffix}" }
+            { label: d.strftime("%b"), path: "#{root_path}#{d.year}/#{d.strftime('%m')}/#{zone_suffix}", year_month: "#{d.year}/#{d.strftime('%m')}" }
           end
         %>
         <div class="page-context-identity">
@@ -61,7 +62,8 @@
               <a href="<%= root_path %><%=zone_suffix%>" class="month-tab month-tab--home">this week</a>
             <% end %>
             <% next_months.each do |m| %>
-              <a href="<%= m[:path] %>" class="month-tab"><%= m[:label] %></a>
+              <% month_active = defined?(nav_month) && nav_month == m[:year_month] %>
+              <a href="<%= m[:path] %>" class="month-tab<%= " active" if month_active %>"><%= m[:label] %></a>
             <% end %>
           </nav>
           <select class="month-select" onchange="location.href=this.value" aria-label="Browse by month">
@@ -70,7 +72,8 @@
               <option value="<%= root_path %><%=zone_suffix%>">this week</option>
             <% end %>
             <% next_months.each do |m| %>
-              <option value="<%= m[:path] %>"><%= m[:label] %></option>
+              <% month_active = defined?(nav_month) && nav_month == m[:year_month] %>
+              <option value="<%= m[:path] %>"<%= " selected" if month_active %>><%= m[:label] %></option>
             <% end %>
           </select>
           <% if defined?(active_zones) && active_zones %>

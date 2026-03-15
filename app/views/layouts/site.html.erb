@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= @page_title.present? ? "#{@page_title} : cov.kids" : "cov.kids: what's on in coventry" %></title>
+  <meta name="rating" content="general">
   <meta name="description" content="<%= @page_description.presence || "What's on in Coventry this week — events, gigs, markets, comedy, theatre, sport and more." %>">
   <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,9 +32,10 @@
     <header class="site-header">
       <% if @week_label %>
         <%
+          current_ym  = @year && @month_path ? "#{@year}/#{@month_path}" : nil
           next_months = (0..5).map do |i|
             d = Date.today >> i
-            { label: d.strftime("%b"), path: "#{root_path}#{d.year}/#{d.strftime('%m')}" }
+            { label: d.strftime("%b"), path: "#{root_path}#{d.year}/#{d.strftime('%m')}", year_month: "#{d.year}/#{d.strftime('%m')}" }
           end
         %>
         <div class="page-context-identity">
@@ -52,7 +54,7 @@
               <a href="<%= root_path %>" class="month-tab month-tab--home">this week</a>
             <% end %>
             <% next_months.each do |m| %>
-              <a href="<%= m[:path] %>" class="month-tab"><%= m[:label] %></a>
+              <a href="<%= m[:path] %>" class="month-tab<%= " active" if current_ym == m[:year_month] %>"><%= m[:label] %></a>
             <% end %>
           </nav>
           <select class="month-select" onchange="location.href=this.value" aria-label="Browse by month">
@@ -61,7 +63,7 @@
               <option value="<%= root_path %>">this week</option>
             <% end %>
             <% next_months.each do |m| %>
-              <option value="<%= m[:path] %>"><%= m[:label] %></option>
+              <option value="<%= m[:path] %>"<%= " selected" if current_ym == m[:year_month] %>><%= m[:label] %></option>
             <% end %>
           </select>
           <nav class="zone-nav" aria-label="Area filter">
